@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>07-01. 기출 문제 분석</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     * {
       margin: 0;
@@ -255,6 +256,53 @@
       border-top: 2px solid #444;
       font-size: 0.9em;
     }
+    
+    .image-save-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #888;
+      color: #ffffff;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95em;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      z-index: 1000;
+      transition: background 0.3s ease;
+    }
+    
+    .image-save-btn:hover {
+      background: #999;
+    }
+    
+    .image-save-btn:active {
+      background: #777;
+    }
+    
+    .save-status {
+      position: fixed;
+      bottom: 70px;
+      right: 20px;
+      background: #2a2a2a;
+      color: #888;
+      padding: 10px 20px;
+      border-radius: 5px;
+      border: 1px solid #444;
+      font-size: 0.9em;
+      display: none;
+      z-index: 1000;
+    }
+    
+    .save-status.saved {
+      color: #888;
+      border-color: #666;
+    }
+    
+    .save-status.saving {
+      color: #ffffff;
+    }
   </style>
 </head>
 <body>
@@ -388,15 +436,106 @@ accuracy = accuracy_score(y_test, y_pred)</code></pre>
     <li><a href="https://scikit-learn.org/stable/">Scikit-learn 공식 문서</a></li>
     </ul>
     <hr>
-    <p><strong>작성일</strong>: 2025-11-19  </p>
-    <p><strong>이전 학습</strong>: <a href="../06_머신러닝/06_01_머신러닝기초.md">06_01_머신러닝기초</a>  </p>
-    <p><strong>다음 학습</strong>: -</p>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0; padding: 15px; background: #2a2a2a; border-radius: 8px; border: 1px solid #444;">
+      <div style="flex: 1;">
+        <p style="margin: 0; color: #888; font-size: 0.9em;"><strong>이전 학습</strong></p>
+        <p style="margin: 5px 0 0 0;"><a href="../06_머신러닝/06_01_머신러닝기초.html" style="color: #888; text-decoration: none; transition: color 0.3s ease;">← 06_01_머신러닝기초</a></p>
+      </div>
+      <div style="flex: 1; text-align: center;">
+        <p style="margin: 0; color: #888; font-size: 0.9em;"><strong>작성일</strong></p>
+        <p style="margin: 5px 0 0 0; color: #aaa;">2025-11-19</p>
+      </div>
+      <div style="flex: 1; text-align: right;">
+        <p style="margin: 0; color: #888; font-size: 0.9em;"><strong>다음 학습</strong></p>
+        <p style="margin: 5px 0 0 0; color: #666;">-</p>
+      </div>
+    </div>
+    <style>
+      div[style*="이전 학습"] a:hover,
+      div[style*="다음 학습"] a:hover {
+        color: #ffffff !important;
+      }
+    </style>
     </div>
     
     <div class="footer">
       <p>AICE Associate 시험 대비 | 학습 자료</p>
     </div>
   </div>
+  
+  <button class="image-save-btn" onclick="saveAsImage()">🖼️ 이미지 저장</button>
+  <div class="save-status" id="saveStatus">저장됨</div>
+  
+  <script>
+    function showSaveStatus(type) {
+      const status = document.getElementById('saveStatus');
+      status.style.display = 'block';
+      if (type === 'saved') {
+        status.textContent = '✓ 저장됨';
+        status.className = 'save-status saved';
+        setTimeout(() => { status.style.display = 'none'; }, 2000);
+      } else if (type === 'saving') {
+        status.textContent = '저장 중...';
+        status.className = 'save-status saving';
+      } else if (type === 'error') {
+        status.textContent = '✗ 저장 실패';
+        status.className = 'save-status';
+        status.style.color = '#ff6b6b';
+        setTimeout(() => { status.style.display = 'none'; }, 3000);
+      }
+    }
+    async function saveAsImage() {
+      if (typeof html2canvas === 'undefined') {
+        alert('이미지 변환 라이브러리를 로드하는 중입니다. 잠시 후 다시 시도해주세요.');
+        return;
+      }
+      showSaveStatus('saving');
+      try {
+        const container = document.querySelector('.container');
+        if (!container) {
+          alert('컨테이너를 찾을 수 없습니다.');
+          showSaveStatus('error');
+          return;
+        }
+        const options = {
+          backgroundColor: '#000000',
+          scale: 2,
+          useCORS: true,
+          logging: false,
+          width: container.scrollWidth,
+          height: container.scrollHeight,
+          windowWidth: container.scrollWidth,
+          windowHeight: container.scrollHeight
+        };
+        const canvas = await html2canvas(container, options);
+        canvas.toBlob(function(blob) {
+          if (!blob) {
+            alert('이미지 생성에 실패했습니다.');
+            showSaveStatus('error');
+            return;
+          }
+          const title = document.title.replace(/\./g, '_').replace(/\s+/g, '_');
+          const today = new Date().toISOString().split('T')[0];
+          const fileName = `${title}_${today}.png`;
+          downloadImage(blob, fileName);
+        }, 'image/png', 1.0);
+      } catch (error) {
+        console.error('이미지 저장 오류:', error);
+        alert('이미지 저장 중 오류가 발생했습니다: ' + error.message);
+        showSaveStatus('error');
+      }
+    }
+    function downloadImage(blob, fileName) {
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileName;
+      link.click();
+      URL.revokeObjectURL(url);
+      showSaveStatus('saved');
+      alert(`✅ 이미지가 다운로드되었습니다!\n\n파일명: ${fileName}`);
+    }
+  </script>
 </body>
 </html>
 
