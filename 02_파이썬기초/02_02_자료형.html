@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>02-02. 파이썬 자료형</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body { 
+      font-family: 'Segoe UI', 'Malgun Gothic', system-ui, -apple-system, BlinkMacSystemFont, sans-serif; 
+      line-height: 1.6; 
+      padding: 20px 15px; 
+      max-width: 900px; 
+      margin: 0 auto; 
+      background: #000000;
+      color: #e0e0e0;
+    }
+    
+    .container {
+      background: #1a1a1a;
+      border-radius: 15px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      padding: 30px 25px;
+      border: 1px solid #333;
+    }
+    
+    h1, h2, h3 { 
+      color: #ffffff; 
+    }
+    
+    h1 { 
+      border-bottom: 4px solid #888; 
+      padding-bottom: 10px; 
+      margin-bottom: 20px;
+      font-size: 2em;
+      text-align: center;
+      color: #ffffff;
+    }
+    
+    h2 {
+      color: #ffffff;
+      font-size: 1.6em;
+      margin-top: 25px;
+      margin-bottom: 15px;
+      padding-left: 15px;
+      border-left: 5px solid #888;
+    }
+    
+    h3 {
+      color: #ffffff;
+      font-size: 1.3em;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    
+    code { 
+      background: #2a2a2a; 
+      color: #d0d0d0;
+      padding: 3px 8px; 
+      border-radius: 5px; 
+      font-family: "Consolas", "Menlo", "Courier New", monospace; 
+      font-size: 0.95em;
+      font-weight: bold;
+      border: 1px solid #444;
+    }
+    
+    pre { 
+      background: #1e1e1e; 
+      color: #d4d4d4; 
+      padding: 15px; 
+      border-radius: 8px; 
+      overflow-x: auto; 
+      font-size: 14px;
+      line-height: 1.6;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      margin: 10px 0;
+      border: 1px solid #333;
+    }
+    
+    pre code {
+      background: transparent;
+      border: none;
+      padding: 0;
+      color: #d4d4d4;
+    }
+    
+    .box { 
+      background: #2a2a2a; 
+      padding: 15px; 
+      border-radius: 10px; 
+      margin-bottom: 15px; 
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      border-left: 4px solid #888;
+      border: 1px solid #444;
+    }
+    
+    .section-box {
+      background: #2a2a2a;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 15px 0;
+      border-left: 4px solid #888;
+      border: 1px solid #444;
+    }
+    
+    .tip { 
+      font-size: 0.95em; 
+      color: #d0d0d0;
+      margin-top: 10px;
+      padding: 10px;
+      background: #2a2a2a;
+      border-left: 4px solid #888;
+      border-radius: 5px;
+      border: 1px solid #444;
+    }
+    
+    .tip strong {
+      color: #ffffff;
+    }
+    
+    .warning {
+      background: #3a2a1a;
+      border-left: 4px solid #ff6b6b;
+      color: #ffcccc;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 10px 0;
+      border: 1px solid #555;
+    }
+    
+    .summary {
+      background: #1a2a2a;
+      border-left: 4px solid #888;
+      color: #d0d0d0;
+      padding: 15px;
+      border-radius: 5px;
+      margin: 15px 0;
+      border: 1px solid #444;
+    }
+    
+    .summary h3 {
+      margin-top: 0;
+      color: #ffffff;
+    }
+    
+    ol { 
+      padding-left: 25px; 
+    }
+    
+    li { 
+      margin-bottom: 6px; 
+      line-height: 1.6;
+    }
+    
+    ul {
+      padding-left: 25px;
+    }
+    
+    p {
+      margin-bottom: 10px;
+      line-height: 1.8;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+      background: #2a2a2a;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #444;
+    }
+    
+    thead {
+      background: #1a1a1a;
+      color: #ffffff;
+      border-bottom: 2px solid #666;
+    }
+    
+    th {
+      padding: 12px;
+      text-align: left;
+      font-weight: 600;
+      color: #ffffff;
+    }
+    
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #444;
+      color: #e0e0e0;
+    }
+    
+    tr:hover {
+      background: #333;
+    }
+    
+    tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .checklist {
+      background: #2a2a2a;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 15px 0;
+      border: 1px solid #444;
+    }
+    
+    .checklist-item {
+      margin: 8px 0;
+      padding-left: 25px;
+      position: relative;
+    }
+    
+    .checklist-item input[type="checkbox"] {
+      position: absolute;
+      left: 0;
+      margin-top: 3px;
+    }
+    
+    img {
+      max-width: 100%;
+      height: auto;
+      border: 2px solid #666;
+      border-radius: 8px;
+      margin: 15px 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+    
+    hr {
+      border: none;
+      border-top: 2px solid #444;
+      margin: 25px 0;
+    }
+    
+    a {
+      color: #888;
+      text-decoration: underline;
+    }
+    
+    a:hover {
+      color: #ffffff;
+    }
+    
+    .footer {
+      text-align: center;
+      color: #888;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 2px solid #444;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>02-02. 파이썬 자료형</h1>
+    
+    <div class="section-box">
+    <h2>📋 목차</h2>
+    <ul>
+    <li><a href="#1-숫자형-number">1. 숫자형 (Number)</a></li>
+    <li><a href="#2-문자열-string">2. 문자열 (String)</a></li>
+    <li><a href="#3-리스트-list">3. 리스트 (List)</a></li>
+    <li><a href="#4-튜플-tuple">4. 튜플 (Tuple)</a></li>
+    <li><a href="#5-딕셔너리-dictionary">5. 딕셔너리 (Dictionary)</a></li>
+    <li><a href="#6-집합-set">6. 집합 (Set)</a></li>
+    <li><a href="#7-불리언-boolean">7. 불리언 (Boolean)</a></li>
+    <li><a href="#8-실습">8. 실습</a></li>
+    <li><a href="#9-요약">9. 요약</a></li>
+    </ul>
+    <hr>
+    <h2>1. 숫자형 (Number)</h2>
+    <h3>1.1 정수 (int)</h3>
+    <pre><code class="language-python"># 정수
+age = 25
+count = -10
+big_number = 1000000
+
+# 밑줄로 가독성 향상 (Python 3.6+)
+big_number = 1_000_000
+print(big_number)  # 1000000</code></pre>
+    <h3>1.2 실수 (float)</h3>
+    <pre><code class="language-python"># 실수
+height = 175.5
+pi = 3.14159
+temperature = -10.5
+
+# 과학적 표기법
+scientific = 1.5e3  # 1500.0
+print(scientific)</code></pre>
+    <h3>1.3 복소수 (complex)</h3>
+    <pre><code class="language-python"># 복소수
+complex_num = 3 + 4j
+print(complex_num.real)  # 3.0
+print(complex_num.imag)  # 4.0</code></pre>
+    <h3>1.4 타입 변환</h3>
+    <pre><code class="language-python"># 정수로 변환
+x = int(3.7)      # 3
+y = int("123")    # 123
+
+# 실수로 변환
+a = float(5)      # 5.0
+b = float("3.14") # 3.14
+
+# 숫자형 확인
+print(type(10))    # &lt;class 'int'&gt;
+print(type(3.14))  # &lt;class 'float'&gt;</code></pre>
+    <hr>
+    <h2>2. 문자열 (String)</h2>
+    <h3>2.1 문자열 생성</h3>
+    <pre><code class="language-python"># 작은따옴표
+str1 = 'Hello'
+
+# 큰따옴표
+str2 = "World"
+
+# 삼중 따옴표 (여러 줄)
+str3 = """여러 줄
+문자열
+작성 가능"""
+
+# 이스케이프 문자
+str4 = "이름: \"홍길동\""        # \": 따옴표
+str5 = "경로: C:\Users"         # \: 백슬래시</code></pre>
+    <p>#### 줄바꿈 방법 비교</p>
+    <p>Python에서 문자열 내에서 줄바꿈을 표현하는 방법은 여러 가지가 있습니다. 각 방법의 차이점을 이해하는 것이 중요합니다.</p>
+    <p><strong>❌ 오류가 발생하는 경우 (문법 오류)</strong></p>
+    <pre><code class="language-python"># 이렇게 작성하면 SyntaxError 발생!
+# str6 = "안녕하세요
+# 반갑습니다"
+# print(str6)
+
+# 오류 메시지: SyntaxError: EOL while scanning string literal
+# 이유: 큰따옴표나 작은따옴표로 시작한 문자열은 한 줄에 완성되어야 합니다.</code></pre>
+    <p><strong>✅ 방법 1: 이스케이프 문자 <code>
+</code> 사용 (권장)</strong></p>
+    <pre><code class="language-python"># 
+을 사용하여 줄바꿈 표현
+str4 = "안녕하세요
+반갑습니다"
+print(str4)
+# 출력 결과:
+# 안녕하세요
+# 반갑습니다
+
+# 장점: 한 줄로 작성 가능, 코드 가독성 좋음
+# 단점: 실제 줄바꿈이 코드에 보이지 않음</code></pre>
+    <p><strong>✅ 방법 2: 삼중 따옴표 <code>"""</code> 사용</strong></p>
+    <pre><code class="language-python"># 삼중 따옴표를 사용하면 실제 줄바꿈이 그대로 유지됨
+str5 = """안녕하세요
+반갑습니다"""
+print(str5)
+# 출력 결과:
+# 안녕하세요
+# 반갑습니다
+
+# 장점: 실제 줄바꿈이 코드에 보여서 직관적
+# 단점: 여러 줄에 걸쳐 작성해야 함</code></pre>
+    <p><strong>비교 예시:</strong></p>
+    <pre><code class="language-python"># 방법 1: 
+ 사용
+text1 = "첫 번째 줄
+두 번째 줄
+세 번째 줄"
+print("방법 1 (\n 사용):")
+print(text1)
+print()
+
+# 방법 2: 삼중 따옴표 사용
+text2 = """첫 번째 줄
+두 번째 줄
+세 번째 줄"""
+print("방법 2 (삼중 따옴표 사용):")
+print(text2)
+print()
+
+# 두 방법의 출력 결과는 동일합니다!
+# 출력:
+# 첫 번째 줄
+# 두 번째 줄
+# 세 번째 줄</code></pre>
+    <div class="tip"><strong>💡 Tip:</strong></div>
+    <blockquote>- 짧은 문자열의 줄바꿈: <code>
+</code> 사용 권장</blockquote>
+    <blockquote>- 긴 여러 줄 문자열: <code>"""</code> 사용 권장</blockquote>
+    <blockquote>- 문자열 내에서 직접 줄바꿈은 <strong>절대 불가능</strong> (SyntaxError 발생)</blockquote>
+    <h3>2.2 문자열 연산</h3>
+    <pre><code class="language-python"># 연결
+greeting = "Hello" + " " + "World"
+print(greeting)  # Hello World
+
+# 반복
+stars = "*" * 5
+print(stars)  # *****
+
+# 길이
+text = "Python"
+print(len(text))  # 6</code></pre>
+    <h3>2.3 문자열 인덱싱과 슬라이싱</h3>
+    <pre><code class="language-python">text = "Python"
+
+# 인덱싱 (0부터 시작)
+print(text[0])   # P
+print(text[1])   # y
+print(text[-1])  # n (뒤에서 첫 번째)
+
+# 슬라이싱 [시작:끝:간격]
+print(text[0:3])    # Pyt
+print(text[:3])     # Pyt (처음부터)
+print(text[3:])     # hon (3부터 끝까지)
+print(text[::2])    # Pto (2칸씩)
+print(text[::-1])   # nohtyP (역순)</code></pre>
+    <h3>2.4 문자열 메서드</h3>
+    <pre><code class="language-python">text = "  Hello World  "
+
+# 대소문자 변환
+print(text.upper())      # "  HELLO WORLD  "
+print(text.lower())      # "  hello world  "
+print(text.title())      # "  Hello World  "
+
+# 공백 제거
+print(text.strip())      # "Hello World"
+print(text.lstrip())     # "Hello World  "
+print(text.rstrip())     # "  Hello World"
+
+# 찾기 및 교체
+text2 = "Python is great"
+print(text2.find("is"))        # 7
+print(text2.replace("great", "awesome"))  # "Python is awesome"
+
+# 분할 및 결합
+words = "apple,banana,orange"
+fruits = words.split(",")      # ['apple', 'banana', 'orange']
+joined = "-".join(fruits)      # "apple-banana-orange"</code></pre>
+    <h3>2.5 문자열 포맷팅</h3>
+    <p>문자열 포맷팅은 변수나 값을 문자열 안에 삽입하는 방법입니다. Python에서는 여러 가지 포맷팅 방법을 제공합니다.</p>
+    <pre><code class="language-python">name = "홍길동"
+age = 25
+
+# f-string (권장, Python 3.6+)
+print(f"이름: {name}, 나이: {age}")
+# 출력: 이름: 홍길동, 나이: 25</code></pre>
+    <p>#### format() 메서드 상세 설명</p>
+    <p><code>format()</code> 메서드를 사용할 때 <code>{}</code>는 값이 들어가는 자리(placeholder)입니다.</p>
+    <p><strong>기본 사용법:</strong></p>
+    <pre><code class="language-python">name = "홍길동"
+age = 25
+
+# 방법 1: 순서대로 자동 할당
+print("이름: {}, 나이: {}".format(name, age))
+# 출력: 이름: 홍길동, 나이: 25
+# {}는 format()에 전달된 값의 순서대로 자동으로 채워집니다.</code></pre>
+    <p><strong>인덱스 사용법:</strong></p>
+    <p><code>{0}</code>, <code>{1}</code>의 숫자는 <code>format()</code>에 전달된 값의 순서(index)를 나타냅니다.</p>
+    <ul>
+    <li><code>{0}</code> → 첫 번째 값</li>
+    <li><code>{1}</code> → 두 번째 값</li>
+    <li><code>{2}</code> → 세 번째 값</li>
+    </ul>
+    <pre><code class="language-python">name = "홍길동"
+age = 25
+city = "서울"
+
+# 방법 2: 인덱스로 명시적 지정
+print("이름: {0}, 나이: {1}".format(name, age))
+# 출력: 이름: 홍길동, 나이: 25
+
+# 인덱스의 장점: 순서 재배치 가능
+print("나이: {1}, 이름: {0}".format(name, age))
+# 출력: 나이: 25, 이름: 홍길동
+# {1}이 먼저, {0}이 나중에 와도 올바르게 출력됩니다!
+
+# 인덱스의 장점: 반복 사용 가능
+print("{0}님은 {1}세이고, {0}님의 나이는 {1}세입니다.".format(name, age))
+# 출력: 홍길동님은 25세이고, 홍길동님의 나이는 25세입니다.
+# 같은 값을 여러 번 사용할 때 편리합니다.
+
+# 여러 값 사용 예시
+print("{0}님은 {1}세이며, {2}에 살고 있습니다.".format(name, age, city))
+# 출력: 홍길동님은 25세이며, 서울에 살고 있습니다.</code></pre>
+    <p><strong>비교 예시:</strong></p>
+    <pre><code class="language-python">name = "홍길동"
+age = 25
+
+# 순서대로 자동 할당 (간단하지만 순서 변경 불가)
+result1 = "이름: {}, 나이: {}".format(name, age)
+
+# 인덱스 사용 (순서 변경 및 반복 사용 가능)
+result2 = "나이: {1}, 이름: {0}".format(name, age)  # 순서 변경
+result3 = "{0}님은 {1}세이고, {0}님은 학생입니다.".format(name, age)  # 반복 사용
+
+print(result1)  # 이름: 홍길동, 나이: 25
+print(result2)  # 나이: 25, 이름: 홍길동
+print(result3)  # 홍길동님은 25세이고, 홍길동님은 학생입니다.</code></pre>
+    <p><strong>% 포맷팅 (구식, 참고용):</strong></p>
+    <pre><code class="language-python"># % 포맷팅 (구식, Python 2 스타일)
+print("이름: %s, 나이: %d" % (name, age))
+# %s: 문자열, %d: 정수, %f: 실수</code></pre>
+    <div class="tip"><strong>💡 Tip:</strong></div>
+    <blockquote>- <strong>f-string</strong> (Python 3.6+): 가장 현대적이고 읽기 쉬운 방법, <strong>권장</strong></blockquote>
+    <blockquote>- <strong>format() 메서드</strong>: 인덱스를 사용하면 순서 재배치나 반복 사용이 가능</blockquote>
+    <blockquote>- <code>{}</code>는 순서대로 자동 할당, <code>{0}</code>, <code>{1}</code>은 명시적 인덱스 지정</blockquote>
+    <blockquote>- 문자열 안에서 원하는 순서로 재배치하거나 반복 사용할 때 인덱스가 편리합니다</blockquote>
+    <hr>
+    <h2>3. 리스트 (List)</h2>
+    <h3>3.1 리스트 생성</h3>
+    <pre><code class="language-python"># 빈 리스트
+empty_list = []
+
+# 숫자 리스트
+numbers = [1, 2, 3, 4, 5]
+
+# 다양한 타입 혼합
+mixed = [1, "hello", 3.14, True]
+
+# 리스트 생성자
+numbers2 = list(range(1, 6))  # [1, 2, 3, 4, 5]</code></pre>
+    <h3>3.2 리스트 인덱싱과 슬라이싱</h3>
+    <pre><code class="language-python">fruits = ["apple", "banana", "orange", "grape"]
+
+# 인덱싱
+print(fruits[0])   # apple
+print(fruits[-1])  # grape
+
+# 슬라이싱
+print(fruits[1:3])  # ['banana', 'orange']
+print(fruits[:2])   # ['apple', 'banana']
+print(fruits[2:])   # ['orange', 'grape']</code></pre>
+    <h3>3.3 리스트 메서드</h3>
+    <pre><code class="language-python">fruits = ["apple", "banana"]
+
+# 추가
+fruits.append("orange")        # 끝에 추가
+fruits.insert(1, "grape")      # 인덱스 1에 삽입
+fruits.extend(["kiwi", "mango"])  # 여러 항목 추가
+
+# 제거
+fruits.remove("banana")        # 값으로 제거
+fruits.pop()                   # 마지막 항목 제거
+fruits.pop(0)                  # 인덱스 0 항목 제거
+
+# 기타
+print(fruits.count("apple"))   # 개수 세기
+print(fruits.index("orange"))  # 인덱스 찾기
+fruits.sort()                  # 정렬
+fruits.reverse()               # 역순</code></pre>
+    <h3>3.4 리스트 컴프리헨션</h3>
+    <pre><code class="language-python"># 기본 리스트 컴프리헨션
+squares = [x**2 for x in range(1, 6)]
+print(squares)  # [1, 4, 9, 16, 25]
+
+# 조건문 포함
+evens = [x for x in range(1, 11) if x % 2 == 0]
+print(evens)  # [2, 4, 6, 8, 10]
+
+# 중첩 리스트 컴프리헨션
+matrix = [[i*j for j in range(1, 4)] for i in range(1, 4)]
+print(matrix)  # [[1, 2, 3], [2, 4, 6], [3, 6, 9]]</code></pre>
+    <hr>
+    <h2>4. 튜플 (Tuple)</h2>
+    <h3>4.1 튜플 생성</h3>
+    <pre><code class="language-python"># 튜플은 불변(immutable) 자료형
+coordinates = (10, 20)
+point = 30, 40  # 괄호 생략 가능
+
+# 단일 요소 튜플
+single = (5,)  # 쉼표 필수!
+
+# 빈 튜플
+empty = ()</code></pre>
+    <h3>4.2 튜플 사용</h3>
+    <pre><code class="language-python"># 패킹과 언패킹
+x, y = (10, 20)  # 언패킹
+print(x, y)      # 10 20
+
+# 여러 변수 동시 할당
+a, b, c = 1, 2, 3
+
+# 튜플 인덱싱
+point = (10, 20, 30)
+print(point[0])  # 10</code></pre>
+    <div class="tip"><strong>💡 Tip: 튜플은 수정할 수 없지만, 리스트보다 빠르고 메모리를 적게 사용합니다.</strong></div>
+    <hr>
+    <h2>5. 딕셔너리 (Dictionary)</h2>
+    <h3>5.1 딕셔너리 생성</h3>
+    <pre><code class="language-python"># 빈 딕셔너리
+empty_dict = {}
+
+# 키-값 쌍
+student = {
+    "name": "홍길동",
+    "age": 25,
+    "grade": "A"
+}
+
+# dict() 생성자
+student2 = dict(name="이영희", age=23, grade="B")</code></pre>
+    <h3>5.2 딕셔너리 접근</h3>
+    <pre><code class="language-python">student = {"name": "홍길동", "age": 25}
+
+# 값 접근
+print(student["name"])        # 홍길동
+print(student.get("age"))     # 25
+print(student.get("grade", "N/A"))  # 키가 없으면 "N/A" 반환
+
+# 키 존재 확인
+print("name" in student)      # True</code></pre>
+    <h3>5.3 딕셔너리 메서드</h3>
+    <pre><code class="language-python">student = {"name": "홍길동", "age": 25}
+
+# 추가/수정
+student["grade"] = "A"        # 추가
+student["age"] = 26           # 수정
+
+# 제거
+del student["grade"]          # 키 삭제
+age = student.pop("age")      # 값 반환하며 삭제
+
+# 모든 키/값/항목
+print(student.keys())         # dict_keys(['name'])
+print(student.values())       # dict_values(['홍길동'])
+print(student.items())        # dict_items([('name', '홍길동')])</code></pre>
+    <h3>5.4 딕셔너리 컴프리헨션</h3>
+    <pre><code class="language-python"># 기본 딕셔너리 컴프리헨션
+squares = {x: x**2 for x in range(1, 6)}
+print(squares)  # {1: 1, 2: 4, 3: 9, 4: 16, 5: 25}
+
+# 조건문 포함
+evens = {x: x*2 for x in range(1, 11) if x % 2 == 0}
+print(evens)  # {2: 4, 4: 8, 6: 12, 8: 16, 10: 20}</code></pre>
+    <hr>
+    <h2>6. 집합 (Set)</h2>
+    <h3>6.1 집합 생성</h3>
+    <pre><code class="language-python"># 빈 집합
+empty_set = set()  # {}는 딕셔너리!
+
+# 집합 생성
+numbers = {1, 2, 3, 4, 5}
+fruits = set(["apple", "banana", "orange"])
+
+# 중복 자동 제거
+unique = {1, 2, 2, 3, 3, 3}
+print(unique)  # {1, 2, 3}</code></pre>
+    <h3>6.2 집합 연산</h3>
+    <pre><code class="language-python">set1 = {1, 2, 3, 4}
+set2 = {3, 4, 5, 6}
+
+# 합집합
+print(set1 | set2)      # {1, 2, 3, 4, 5, 6}
+print(set1.union(set2))
+
+# 교집합
+print(set1 &amp; set2)      # {3, 4}
+print(set1.intersection(set2))
+
+# 차집합
+print(set1 - set2)      # {1, 2}
+print(set1.difference(set2))
+
+# 대칭차집합
+print(set1 ^ set2)      # {1, 2, 5, 6}
+print(set1.symmetric_difference(set2))</code></pre>
+    <h3>6.3 집합 메서드</h3>
+    <pre><code class="language-python">numbers = {1, 2, 3}
+
+# 추가
+numbers.add(4)          # 단일 항목 추가
+numbers.update([5, 6])  # 여러 항목 추가
+
+# 제거
+numbers.remove(3)       # 항목 제거 (없으면 에러)
+numbers.discard(10)     # 항목 제거 (없어도 에러 없음)
+numbers.pop()           # 임의 항목 제거</code></pre>
+    <hr>
+    <h2>7. 불리언 (Boolean)</h2>
+    <h3>7.1 불리언 값</h3>
+    <pre><code class="language-python"># True와 False
+is_student = True
+is_working = False
+
+# 타입 확인
+print(type(True))  # &lt;class 'bool'&gt;</code></pre>
+    <h3>7.2 불리언 변환</h3>
+    <pre><code class="language-python"># 다른 타입을 불리언으로 변환
+print(bool(1))        # True
+print(bool(0))        # False
+print(bool(""))       # False (빈 문자열)
+print(bool("hello"))  # True
+print(bool([]))       # False (빈 리스트)
+print(bool([1, 2]))   # True</code></pre>
+    <hr>
+    <h2>8. 실습</h2>
+    <h3>실습 1: 학생 성적 관리</h3>
+    <pre><code class="language-python"># 학생 정보 딕셔너리
+students = {
+    "홍길동": {"국어": 85, "수학": 92, "영어": 78},
+    "이영희": {"국어": 90, "수학": 88, "영어": 95},
+    "김철수": {"국어": 75, "수학": 80, "영어": 82}
+}
+
+# 평균 계산
+for name, scores in students.items():
+    total = sum(scores.values())
+    average = total / len(scores)
+    print(f"{name}: 평균 {average:.2f}점")</code></pre>
+    <h3>실습 2: 데이터 분석 기초</h3>
+    <pre><code class="language-python"># 숫자 리스트
+numbers = [23, 45, 12, 67, 34, 89, 56, 23, 12, 45]
+
+# 통계 계산
+print(f"최댓값: {max(numbers)}")
+print(f"최솟값: {min(numbers)}")
+print(f"합계: {sum(numbers)}")
+print(f"평균: {sum(numbers) / len(numbers):.2f}")
+
+# 중복 제거
+unique_numbers = list(set(numbers))
+print(f"중복 제거 후: {unique_numbers}")
+
+# 정렬
+sorted_numbers = sorted(numbers)
+print(f"정렬: {sorted_numbers}")</code></pre>
+    <hr>
+    <div class="summary">
+    <h2>9. 요약</h2>
+    <h3>핵심 정리</h3>
+    <ol>
+    <li><strong>숫자형</strong>: int, float, complex</li>
+    <li><strong>문자열</strong>: 불변, 인덱싱/슬라이싱, 다양한 메서드</li>
+    <li><strong>리스트</strong>: 가변, 순서 있음, 다양한 메서드</li>
+    <li><strong>튜플</strong>: 불변, 순서 있음</li>
+    <li><strong>딕셔너리</strong>: 키-값 쌍, 순서 있음 (Python 3.7+)</li>
+    <li><strong>집합</strong>: 중복 없음, 집합 연산 지원</li>
+    <li><strong>불리언</strong>: True/False</li>
+    </ol>
+    <h3>AICE 실전 팁</h3>
+    <ul>
+    <li><strong>타입 확인</strong>: <code>type()</code>, <code>isinstance()</code> 함수 활용</li>
+    <li><strong>리스트 컴프리헨션</strong>: 간결하고 빠른 리스트 생성</li>
+    <li><strong>딕셔너리</strong>: 데이터 구조화에 유용</li>
+    <li><strong>집합</strong>: 중복 제거 및 집합 연산에 활용</li>
+    </ul>
+    <pre><code class="language-python"># 타입 확인
+x = [1, 2, 3]
+print(isinstance(x, list))  # True</code></pre>
+    </div>
+    <hr>
+    <div class="checklist">
+    <h2>✅ 체크리스트</h2>
+    <div class="checklist-item"><input type="checkbox" ><label>숫자형 (int, float) 이해</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>문자열 인덱싱, 슬라이싱, 메서드 숙지</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>리스트 생성, 수정, 메서드 이해</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>튜플과 리스트의 차이점 이해</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>딕셔너리 생성 및 활용</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>집합 연산 이해</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>실습 코드 작성 및 실행 완료</label></div>
+    </div>
+    <hr>
+    <h2>📚 참고 자료</h2>
+    <ul>
+    <li><a href="https://docs.python.org/ko/3/library/stdtypes.html">Python 공식 문서 - 내장 타입</a></li>
+    </ul>
+    <hr>
+    <p><strong>작성일</strong>: 2025-11-18  </p>
+    <p><strong>다음 학습</strong>: 02_03_제어문.md</p>
+    </div>
+    
+    <div class="footer">
+      <p>AICE Associate 시험 대비 | 학습 자료</p>
+    </div>
+  </div>
+</body>
+</html>
+

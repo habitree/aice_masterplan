@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>03-02. Pandas 기초</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body { 
+      font-family: 'Segoe UI', 'Malgun Gothic', system-ui, -apple-system, BlinkMacSystemFont, sans-serif; 
+      line-height: 1.6; 
+      padding: 20px 15px; 
+      max-width: 900px; 
+      margin: 0 auto; 
+      background: #000000;
+      color: #e0e0e0;
+    }
+    
+    .container {
+      background: #1a1a1a;
+      border-radius: 15px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      padding: 30px 25px;
+      border: 1px solid #333;
+    }
+    
+    h1, h2, h3 { 
+      color: #ffffff; 
+    }
+    
+    h1 { 
+      border-bottom: 4px solid #888; 
+      padding-bottom: 10px; 
+      margin-bottom: 20px;
+      font-size: 2em;
+      text-align: center;
+      color: #ffffff;
+    }
+    
+    h2 {
+      color: #ffffff;
+      font-size: 1.6em;
+      margin-top: 25px;
+      margin-bottom: 15px;
+      padding-left: 15px;
+      border-left: 5px solid #888;
+    }
+    
+    h3 {
+      color: #ffffff;
+      font-size: 1.3em;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    
+    code { 
+      background: #2a2a2a; 
+      color: #d0d0d0;
+      padding: 3px 8px; 
+      border-radius: 5px; 
+      font-family: "Consolas", "Menlo", "Courier New", monospace; 
+      font-size: 0.95em;
+      font-weight: bold;
+      border: 1px solid #444;
+    }
+    
+    pre { 
+      background: #1e1e1e; 
+      color: #d4d4d4; 
+      padding: 15px; 
+      border-radius: 8px; 
+      overflow-x: auto; 
+      font-size: 14px;
+      line-height: 1.6;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      margin: 10px 0;
+      border: 1px solid #333;
+    }
+    
+    pre code {
+      background: transparent;
+      border: none;
+      padding: 0;
+      color: #d4d4d4;
+    }
+    
+    .box { 
+      background: #2a2a2a; 
+      padding: 15px; 
+      border-radius: 10px; 
+      margin-bottom: 15px; 
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      border-left: 4px solid #888;
+      border: 1px solid #444;
+    }
+    
+    .section-box {
+      background: #2a2a2a;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 15px 0;
+      border-left: 4px solid #888;
+      border: 1px solid #444;
+    }
+    
+    .tip { 
+      font-size: 0.95em; 
+      color: #d0d0d0;
+      margin-top: 10px;
+      padding: 10px;
+      background: #2a2a2a;
+      border-left: 4px solid #888;
+      border-radius: 5px;
+      border: 1px solid #444;
+    }
+    
+    .tip strong {
+      color: #ffffff;
+    }
+    
+    .warning {
+      background: #3a2a1a;
+      border-left: 4px solid #ff6b6b;
+      color: #ffcccc;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 10px 0;
+      border: 1px solid #555;
+    }
+    
+    .summary {
+      background: #1a2a2a;
+      border-left: 4px solid #888;
+      color: #d0d0d0;
+      padding: 15px;
+      border-radius: 5px;
+      margin: 15px 0;
+      border: 1px solid #444;
+    }
+    
+    .summary h3 {
+      margin-top: 0;
+      color: #ffffff;
+    }
+    
+    ol { 
+      padding-left: 25px; 
+    }
+    
+    li { 
+      margin-bottom: 6px; 
+      line-height: 1.6;
+    }
+    
+    ul {
+      padding-left: 25px;
+    }
+    
+    p {
+      margin-bottom: 10px;
+      line-height: 1.8;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+      background: #2a2a2a;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #444;
+    }
+    
+    thead {
+      background: #1a1a1a;
+      color: #ffffff;
+      border-bottom: 2px solid #666;
+    }
+    
+    th {
+      padding: 12px;
+      text-align: left;
+      font-weight: 600;
+      color: #ffffff;
+    }
+    
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #444;
+      color: #e0e0e0;
+    }
+    
+    tr:hover {
+      background: #333;
+    }
+    
+    tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .checklist {
+      background: #2a2a2a;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 15px 0;
+      border: 1px solid #444;
+    }
+    
+    .checklist-item {
+      margin: 8px 0;
+      padding-left: 25px;
+      position: relative;
+    }
+    
+    .checklist-item input[type="checkbox"] {
+      position: absolute;
+      left: 0;
+      margin-top: 3px;
+    }
+    
+    img {
+      max-width: 100%;
+      height: auto;
+      border: 2px solid #666;
+      border-radius: 8px;
+      margin: 15px 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+    
+    hr {
+      border: none;
+      border-top: 2px solid #444;
+      margin: 25px 0;
+    }
+    
+    a {
+      color: #888;
+      text-decoration: underline;
+    }
+    
+    a:hover {
+      color: #ffffff;
+    }
+    
+    .footer {
+      text-align: center;
+      color: #888;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 2px solid #444;
+      font-size: 0.9em;
+    }
+    
+    .image-save-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #888;
+      color: #ffffff;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95em;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      z-index: 1000;
+      transition: background 0.3s ease;
+    }
+    
+    .image-save-btn:hover {
+      background: #999;
+    }
+    
+    .image-save-btn:active {
+      background: #777;
+    }
+    
+    .save-status {
+      position: fixed;
+      bottom: 70px;
+      right: 20px;
+      background: #2a2a2a;
+      color: #888;
+      padding: 10px 20px;
+      border-radius: 5px;
+      border: 1px solid #444;
+      font-size: 0.9em;
+      display: none;
+      z-index: 1000;
+    }
+    
+    .save-status.saved {
+      color: #888;
+      border-color: #666;
+    }
+    
+    .save-status.saving {
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>03-02. Pandas 기초</h1>
+    
+    <div class="section-box">
+    <h2>📋 목차</h2>
+    <ul>
+    <li><a href="#1-pandas란">1. Pandas란?</a></li>
+    <li><a href="#2-series-생성-및-조작">2. Series 생성 및 조작</a></li>
+    <li><a href="#3-dataframe-생성">3. DataFrame 생성</a></li>
+    <li><a href="#4-데이터-읽기-및-쓰기">4. 데이터 읽기 및 쓰기</a></li>
+    <li><a href="#5-데이터-선택-및-필터링">5. 데이터 선택 및 필터링</a></li>
+    <li><a href="#6-데이터-탐색">6. 데이터 탐색</a></li>
+    <li><a href="#7-데이터-정렬-및-그룹화">7. 데이터 정렬 및 그룹화</a></li>
+    <li><a href="#8-실습">8. 실습</a></li>
+    <li><a href="#9-요약">9. 요약</a></li>
+    </ul>
+    <hr>
+    <h2>1. Pandas란?</h2>
+    <p><strong>Pandas</strong>는 Python에서 데이터 분석을 위한 가장 인기 있는 라이브러리입니다. 표 형태의 데이터를 효율적으로 다룰 수 있는 <code>DataFrame</code>과 <code>Series</code> 자료구조를 제공합니다.</p>
+    <h3>1.1 Pandas의 특징</h3>
+    <ul>
+    <li><strong>표 형태 데이터 처리</strong>: 엑셀과 유사한 테이블 데이터 조작</li>
+    <li><strong>데이터 읽기/쓰기</strong>: CSV, Excel, JSON, SQL 등 다양한 형식 지원</li>
+    <li><strong>데이터 정제</strong>: 결측치 처리, 중복 제거, 데이터 변환</li>
+    <li><strong>데이터 분석</strong>: 그룹화, 집계, 통계 함수 제공</li>
+    <li><strong>시계열 데이터</strong>: 날짜/시간 데이터 처리에 특화</li>
+    </ul>
+    <h3>1.2 Pandas 설치 및 import</h3>
+    <pre><code class="language-python"># Pandas 설치 (터미널/명령 프롬프트)
+# pip install pandas
+
+# Pandas import (관례적으로 pd로 축약)
+import pandas as pd
+
+# 버전 확인
+print(pd.__version__)  # 예: 2.0.3</code></pre>
+    <div class="tip"><strong>💡 Tip: Pandas는 <code>pd</code>로 import하는 것이 관례입니다. NumPy와 함께 사용하는 경우가 많으므로 <code>import numpy as np</code>, <code>import pandas as pd</code>를 함께 사용합니다.</strong></div>
+    <hr>
+    <h2>2. Series 생성 및 조작</h2>
+    <h3>2.1 Series란?</h3>
+    <p><strong>Series</strong>는 1차원 배열과 유사하지만 인덱스(라벨)를 가진 데이터 구조입니다.</p>
+    <h3>2.2 Series 생성</h3>
+    <pre><code class="language-python">import pandas as pd
+
+# 리스트에서 Series 생성
+s1 = pd.Series([10, 20, 30, 40, 50])
+print(s1)
+# 0    10
+# 1    20
+# 2    30
+# 3    40
+# 4    50
+# dtype: int64
+
+# 인덱스 지정
+s2 = pd.Series([10, 20, 30, 40, 50], index=['a', 'b', 'c', 'd', 'e'])
+print(s2)
+# a    10
+# b    20
+# c    30
+# d    40
+# e    50
+# dtype: int64
+
+# 딕셔너리에서 Series 생성
+s3 = pd.Series({'이름': '홍길동', '나이': 25, '직업': '학생'})
+print(s3)
+# 이름    홍길동
+# 나이     25
+# 직업     학생
+# dtype: object</code></pre>
+    <h3>2.3 Series 속성 및 메서드</h3>
+    <pre><code class="language-python">import pandas as pd
+
+s = pd.Series([10, 20, 30, 40, 50], index=['a', 'b', 'c', 'd', 'e'])
+
+# 속성
+print(s.index)    # Index(['a', 'b', 'c', 'd', 'e'], dtype='object')
+print(s.values)   # [10 20 30 40 50]
+print(s.dtype)    # int64
+print(s.size)     # 5
+print(s.shape)    # (5,)
+
+# 통계 메서드
+print(s.sum())    # 150
+print(s.mean())   # 30.0
+print(s.std())    # 15.811388300841896
+print(s.min())    # 10
+print(s.max())    # 50</code></pre>
+    <h3>2.4 Series 인덱싱</h3>
+    <pre><code class="language-python">import pandas as pd
+
+s = pd.Series([10, 20, 30, 40, 50], index=['a', 'b', 'c', 'd', 'e'])
+
+# 인덱스로 접근
+print(s['a'])     # 10
+print(s[0])       # 10 (위치 인덱스도 가능)
+
+# 슬라이싱
+print(s['a':'c'])  # a: 10, b: 20, c: 30
+print(s[0:3])      # a: 10, b: 20, c: 30
+
+# 조건부 선택
+print(s[s &gt; 30])   # d: 40, e: 50</code></pre>
+    <hr>
+    <h2>3. DataFrame 생성</h2>
+    <h3>3.1 DataFrame이란?</h3>
+    <p><strong>DataFrame</strong>은 2차원 표 형태의 데이터 구조로, 행과 열로 구성됩니다. 엑셀의 시트와 유사합니다.</p>
+    <h3>3.2 DataFrame 생성</h3>
+    <pre><code class="language-python">import pandas as pd
+
+# 딕셔너리에서 DataFrame 생성
+data = {
+    '이름': ['홍길동', '김철수', '이영희', '박민수'],
+    '나이': [25, 30, 28, 35],
+    '직업': ['학생', '회사원', '교사', '의사']
+}
+df = pd.DataFrame(data)
+print(df)
+#     이름  나이   직업
+# 0  홍길동  25   학생
+# 1  김철수  30  회사원
+# 2  이영희  28   교사
+# 3  박민수  35   의사
+
+# 리스트의 리스트에서 생성
+data_list = [
+    ['홍길동', 25, '학생'],
+    ['김철수', 30, '회사원'],
+    ['이영희', 28, '교사']
+]
+df2 = pd.DataFrame(data_list, columns=['이름', '나이', '직업'])
+print(df2)
+
+# 빈 DataFrame 생성
+df_empty = pd.DataFrame()
+print(df_empty)  # Empty DataFrame</code></pre>
+    <h3>3.3 DataFrame 속성</h3>
+    <pre><code class="language-python">import pandas as pd
+
+df = pd.DataFrame({
+    '이름': ['홍길동', '김철수', '이영희'],
+    '나이': [25, 30, 28],
+    '직업': ['학생', '회사원', '교사']
+})
+
+# 기본 정보
+print(df.shape)      # (3, 3) - (행, 열)
+print(df.size)       # 9 - 총 원소 개수
+print(df.ndim)       # 2 - 차원 수
+print(df.index)      # RangeIndex(start=0, stop=3, step=1)
+print(df.columns)    # Index(['이름', '나이', '직업'], dtype='object')
+print(df.dtypes)     # 각 열의 데이터 타입</code></pre>
+    <hr>
+    <h2>4. 데이터 읽기 및 쓰기</h2>
+    <h3>4.1 CSV 파일 읽기/쓰기</h3>
+    <pre><code class="language-python">import pandas as pd
+
+# CSV 파일 읽기
+df = pd.read_csv('data.csv')
+print(df.head())  # 처음 5행 출력
+
+# 옵션 지정
+df = pd.read_csv('data.csv', 
+                 encoding='utf-8',      # 인코딩
+                 sep=',',               # 구분자
+                 header=0,              # 헤더 행 번호
+                 index_col=0)           # 인덱스 열
+
+# CSV 파일 쓰기
+df.to_csv('output.csv', index=False, encoding='utf-8-sig')</code></pre>
+    <h3>4.2 Excel 파일 읽기/쓰기</h3>
+    <pre><code class="language-python">import pandas as pd
+
+# Excel 파일 읽기
+df = pd.read_excel('data.xlsx', sheet_name='Sheet1')
+
+# Excel 파일 쓰기
+df.to_excel('output.xlsx', index=False, sheet_name='Sheet1')</code></pre>
+    <div class="tip"><strong>💡 Tip: Excel 파일을 읽고 쓰려면 <code>openpyxl</code> 또는 <code>xlrd</code> 라이브러리가 필요합니다. <code>pip install openpyxl</code>로 설치할 수 있습니다.</strong></div>
+    <h3>4.3 기타 파일 형식</h3>
+    <pre><code class="language-python">import pandas as pd
+
+# JSON 파일
+df = pd.read_json('data.json')
+df.to_json('output.json')
+
+# HTML 테이블 읽기
+df = pd.read_html('https://example.com/table.html')[0]
+
+# 클립보드에서 읽기 (엑셀에서 복사한 데이터)
+df = pd.read_clipboard()</code></pre>
+    <hr>
+    <h2>5. 데이터 선택 및 필터링</h2>
+    <h3>5.1 열 선택</h3>
+    <pre><code class="language-python">import pandas as pd
+
+df = pd.DataFrame({
+    '이름': ['홍길동', '김철수', '이영희'],
+    '나이': [25, 30, 28],
+    '직업': ['학생', '회사원', '교사']
+})
+
+# 단일 열 선택 (Series 반환)
+print(df['이름'])
+# 0    홍길동
+# 1    김철수
+# 2    이영희
+# Name: 이름, dtype: object
+
+# 단일 열 선택 (DataFrame 반환)
+print(df[['이름']])
+
+# 여러 열 선택
+print(df[['이름', '나이']])</code></pre>
+    <h3>5.2 행 선택: loc와 iloc</h3>
+    <pre><code class="language-python">import pandas as pd
+
+df = pd.DataFrame({
+    '이름': ['홍길동', '김철수', '이영희', '박민수'],
+    '나이': [25, 30, 28, 35],
+    '직업': ['학생', '회사원', '교사', '의사']
+})
+
+# loc: 라벨 기반 인덱싱
+print(df.loc[0])           # 첫 번째 행
+print(df.loc[0:2])         # 0~2행 (끝 포함)
+print(df.loc[0, '이름'])   # 0행, '이름'열
+
+# iloc: 위치 기반 인덱싱
+print(df.iloc[0])          # 첫 번째 행
+print(df.iloc[0:2])        # 0~1행 (끝 제외, Python 슬라이싱)
+print(df.iloc[0, 0])       # 0행, 0열
+
+# 조건부 선택
+print(df.loc[df['나이'] &gt; 28])  # 나이가 28보다 큰 행</code></pre>
+    <h3>5.3 조건부 필터링</h3>
+    <pre><code class="language-python">import pandas as pd
+
+df = pd.DataFrame({
+    '이름': ['홍길동', '김철수', '이영희', '박민수'],
+    '나이': [25, 30, 28, 35],
+    '직업': ['학생', '회사원', '교사', '의사']
+})
+
+# 단일 조건
+print(df[df['나이'] &gt; 28])
+#     이름  나이   직업
+# 1  김철수  30  회사원
+# 3  박민수  35   의사
+
+# 여러 조건 (and: &amp;, or: |, not: ~)
+print(df[(df['나이'] &gt; 25) &amp; (df['나이'] &lt; 35)])
+#     이름  나이   직업
+# 1  김철수  30  회사원
+# 2  이영희  28   교사
+
+# 문자열 조건
+print(df[df['직업'] == '학생'])
+print(df[df['이름'].str.contains('길')])  # 이름에 '길' 포함</code></pre>
+    <h3>5.4 query 메서드</h3>
+    <pre><code class="language-python">import pandas as pd
+
+df = pd.DataFrame({
+    '이름': ['홍길동', '김철수', '이영희', '박민수'],
+    '나이': [25, 30, 28, 35],
+    '직업': ['학생', '회사원', '교사', '의사']
+})
+
+# query로 조건 표현
+print(df.query('나이 &gt; 28'))
+print(df.query('나이 &gt; 25 and 나이 &lt; 35'))</code></pre>
+    <hr>
+    <h2>6. 데이터 탐색</h2>
+    <h3>6.1 기본 정보 확인</h3>
+    <pre><code class="language-python">import pandas as pd
+
+df = pd.DataFrame({
+    '이름': ['홍길동', '김철수', '이영희', '박민수'],
+    '나이': [25, 30, 28, 35],
+    '직업': ['학생', '회사원', '교사', '의사']
+})
+
+# 처음/끝 n행
+print(df.head(3))   # 처음 3행
+print(df.tail(2))   # 마지막 2행
+
+# 기본 정보
+print(df.info())    # 데이터 타입, 결측치 정보
+print(df.describe())  # 수치형 열의 통계 요약</code></pre>
+    <h3>6.2 통계 함수</h3>
+    <pre><code class="language-python">import pandas as pd
+
+df = pd.DataFrame({
+    '이름': ['홍길동', '김철수', '이영희', '박민수'],
+    '나이': [25, 30, 28, 35],
+    '키': [175, 180, 165, 178]
+})
+
+# 열별 통계
+print(df['나이'].sum())    # 118
+print(df['나이'].mean())   # 29.5
+print(df['나이'].std())    # 표준편차
+print(df['나이'].min())    # 25
+print(df['나이'].max())    # 35
+print(df['나이'].median()) # 29.0
+
+# 전체 DataFrame 통계
+print(df.describe())</code></pre>
+    <h3>6.3 값 개수 및 고유값</h3>
+    <pre><code class="language-python">import pandas as pd
+
+df = pd.DataFrame({
+    '이름': ['홍길동', '김철수', '이영희', '박민수'],
+    '직업': ['학생', '회사원', '교사', '회사원']
+})
+
+# 값 개수
+print(df['직업'].value_counts())
+# 회사원    2
+# 학생      1
+# 교사      1
+# Name: 직업, dtype: int64
+
+# 고유값
+print(df['직업'].unique())  # ['학생' '회사원' '교사']
+print(df['직업'].nunique()) # 3 (고유값 개수)</code></pre>
+    <hr>
+    <h2>7. 데이터 정렬 및 그룹화</h2>
+    <h3>7.1 정렬</h3>
+    <pre><code class="language-python">import pandas as pd
+
+df = pd.DataFrame({
+    '이름': ['홍길동', '김철수', '이영희', '박민수'],
+    '나이': [25, 30, 28, 35],
+    '키': [175, 180, 165, 178]
+})
+
+# 단일 열 기준 정렬
+print(df.sort_values('나이'))          # 오름차순
+print(df.sort_values('나이', ascending=False))  # 내림차순
+
+# 여러 열 기준 정렬
+print(df.sort_values(['나이', '키'], ascending=[True, False]))</code></pre>
+    <h3>7.2 그룹화 (GroupBy)</h3>
+    <pre><code class="language-python">import pandas as pd
+
+df = pd.DataFrame({
+    '직업': ['학생', '회사원', '교사', '회사원', '학생'],
+    '나이': [25, 30, 28, 35, 22],
+    '급여': [0, 3000, 2500, 4000, 0]
+})
+
+# 그룹별 집계
+grouped = df.groupby('직업')
+print(grouped['나이'].mean())
+# 직업
+# 교사     28.0
+# 학생     23.5
+# 회사원   32.5
+# Name: 나이, dtype: float64
+
+# 여러 집계 함수
+print(grouped.agg({
+    '나이': ['mean', 'min', 'max'],
+    '급여': 'sum'
+}))</code></pre>
+    <h3>7.3 피벗 테이블</h3>
+    <pre><code class="language-python">import pandas as pd
+
+df = pd.DataFrame({
+    '직업': ['학생', '회사원', '교사', '회사원'],
+    '성별': ['남', '남', '여', '여'],
+    '나이': [25, 30, 28, 35]
+})
+
+# 피벗 테이블 생성
+pivot = df.pivot_table(values='나이', index='직업', columns='성별', aggfunc='mean')
+print(pivot)</code></pre>
+    <hr>
+    <h2>8. 실습</h2>
+    <h3>실습 1: 학생 성적 데이터 분석</h3>
+    <pre><code class="language-python">import pandas as pd
+
+# 데이터 생성
+data = {
+    '이름': ['홍길동', '김철수', '이영희', '박민수', '최지영'],
+    '국어': [85, 92, 78, 95, 88],
+    '영어': [90, 87, 91, 88, 85],
+    '수학': [88, 95, 82, 92, 90]
+}
+df = pd.DataFrame(data)
+
+# 평균 점수 추가
+df['평균'] = (df['국어'] + df['영어'] + df['수학']) / 3
+
+# 평균 점수로 정렬
+df = df.sort_values('평균', ascending=False)
+
+print(df)
+print(f"
+전체 평균: {df['평균'].mean():.2f}")
+print(f"최고 평균: {df['평균'].max():.2f}")
+print(f"최저 평균: {df['평균'].min():.2f}")</code></pre>
+    <h3>실습 2: 데이터 필터링 및 집계</h3>
+    <pre><code class="language-python">import pandas as pd
+
+# 판매 데이터
+data = {
+    '제품': ['노트북', '마우스', '키보드', '노트북', '마우스'],
+    '수량': [5, 20, 15, 3, 25],
+    '가격': [1000, 30, 50, 1200, 25]
+}
+df = pd.DataFrame(data)
+
+# 매출 계산
+df['매출'] = df['수량'] * df['가격']
+
+# 제품별 총 매출
+product_sales = df.groupby('제품')['매출'].sum()
+print("제품별 총 매출:")
+print(product_sales)
+
+# 매출이 100 이상인 제품만 필터링
+high_sales = df[df['매출'] &gt;= 100]
+print("
+매출 100 이상:")
+print(high_sales)</code></pre>
+    <hr>
+    <div class="summary">
+    <h2>9. 요약</h2>
+    <h3>핵심 정리</h3>
+    <ol>
+    <li><strong>Series</strong>: 1차원 인덱스가 있는 배열</li>
+    <li><strong>DataFrame</strong>: 2차원 표 형태의 데이터 구조</li>
+    <li><strong>데이터 읽기/쓰기</strong>: <code>read_csv()</code>, <code>to_csv()</code>, <code>read_excel()</code>, <code>to_excel()</code> 등</li>
+    <li><strong>데이터 선택</strong>: <code>loc</code> (라벨), <code>iloc</code> (위치), 조건부 필터링</li>
+    <li><strong>데이터 탐색</strong>: <code>head()</code>, <code>tail()</code>, <code>info()</code>, <code>describe()</code>, <code>value_counts()</code></li>
+    <li><strong>그룹화</strong>: <code>groupby()</code>로 그룹별 집계 수행</li>
+    </ol>
+    <h3>AICE 실전 팁</h3>
+    <ul>
+    <li><strong>인덱싱</strong>: <code>loc</code>는 끝 포함, <code>iloc</code>는 끝 제외 (Python 슬라이싱)</li>
+    <li><strong>조건 필터링</strong>: 여러 조건은 <code>&</code>, <code>|</code>, <code>~</code> 사용 (괄호 필수)</li>
+    <li><strong>결측치</strong>: <code>isna()</code>, <code>fillna()</code>, <code>dropna()</code>로 처리</li>
+    <li><strong>성능</strong>: 대용량 데이터는 <code>chunksize</code> 옵션 사용</li>
+    <li><strong>메모리</strong>: 불필요한 열은 <code>drop()</code>으로 제거하여 메모리 절약</li>
+    </ul>
+    </div>
+    <hr>
+    <div class="checklist">
+    <h2>✅ 체크리스트</h2>
+    <div class="checklist-item"><input type="checkbox" ><label>Series와 DataFrame 생성 방법 이해</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>데이터 읽기/쓰기 함수 숙지</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>loc, iloc를 이용한 데이터 선택 방법 숙지</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>조건부 필터링 방법 이해</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>데이터 탐색 함수 활용 가능</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>그룹화 및 집계 함수 이해</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>실습 코드 작성 및 실행 완료</label></div>
+    </div>
+    <hr>
+    <h2>📚 참고 자료</h2>
+    <ul>
+    <li><a href="https://pandas.pydata.org/docs/">Pandas 공식 문서</a></li>
+    <li><a href="https://pandas.pydata.org/docs/getting_started/intro_tutorials/index.html">Pandas 튜토리얼</a></li>
+    </ul>
+    <hr>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0; padding: 15px; background: #2a2a2a; border-radius: 8px; border: 1px solid #444;">
+      <div style="flex: 1;">
+        <p style="margin: 0; color: #888; font-size: 0.9em;"><strong>이전 학습</strong></p>
+        <p style="margin: 5px 0 0 0;"><a href="03_01_Numpy기초.html" style="color: #888; text-decoration: none; transition: color 0.3s ease;">← 03_01_Numpy기초</a></p>
+      </div>
+      <div style="flex: 1; text-align: center;">
+        <p style="margin: 0; color: #888; font-size: 0.9em;"><strong>작성일</strong></p>
+        <p style="margin: 5px 0 0 0; color: #aaa;">2025-11-19</p>
+      </div>
+      <div style="flex: 1; text-align: right;">
+        <p style="margin: 0; color: #888; font-size: 0.9em;"><strong>다음 학습</strong></p>
+        <p style="margin: 5px 0 0 0;"><a href="../04_전처리/04_01_데이터전처리.html" style="color: #888; text-decoration: none; transition: color 0.3s ease;">04_01_데이터전처리 →</a></p>
+      </div>
+    </div>
+    <style>
+      div[style*="이전 학습"] a:hover,
+      div[style*="다음 학습"] a:hover {
+        color: #ffffff !important;
+      }
+    </style>
+    </div>
+    
+    <div class="footer">
+      <p>AICE Associate 시험 대비 | 학습 자료</p>
+    </div>
+  </div>
+  
+  <button class="image-save-btn" onclick="saveAsImage()">🖼️ 이미지 저장</button>
+  <div class="save-status" id="saveStatus">저장됨</div>
+  
+  <script>
+    function showSaveStatus(type) {
+      const status = document.getElementById('saveStatus');
+      status.style.display = 'block';
+      if (type === 'saved') {
+        status.textContent = '✓ 저장됨';
+        status.className = 'save-status saved';
+        setTimeout(() => { status.style.display = 'none'; }, 2000);
+      } else if (type === 'saving') {
+        status.textContent = '저장 중...';
+        status.className = 'save-status saving';
+      } else if (type === 'error') {
+        status.textContent = '✗ 저장 실패';
+        status.className = 'save-status';
+        status.style.color = '#ff6b6b';
+        setTimeout(() => { status.style.display = 'none'; }, 3000);
+      }
+    }
+    async function saveAsImage() {
+      if (typeof html2canvas === 'undefined') {
+        alert('이미지 변환 라이브러리를 로드하는 중입니다. 잠시 후 다시 시도해주세요.');
+        return;
+      }
+      showSaveStatus('saving');
+      try {
+        const container = document.querySelector('.container');
+        if (!container) {
+          alert('컨테이너를 찾을 수 없습니다.');
+          showSaveStatus('error');
+          return;
+        }
+        const options = {
+          backgroundColor: '#000000',
+          scale: 2,
+          useCORS: true,
+          logging: false,
+          width: container.scrollWidth,
+          height: container.scrollHeight,
+          windowWidth: container.scrollWidth,
+          windowHeight: container.scrollHeight
+        };
+        const canvas = await html2canvas(container, options);
+        canvas.toBlob(function(blob) {
+          if (!blob) {
+            alert('이미지 생성에 실패했습니다.');
+            showSaveStatus('error');
+            return;
+          }
+          const title = document.title.replace(/\./g, '_').replace(/\s+/g, '_');
+          const today = new Date().toISOString().split('T')[0];
+          const fileName = `${title}_${today}.png`;
+          downloadImage(blob, fileName);
+        }, 'image/png', 1.0);
+      } catch (error) {
+        console.error('이미지 저장 오류:', error);
+        alert('이미지 저장 중 오류가 발생했습니다: ' + error.message);
+        showSaveStatus('error');
+      }
+    }
+    function downloadImage(blob, fileName) {
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileName;
+      link.click();
+      URL.revokeObjectURL(url);
+      showSaveStatus('saved');
+      alert(`✅ 이미지가 다운로드되었습니다!\n\n파일명: ${fileName}`);
+    }
+  </script>
+</body>
+</html>
+

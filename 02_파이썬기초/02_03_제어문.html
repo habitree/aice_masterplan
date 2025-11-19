@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>02-03. 파이썬 제어문</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body { 
+      font-family: 'Segoe UI', 'Malgun Gothic', system-ui, -apple-system, BlinkMacSystemFont, sans-serif; 
+      line-height: 1.6; 
+      padding: 20px 15px; 
+      max-width: 900px; 
+      margin: 0 auto; 
+      background: #000000;
+      color: #e0e0e0;
+    }
+    
+    .container {
+      background: #1a1a1a;
+      border-radius: 15px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      padding: 30px 25px;
+      border: 1px solid #333;
+    }
+    
+    h1, h2, h3 { 
+      color: #ffffff; 
+    }
+    
+    h1 { 
+      border-bottom: 4px solid #888; 
+      padding-bottom: 10px; 
+      margin-bottom: 20px;
+      font-size: 2em;
+      text-align: center;
+      color: #ffffff;
+    }
+    
+    h2 {
+      color: #ffffff;
+      font-size: 1.6em;
+      margin-top: 25px;
+      margin-bottom: 15px;
+      padding-left: 15px;
+      border-left: 5px solid #888;
+    }
+    
+    h3 {
+      color: #ffffff;
+      font-size: 1.3em;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    
+    code { 
+      background: #2a2a2a; 
+      color: #d0d0d0;
+      padding: 3px 8px; 
+      border-radius: 5px; 
+      font-family: "Consolas", "Menlo", "Courier New", monospace; 
+      font-size: 0.95em;
+      font-weight: bold;
+      border: 1px solid #444;
+    }
+    
+    pre { 
+      background: #1e1e1e; 
+      color: #d4d4d4; 
+      padding: 15px; 
+      border-radius: 8px; 
+      overflow-x: auto; 
+      font-size: 14px;
+      line-height: 1.6;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      margin: 10px 0;
+      border: 1px solid #333;
+    }
+    
+    pre code {
+      background: transparent;
+      border: none;
+      padding: 0;
+      color: #d4d4d4;
+    }
+    
+    .box { 
+      background: #2a2a2a; 
+      padding: 15px; 
+      border-radius: 10px; 
+      margin-bottom: 15px; 
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      border-left: 4px solid #888;
+      border: 1px solid #444;
+    }
+    
+    .section-box {
+      background: #2a2a2a;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 15px 0;
+      border-left: 4px solid #888;
+      border: 1px solid #444;
+    }
+    
+    .tip { 
+      font-size: 0.95em; 
+      color: #d0d0d0;
+      margin-top: 10px;
+      padding: 10px;
+      background: #2a2a2a;
+      border-left: 4px solid #888;
+      border-radius: 5px;
+      border: 1px solid #444;
+    }
+    
+    .tip strong {
+      color: #ffffff;
+    }
+    
+    .warning {
+      background: #3a2a1a;
+      border-left: 4px solid #ff6b6b;
+      color: #ffcccc;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 10px 0;
+      border: 1px solid #555;
+    }
+    
+    .summary {
+      background: #1a2a2a;
+      border-left: 4px solid #888;
+      color: #d0d0d0;
+      padding: 15px;
+      border-radius: 5px;
+      margin: 15px 0;
+      border: 1px solid #444;
+    }
+    
+    .summary h3 {
+      margin-top: 0;
+      color: #ffffff;
+    }
+    
+    ol { 
+      padding-left: 25px; 
+    }
+    
+    li { 
+      margin-bottom: 6px; 
+      line-height: 1.6;
+    }
+    
+    ul {
+      padding-left: 25px;
+    }
+    
+    p {
+      margin-bottom: 10px;
+      line-height: 1.8;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+      background: #2a2a2a;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #444;
+    }
+    
+    thead {
+      background: #1a1a1a;
+      color: #ffffff;
+      border-bottom: 2px solid #666;
+    }
+    
+    th {
+      padding: 12px;
+      text-align: left;
+      font-weight: 600;
+      color: #ffffff;
+    }
+    
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #444;
+      color: #e0e0e0;
+    }
+    
+    tr:hover {
+      background: #333;
+    }
+    
+    tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .checklist {
+      background: #2a2a2a;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 15px 0;
+      border: 1px solid #444;
+    }
+    
+    .checklist-item {
+      margin: 8px 0;
+      padding-left: 25px;
+      position: relative;
+    }
+    
+    .checklist-item input[type="checkbox"] {
+      position: absolute;
+      left: 0;
+      margin-top: 3px;
+    }
+    
+    img {
+      max-width: 100%;
+      height: auto;
+      border: 2px solid #666;
+      border-radius: 8px;
+      margin: 15px 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+    
+    hr {
+      border: none;
+      border-top: 2px solid #444;
+      margin: 25px 0;
+    }
+    
+    a {
+      color: #888;
+      text-decoration: underline;
+    }
+    
+    a:hover {
+      color: #ffffff;
+    }
+    
+    .footer {
+      text-align: center;
+      color: #888;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 2px solid #444;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>02-03. 파이썬 제어문</h1>
+    
+    <div class="section-box">
+    <h2>📋 목차</h2>
+    <ul>
+    <li><a href="#1-조건문-if">1. 조건문 (if)</a></li>
+    <li><a href="#2-반복문-for-while">2. 반복문 (for, while)</a></li>
+    <li><a href="#3-제어문-활용">3. 제어문 활용</a></li>
+    <li><a href="#4-실습">4. 실습</a></li>
+    <li><a href="#5-요약">5. 요약</a></li>
+    </ul>
+    <hr>
+    <h2>1. 조건문 (if)</h2>
+    <h3>1.1 기본 if 문</h3>
+    <pre><code class="language-python"># 기본 구조
+age = 20
+
+if age &gt;= 18:
+    print("성인입니다")</code></pre>
+    <h3>1.2 if-else 문</h3>
+    <pre><code class="language-python">age = 15
+
+if age &gt;= 18:
+    print("성인입니다")
+else:
+    print("미성년자입니다")</code></pre>
+    <h3>1.3 if-elif-else 문</h3>
+    <pre><code class="language-python">score = 85
+
+if score &gt;= 90:
+    grade = "A"
+elif score &gt;= 80:
+    grade = "B"
+elif score &gt;= 70:
+    grade = "C"
+else:
+    grade = "F"
+
+print(f"학점: {grade}")</code></pre>
+    <h3>1.4 중첩 if 문</h3>
+    <pre><code class="language-python">age = 25
+has_license = True
+
+if age &gt;= 18:
+    if has_license:
+        print("운전 가능합니다")
+    else:
+        print("면허가 필요합니다")
+else:
+    print("미성년자는 운전할 수 없습니다")</code></pre>
+    <h3>1.5 조건식 (삼항 연산자)</h3>
+    <pre><code class="language-python"># 기본 문법: 값1 if 조건 else 값2
+age = 20
+status = "성인" if age &gt;= 18 else "미성년자"
+print(status)  # 성인
+
+# 활용 예시
+score = 85
+result = "합격" if score &gt;= 80 else "불합격"
+print(result)  # 합격</code></pre>
+    <hr>
+    <h2>2. 반복문 (for, while)</h2>
+    <h3>2.1 for 문</h3>
+    <pre><code class="language-python"># 리스트 순회
+fruits = ["apple", "banana", "orange"]
+for fruit in fruits:
+    print(fruit)
+
+# range() 사용
+for i in range(5):
+    print(i)  # 0, 1, 2, 3, 4
+
+for i in range(1, 6):
+    print(i)  # 1, 2, 3, 4, 5
+
+for i in range(0, 10, 2):
+    print(i)  # 0, 2, 4, 6, 8</code></pre>
+    <h3>2.2 enumerate() - 인덱스와 값 함께</h3>
+    <pre><code class="language-python">fruits = ["apple", "banana", "orange"]
+
+for index, fruit in enumerate(fruits):
+    print(f"{index}: {fruit}")
+
+# 출력:
+# 0: apple
+# 1: banana
+# 2: orange</code></pre>
+    <h3>2.3 딕셔너리 순회</h3>
+    <pre><code class="language-python">student = {"name": "홍길동", "age": 25, "grade": "A"}
+
+# 키만 순회
+for key in student:
+    print(key)
+
+# 키-값 쌍 순회
+for key, value in student.items():
+    print(f"{key}: {value}")
+
+# 값만 순회
+for value in student.values():
+    print(value)</code></pre>
+    <h3>2.4 while 문</h3>
+    <pre><code class="language-python"># 기본 while 문
+count = 0
+while count &lt; 5:
+    print(count)
+    count += 1
+
+# 무한 루프 (주의!)
+# while True:
+#     print("무한 반복")</code></pre>
+    <h3>2.5 break와 continue</h3>
+    <pre><code class="language-python"># break: 반복문 종료
+for i in range(10):
+    if i == 5:
+        break
+    print(i)  # 0, 1, 2, 3, 4
+
+# continue: 다음 반복으로 건너뛰기
+for i in range(10):
+    if i % 2 == 0:
+        continue
+    print(i)  # 1, 3, 5, 7, 9</code></pre>
+    <h3>2.6 else 절 (반복문)</h3>
+    <pre><code class="language-python"># for-else: break 없이 정상 종료 시 실행
+for i in range(5):
+    print(i)
+else:
+    print("반복 완료")
+
+# while-else
+count = 0
+while count &lt; 5:
+    print(count)
+    count += 1
+else:
+    print("반복 완료")</code></pre>
+    <h3>2.7 중첩 반복문</h3>
+    <pre><code class="language-python"># 구구단 출력
+for i in range(2, 10):
+    for j in range(1, 10):
+        print(f"{i} x {j} = {i*j}")
+    print()  # 줄바꿈</code></pre>
+    <hr>
+    <h2>3. 제어문 활용</h2>
+    <h3>3.1 리스트 컴프리헨션과 조건문</h3>
+    <pre><code class="language-python"># 조건문 포함
+numbers = [x for x in range(1, 11) if x % 2 == 0]
+print(numbers)  # [2, 4, 6, 8, 10]
+
+# if-else 포함
+result = ["짝수" if x % 2 == 0 else "홀수" for x in range(1, 6)]
+print(result)  # ['홀수', '짝수', '홀수', '짝수', '홀수']</code></pre>
+    <h3>3.2 pass 문</h3>
+    <pre><code class="language-python"># 아무것도 하지 않지만 문법상 필요할 때
+if True:
+    pass  # 나중에 구현할 예정
+
+# 빈 함수나 클래스 정의 시
+def my_function():
+    pass</code></pre>
+    <hr>
+    <h2>4. 실습</h2>
+    <h3>실습 1: 성적 등급 계산기</h3>
+    <pre><code class="language-python"># 여러 학생의 성적 처리
+students = [
+    {"name": "홍길동", "score": 95},
+    {"name": "이영희", "score": 87},
+    {"name": "김철수", "score": 72},
+    {"name": "박민수", "score": 65}
+]
+
+for student in students:
+    score = student["score"]
+    if score &gt;= 90:
+        grade = "A"
+    elif score &gt;= 80:
+        grade = "B"
+    elif score &gt;= 70:
+        grade = "C"
+    elif score &gt;= 60:
+        grade = "D"
+    else:
+        grade = "F"
+    
+    print(f"{student['name']}: {score}점 → {grade}등급")</code></pre>
+    <h3>실습 2: 숫자 게임</h3>
+    <pre><code class="language-python">import random
+
+# 1부터 100까지 랜덤 숫자 생성
+target = random.randint(1, 100)
+attempts = 0
+max_attempts = 7
+
+print("1부터 100까지 숫자를 맞춰보세요!")
+
+while attempts &lt; max_attempts:
+    guess = int(input(f"시도 {attempts + 1}/{max_attempts}: "))
+    attempts += 1
+    
+    if guess == target:
+        print(f"정답입니다! {attempts}번 만에 맞췄습니다.")
+        break
+    elif guess &lt; target:
+        print("더 큰 수입니다.")
+    else:
+        print("더 작은 수입니다.")
+else:
+    print(f"실패했습니다. 정답은 {target}이었습니다.")</code></pre>
+    <h3>실습 3: 데이터 필터링</h3>
+    <pre><code class="language-python"># 숫자 리스트에서 조건에 맞는 데이터 추출
+numbers = [23, 45, 12, 67, 34, 89, 56, 23, 12, 45]
+
+# 50 이상인 숫자만 추출
+filtered = [x for x in numbers if x &gt;= 50]
+print(f"50 이상: {filtered}")
+
+# 짝수만 추출
+evens = [x for x in numbers if x % 2 == 0]
+print(f"짝수: {evens}")
+
+# 중복 제거 후 정렬
+unique_sorted = sorted(set(numbers))
+print(f"중복 제거 후 정렬: {unique_sorted}")</code></pre>
+    <h3>실습 4: 통계 계산</h3>
+    <pre><code class="language-python"># 점수 리스트
+scores = [85, 92, 78, 96, 88, 75, 90, 82, 95, 87]
+
+# 통계 계산
+total = 0
+count = 0
+max_score = scores[0]
+min_score = scores[0]
+
+for score in scores:
+    total += score
+    count += 1
+    if score &gt; max_score:
+        max_score = score
+    if score &lt; min_score:
+        min_score = score
+
+average = total / count
+
+print(f"총점: {total}")
+print(f"평균: {average:.2f}")
+print(f"최댓값: {max_score}")
+print(f"최솟값: {min_score}")</code></pre>
+    <hr>
+    <div class="summary">
+    <h2>5. 요약</h2>
+    <h3>핵심 정리</h3>
+    <ol>
+    <li><strong>조건문</strong>: if, elif, else로 분기 처리</li>
+    <li><strong>반복문</strong>: for (정해진 횟수), while (조건 만족 시)</li>
+    <li><strong>제어 키워드</strong>: break (종료), continue (건너뛰기)</li>
+    <li><strong>리스트 컴프리헨션</strong>: 간결한 반복문 표현</li>
+    </ol>
+    <h3>AICE 실전 팁</h3>
+    <ul>
+    <li><strong>들여쓰기</strong>: 파이썬은 들여쓰기로 블록 구분 (4칸 권장)</li>
+    <li><strong>range()</strong>: 반복 횟수 제어에 유용</li>
+    <li><strong>enumerate()</strong>: 인덱스와 값이 모두 필요할 때</li>
+    <li><strong>리스트 컴프리헨션</strong>: 간결하고 빠른 리스트 생성</li>
+    </ul>
+    <div class="warning"><strong>⚠️ Warning: 무한 루프에 주의하세요. while True 사용 시 반드시 break 조건을 확인하세요.</strong></div>
+    </div>
+    <hr>
+    <div class="checklist">
+    <h2>✅ 체크리스트</h2>
+    <div class="checklist-item"><input type="checkbox" ><label>if-elif-else 문 이해 및 활용</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>for 문으로 리스트, 딕셔너리 순회</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>while 문으로 조건 반복 처리</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>break, continue 사용법 숙지</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>중첩 반복문 이해</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>리스트 컴프리헨션 활용</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>실습 코드 작성 및 실행 완료</label></div>
+    </div>
+    <hr>
+    <h2>📚 참고 자료</h2>
+    <ul>
+    <li><a href="https://docs.python.org/ko/3/tutorial/controlflow.html">Python 공식 문서 - 제어 흐름</a></li>
+    </ul>
+    <hr>
+    <p><strong>작성일</strong>: 2025-11-18  </p>
+    <p><strong>다음 학습</strong>: 02_04_함수모듈.md</p>
+    </div>
+    
+    <div class="footer">
+      <p>AICE Associate 시험 대비 | 학습 자료</p>
+    </div>
+  </div>
+</body>
+</html>
+

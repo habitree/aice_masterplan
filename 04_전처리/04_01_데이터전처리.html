@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>04-01. 데이터 전처리</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body { 
+      font-family: 'Segoe UI', 'Malgun Gothic', system-ui, -apple-system, BlinkMacSystemFont, sans-serif; 
+      line-height: 1.6; 
+      padding: 20px 15px; 
+      max-width: 900px; 
+      margin: 0 auto; 
+      background: #000000;
+      color: #e0e0e0;
+    }
+    
+    .container {
+      background: #1a1a1a;
+      border-radius: 15px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      padding: 30px 25px;
+      border: 1px solid #333;
+    }
+    
+    h1, h2, h3 { 
+      color: #ffffff; 
+    }
+    
+    h1 { 
+      border-bottom: 4px solid #888; 
+      padding-bottom: 10px; 
+      margin-bottom: 20px;
+      font-size: 2em;
+      text-align: center;
+      color: #ffffff;
+    }
+    
+    h2 {
+      color: #ffffff;
+      font-size: 1.6em;
+      margin-top: 25px;
+      margin-bottom: 15px;
+      padding-left: 15px;
+      border-left: 5px solid #888;
+    }
+    
+    h3 {
+      color: #ffffff;
+      font-size: 1.3em;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    
+    code { 
+      background: #2a2a2a; 
+      color: #d0d0d0;
+      padding: 3px 8px; 
+      border-radius: 5px; 
+      font-family: "Consolas", "Menlo", "Courier New", monospace; 
+      font-size: 0.95em;
+      font-weight: bold;
+      border: 1px solid #444;
+    }
+    
+    pre { 
+      background: #1e1e1e; 
+      color: #d4d4d4; 
+      padding: 15px; 
+      border-radius: 8px; 
+      overflow-x: auto; 
+      font-size: 14px;
+      line-height: 1.6;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      margin: 10px 0;
+      border: 1px solid #333;
+    }
+    
+    pre code {
+      background: transparent;
+      border: none;
+      padding: 0;
+      color: #d4d4d4;
+    }
+    
+    .box { 
+      background: #2a2a2a; 
+      padding: 15px; 
+      border-radius: 10px; 
+      margin-bottom: 15px; 
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      border-left: 4px solid #888;
+      border: 1px solid #444;
+    }
+    
+    .section-box {
+      background: #2a2a2a;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 15px 0;
+      border-left: 4px solid #888;
+      border: 1px solid #444;
+    }
+    
+    .tip { 
+      font-size: 0.95em; 
+      color: #d0d0d0;
+      margin-top: 10px;
+      padding: 10px;
+      background: #2a2a2a;
+      border-left: 4px solid #888;
+      border-radius: 5px;
+      border: 1px solid #444;
+    }
+    
+    .tip strong {
+      color: #ffffff;
+    }
+    
+    .warning {
+      background: #3a2a1a;
+      border-left: 4px solid #ff6b6b;
+      color: #ffcccc;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 10px 0;
+      border: 1px solid #555;
+    }
+    
+    .summary {
+      background: #1a2a2a;
+      border-left: 4px solid #888;
+      color: #d0d0d0;
+      padding: 15px;
+      border-radius: 5px;
+      margin: 15px 0;
+      border: 1px solid #444;
+    }
+    
+    .summary h3 {
+      margin-top: 0;
+      color: #ffffff;
+    }
+    
+    ol { 
+      padding-left: 25px; 
+    }
+    
+    li { 
+      margin-bottom: 6px; 
+      line-height: 1.6;
+    }
+    
+    ul {
+      padding-left: 25px;
+    }
+    
+    p {
+      margin-bottom: 10px;
+      line-height: 1.8;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+      background: #2a2a2a;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #444;
+    }
+    
+    thead {
+      background: #1a1a1a;
+      color: #ffffff;
+      border-bottom: 2px solid #666;
+    }
+    
+    th {
+      padding: 12px;
+      text-align: left;
+      font-weight: 600;
+      color: #ffffff;
+    }
+    
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #444;
+      color: #e0e0e0;
+    }
+    
+    tr:hover {
+      background: #333;
+    }
+    
+    tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .checklist {
+      background: #2a2a2a;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 15px 0;
+      border: 1px solid #444;
+    }
+    
+    .checklist-item {
+      margin: 8px 0;
+      padding-left: 25px;
+      position: relative;
+    }
+    
+    .checklist-item input[type="checkbox"] {
+      position: absolute;
+      left: 0;
+      margin-top: 3px;
+    }
+    
+    img {
+      max-width: 100%;
+      height: auto;
+      border: 2px solid #666;
+      border-radius: 8px;
+      margin: 15px 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+    
+    hr {
+      border: none;
+      border-top: 2px solid #444;
+      margin: 25px 0;
+    }
+    
+    a {
+      color: #888;
+      text-decoration: underline;
+    }
+    
+    a:hover {
+      color: #ffffff;
+    }
+    
+    .footer {
+      text-align: center;
+      color: #888;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 2px solid #444;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>04-01. 데이터 전처리</h1>
+    
+    <div class="section-box">
+    <h2>📋 목차</h2>
+    <ul>
+    <li><a href="#1-데이터-전처리란">1. 데이터 전처리란?</a></li>
+    <li><a href="#2-결측치-처리">2. 결측치 처리</a></li>
+    <li><a href="#3-이상치-처리">3. 이상치 처리</a></li>
+    <li><a href="#4-데이터-변환">4. 데이터 변환</a></li>
+    <li><a href="#5-중복-데이터-처리">5. 중복 데이터 처리</a></li>
+    <li><a href="#6-실습">6. 실습</a></li>
+    <li><a href="#7-요약">7. 요약</a></li>
+    </ul>
+    <hr>
+    <h2>1. 데이터 전처리란?</h2>
+    <p><strong>데이터 전처리</strong>는 머신러닝 모델에 데이터를 입력하기 전에 데이터를 정제하고 변환하는 과정입니다. 실제 데이터는 결측치, 이상치, 불일치 등이 있어 전처리가 필수적입니다.</p>
+    <h3>1.1 전처리의 중요성</h3>
+    <ul>
+    <li><strong>모델 성능 향상</strong>: 깨끗한 데이터는 더 나은 예측 결과를 만듦</li>
+    <li><strong>오류 방지</strong>: 결측치나 이상치로 인한 오류 예방</li>
+    <li><strong>데이터 품질</strong>: 일관성 있고 신뢰할 수 있는 데이터 확보</li>
+    </ul>
+    <hr>
+    <h2>2. 결측치 처리</h2>
+    <h3>2.1 결측치 확인</h3>
+    <pre><code class="language-python">import pandas as pd
+import numpy as np
+
+df = pd.DataFrame({
+    '이름': ['홍길동', '김철수', '이영희', '박민수'],
+    '나이': [25, np.nan, 28, 35],
+    '급여': [3000, 4000, np.nan, 5000]
+})
+
+# 결측치 확인
+print(df.isna())        # 결측치 여부 (True/False)
+print(df.isnull())      # isna()와 동일
+print(df.isna().sum())  # 열별 결측치 개수
+print(df.isna().sum().sum())  # 전체 결측치 개수</code></pre>
+    <h3>2.2 결측치 제거</h3>
+    <pre><code class="language-python"># 행 제거
+df_dropna = df.dropna()              # 결측치가 있는 행 모두 제거
+df_dropna = df.dropna(how='all')     # 모든 값이 결측치인 행만 제거
+df_dropna = df.dropna(subset=['나이'])  # 특정 열의 결측치만 제거
+
+# 열 제거
+df_dropna_col = df.dropna(axis=1)    # 결측치가 있는 열 제거</code></pre>
+    <h3>2.3 결측치 채우기</h3>
+    <pre><code class="language-python"># 특정 값으로 채우기
+df_fill = df.fillna(0)                    # 0으로 채우기
+df_fill = df.fillna({'나이': 0, '급여': 1000})  # 열별로 다른 값
+
+# 통계값으로 채우기
+df_fill = df.fillna(df.mean())            # 평균값으로 채우기
+df_fill = df['나이'].fillna(df['나이'].mean())  # 특정 열만
+df_fill = df.fillna(df.median())          # 중앙값으로 채우기
+df_fill = df.fillna(df.mode().iloc[0])    # 최빈값으로 채우기
+
+# 앞/뒤 값으로 채우기 (시계열 데이터)
+df_fill = df.fillna(method='ffill')       # 앞 값으로 채우기
+df_fill = df.fillna(method='bfill')       # 뒤 값으로 채우기</code></pre>
+    <hr>
+    <h2>3. 이상치 처리</h2>
+    <h3>3.1 이상치 탐지</h3>
+    <pre><code class="language-python">import pandas as pd
+import numpy as np
+
+df = pd.DataFrame({
+    '나이': [25, 30, 28, 200, 35, 27],  # 200은 이상치
+    '키': [175, 180, 165, 178, 300, 170]  # 300은 이상치
+})
+
+# IQR 방법으로 이상치 탐지
+Q1 = df['나이'].quantile(0.25)
+Q3 = df['나이'].quantile(0.75)
+IQR = Q3 - Q1
+lower_bound = Q1 - 1.5 * IQR
+upper_bound = Q3 + 1.5 * IQR
+
+outliers = df[(df['나이'] &lt; lower_bound) | (df['나이'] &gt; upper_bound)]
+print(outliers)
+
+# Z-score 방법
+from scipy import stats
+z_scores = np.abs(stats.zscore(df['나이']))
+outliers = df[z_scores &gt; 3]  # Z-score가 3보다 큰 값</code></pre>
+    <h3>3.2 이상치 처리</h3>
+    <pre><code class="language-python"># 이상치 제거
+df_clean = df[(df['나이'] &gt;= lower_bound) &amp; (df['나이'] &lt;= upper_bound)]
+
+# 이상치를 경계값으로 대체
+df['나이'] = df['나이'].clip(lower=lower_bound, upper=upper_bound)
+
+# 이상치를 중앙값으로 대체
+median_value = df['나이'].median()
+df.loc[df['나이'] &gt; upper_bound, '나이'] = median_value</code></pre>
+    <hr>
+    <h2>4. 데이터 변환</h2>
+    <h3>4.1 데이터 타입 변환</h3>
+    <pre><code class="language-python">import pandas as pd
+
+df = pd.DataFrame({
+    '나이': ['25', '30', '28'],  # 문자열
+    '급여': ['3000', '4000', '5000']
+})
+
+# 타입 변환
+df['나이'] = df['나이'].astype(int)
+df['급여'] = pd.to_numeric(df['급여'])
+
+# 날짜 변환
+df['날짜'] = pd.to_datetime(['2023-01-01', '2023-02-01', '2023-03-01'])</code></pre>
+    <h3>4.2 범주형 데이터 인코딩</h3>
+    <pre><code class="language-python">import pandas as pd
+
+df = pd.DataFrame({
+    '직업': ['학생', '회사원', '교사', '회사원']
+})
+
+# 원-핫 인코딩 (One-Hot Encoding)
+df_encoded = pd.get_dummies(df, columns=['직업'])
+print(df_encoded)
+
+# 라벨 인코딩
+from sklearn.preprocessing import LabelEncoder
+le = LabelEncoder()
+df['직업_encoded'] = le.fit_transform(df['직업'])</code></pre>
+    <h3>4.3 정규화 및 표준화</h3>
+    <pre><code class="language-python">from sklearn.preprocessing import MinMaxScaler, StandardScaler
+
+# Min-Max 정규화 (0~1 사이로 변환)
+scaler_minmax = MinMaxScaler()
+df_normalized = scaler_minmax.fit_transform(df[['나이', '급여']])
+
+# 표준화 (평균 0, 표준편차 1)
+scaler_std = StandardScaler()
+df_standardized = scaler_std.fit_transform(df[['나이', '급여']])</code></pre>
+    <hr>
+    <h2>5. 중복 데이터 처리</h2>
+    <h3>5.1 중복 확인 및 제거</h3>
+    <pre><code class="language-python">import pandas as pd
+
+df = pd.DataFrame({
+    '이름': ['홍길동', '김철수', '홍길동', '이영희'],
+    '나이': [25, 30, 25, 28]
+})
+
+# 중복 확인
+print(df.duplicated())        # 중복 행 여부
+print(df.duplicated().sum())  # 중복 행 개수
+
+# 중복 제거
+df_unique = df.drop_duplicates()                    # 모든 열 기준
+df_unique = df.drop_duplicates(subset=['이름'])     # 특정 열 기준
+df_unique = df.drop_duplicates(keep='first')        # 첫 번째 유지
+df_unique = df.drop_duplicates(keep='last')         # 마지막 유지</code></pre>
+    <hr>
+    <h2>6. 실습</h2>
+    <h3>실습: 데이터 전처리 종합</h3>
+    <pre><code class="language-python">import pandas as pd
+import numpy as np
+
+# 샘플 데이터 생성
+data = {
+    '이름': ['홍길동', '김철수', '이영희', '박민수', '최지영', '홍길동'],
+    '나이': [25, np.nan, 28, 200, 35, 25],
+    '급여': [3000, 4000, np.nan, 5000, 4500, 3000],
+    '직업': ['학생', '회사원', '교사', '회사원', '학생', '학생']
+}
+df = pd.DataFrame(data)
+
+print("원본 데이터:")
+print(df)
+print("
+결측치 개수:")
+print(df.isna().sum())
+
+# 1. 결측치 처리
+df['나이'] = df['나이'].fillna(df['나이'].median())
+df['급여'] = df['급여'].fillna(df['급여'].mean())
+
+# 2. 이상치 처리 (나이)
+Q1 = df['나이'].quantile(0.25)
+Q3 = df['나이'].quantile(0.75)
+IQR = Q3 - Q1
+df['나이'] = df['나이'].clip(lower=Q1-1.5*IQR, upper=Q3+1.5*IQR)
+
+# 3. 중복 제거
+df = df.drop_duplicates(subset=['이름'], keep='first')
+
+# 4. 원-핫 인코딩
+df = pd.get_dummies(df, columns=['직업'])
+
+print("
+전처리 후 데이터:")
+print(df)</code></pre>
+    <hr>
+    <div class="summary">
+    <h2>7. 요약</h2>
+    <h3>핵심 정리</h3>
+    <ol>
+    <li><strong>결측치 처리</strong>: <code>isna()</code>, <code>dropna()</code>, <code>fillna()</code> 사용</li>
+    <li><strong>이상치 처리</strong>: IQR, Z-score 방법으로 탐지 후 제거 또는 대체</li>
+    <li><strong>데이터 변환</strong>: 타입 변환, 인코딩, 정규화/표준화</li>
+    <li><strong>중복 제거</strong>: <code>drop_duplicates()</code> 사용</li>
+    </ol>
+    <h3>AICE 실전 팁</h3>
+    <ul>
+    <li><strong>결측치</strong>: 데이터 특성에 따라 제거 또는 채우기 선택</li>
+    <li><strong>이상치</strong>: 도메인 지식을 활용하여 판단</li>
+    <li><strong>인코딩</strong>: 범주형 데이터는 원-핫 인코딩이 일반적</li>
+    <li><strong>정규화</strong>: 머신러닝 모델 전에 필수</li>
+    </ul>
+    </div>
+    <hr>
+    <div class="checklist">
+    <h2>✅ 체크리스트</h2>
+    <div class="checklist-item"><input type="checkbox" ><label>결측치 확인 및 처리 방법 이해</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>이상치 탐지 및 처리 방법 숙지</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>데이터 타입 변환 방법 이해</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>범주형 데이터 인코딩 방법 숙지</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>중복 데이터 처리 방법 이해</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>실습 코드 작성 및 실행 완료</label></div>
+    </div>
+    <hr>
+    <h2>📚 참고 자료</h2>
+    <ul>
+    <li><a href="https://pandas.pydata.org/docs/user_guide/missing_data.html">Pandas 데이터 전처리</a></li>
+    <li><a href="https://scikit-learn.org/stable/modules/preprocessing.html">Scikit-learn 전처리</a></li>
+    </ul>
+    <hr>
+    <p><strong>작성일</strong>: 2025-11-19  </p>
+    <p><strong>이전 학습</strong>: <a href="../03_데이터분석/03_02_Pandas기초.md">03_02_Pandas기초</a>  </p>
+    <p><strong>다음 학습</strong>: <a href="../05_시각화/05_01_데이터시각화.md">05_01_데이터시각화</a></p>
+    </div>
+    
+    <div class="footer">
+      <p>AICE Associate 시험 대비 | 학습 자료</p>
+    </div>
+  </div>
+</body>
+</html>
+

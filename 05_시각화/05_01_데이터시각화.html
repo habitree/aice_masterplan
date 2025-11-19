@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>05-01. 데이터 시각화</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body { 
+      font-family: 'Segoe UI', 'Malgun Gothic', system-ui, -apple-system, BlinkMacSystemFont, sans-serif; 
+      line-height: 1.6; 
+      padding: 20px 15px; 
+      max-width: 900px; 
+      margin: 0 auto; 
+      background: #000000;
+      color: #e0e0e0;
+    }
+    
+    .container {
+      background: #1a1a1a;
+      border-radius: 15px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      padding: 30px 25px;
+      border: 1px solid #333;
+    }
+    
+    h1, h2, h3 { 
+      color: #ffffff; 
+    }
+    
+    h1 { 
+      border-bottom: 4px solid #888; 
+      padding-bottom: 10px; 
+      margin-bottom: 20px;
+      font-size: 2em;
+      text-align: center;
+      color: #ffffff;
+    }
+    
+    h2 {
+      color: #ffffff;
+      font-size: 1.6em;
+      margin-top: 25px;
+      margin-bottom: 15px;
+      padding-left: 15px;
+      border-left: 5px solid #888;
+    }
+    
+    h3 {
+      color: #ffffff;
+      font-size: 1.3em;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    
+    code { 
+      background: #2a2a2a; 
+      color: #d0d0d0;
+      padding: 3px 8px; 
+      border-radius: 5px; 
+      font-family: "Consolas", "Menlo", "Courier New", monospace; 
+      font-size: 0.95em;
+      font-weight: bold;
+      border: 1px solid #444;
+    }
+    
+    pre { 
+      background: #1e1e1e; 
+      color: #d4d4d4; 
+      padding: 15px; 
+      border-radius: 8px; 
+      overflow-x: auto; 
+      font-size: 14px;
+      line-height: 1.6;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      margin: 10px 0;
+      border: 1px solid #333;
+    }
+    
+    pre code {
+      background: transparent;
+      border: none;
+      padding: 0;
+      color: #d4d4d4;
+    }
+    
+    .box { 
+      background: #2a2a2a; 
+      padding: 15px; 
+      border-radius: 10px; 
+      margin-bottom: 15px; 
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      border-left: 4px solid #888;
+      border: 1px solid #444;
+    }
+    
+    .section-box {
+      background: #2a2a2a;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 15px 0;
+      border-left: 4px solid #888;
+      border: 1px solid #444;
+    }
+    
+    .tip { 
+      font-size: 0.95em; 
+      color: #d0d0d0;
+      margin-top: 10px;
+      padding: 10px;
+      background: #2a2a2a;
+      border-left: 4px solid #888;
+      border-radius: 5px;
+      border: 1px solid #444;
+    }
+    
+    .tip strong {
+      color: #ffffff;
+    }
+    
+    .warning {
+      background: #3a2a1a;
+      border-left: 4px solid #ff6b6b;
+      color: #ffcccc;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 10px 0;
+      border: 1px solid #555;
+    }
+    
+    .summary {
+      background: #1a2a2a;
+      border-left: 4px solid #888;
+      color: #d0d0d0;
+      padding: 15px;
+      border-radius: 5px;
+      margin: 15px 0;
+      border: 1px solid #444;
+    }
+    
+    .summary h3 {
+      margin-top: 0;
+      color: #ffffff;
+    }
+    
+    ol { 
+      padding-left: 25px; 
+    }
+    
+    li { 
+      margin-bottom: 6px; 
+      line-height: 1.6;
+    }
+    
+    ul {
+      padding-left: 25px;
+    }
+    
+    p {
+      margin-bottom: 10px;
+      line-height: 1.8;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+      background: #2a2a2a;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #444;
+    }
+    
+    thead {
+      background: #1a1a1a;
+      color: #ffffff;
+      border-bottom: 2px solid #666;
+    }
+    
+    th {
+      padding: 12px;
+      text-align: left;
+      font-weight: 600;
+      color: #ffffff;
+    }
+    
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #444;
+      color: #e0e0e0;
+    }
+    
+    tr:hover {
+      background: #333;
+    }
+    
+    tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .checklist {
+      background: #2a2a2a;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 15px 0;
+      border: 1px solid #444;
+    }
+    
+    .checklist-item {
+      margin: 8px 0;
+      padding-left: 25px;
+      position: relative;
+    }
+    
+    .checklist-item input[type="checkbox"] {
+      position: absolute;
+      left: 0;
+      margin-top: 3px;
+    }
+    
+    img {
+      max-width: 100%;
+      height: auto;
+      border: 2px solid #666;
+      border-radius: 8px;
+      margin: 15px 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+    
+    hr {
+      border: none;
+      border-top: 2px solid #444;
+      margin: 25px 0;
+    }
+    
+    a {
+      color: #888;
+      text-decoration: underline;
+    }
+    
+    a:hover {
+      color: #ffffff;
+    }
+    
+    .footer {
+      text-align: center;
+      color: #888;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 2px solid #444;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>05-01. 데이터 시각화</h1>
+    
+    <div class="section-box">
+    <h2>📋 목차</h2>
+    <ul>
+    <li><a href="#1-데이터-시각화란">1. 데이터 시각화란?</a></li>
+    <li><a href="#2-matplotlib-기초">2. Matplotlib 기초</a></li>
+    <li><a href="#3-seaborn-기초">3. Seaborn 기초</a></li>
+    <li><a href="#4-주요-그래프-유형">4. 주요 그래프 유형</a></li>
+    <li><a href="#5-실습">5. 실습</a></li>
+    <li><a href="#6-요약">6. 요약</a></li>
+    </ul>
+    <hr>
+    <h2>1. 데이터 시각화란?</h2>
+    <p><strong>데이터 시각화</strong>는 데이터를 그래프나 차트로 표현하여 패턴, 트렌드, 관계를 시각적으로 이해하기 쉽게 만드는 과정입니다.</p>
+    <h3>1.1 시각화의 장점</h3>
+    <ul>
+    <li><strong>패턴 발견</strong>: 데이터의 숨겨진 패턴 발견</li>
+    <li><strong>의사소통</strong>: 복잡한 데이터를 쉽게 전달</li>
+    <li><strong>인사이트</strong>: 빠른 데이터 이해 및 의사결정</li>
+    </ul>
+    <hr>
+    <h2>2. Matplotlib 기초</h2>
+    <h3>2.1 기본 사용법</h3>
+    <pre><code class="language-python">import matplotlib.pyplot as plt
+import numpy as np
+
+# 기본 그래프
+x = np.linspace(0, 10, 100)
+y = np.sin(x)
+
+plt.figure(figsize=(10, 6))
+plt.plot(x, y)
+plt.xlabel('X축')
+plt.ylabel('Y축')
+plt.title('Sine 그래프')
+plt.grid(True)
+plt.show()</code></pre>
+    <h3>2.2 여러 그래프 그리기</h3>
+    <pre><code class="language-python">import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.linspace(0, 10, 100)
+y1 = np.sin(x)
+y2 = np.cos(x)
+
+plt.figure(figsize=(10, 6))
+plt.plot(x, y1, label='sin(x)')
+plt.plot(x, y2, label='cos(x)')
+plt.xlabel('X축')
+plt.ylabel('Y축')
+plt.title('삼각함수 그래프')
+plt.legend()
+plt.grid(True)
+plt.show()</code></pre>
+    <h3>2.3 주요 그래프 유형</h3>
+    <pre><code class="language-python">import matplotlib.pyplot as plt
+import numpy as np
+
+# 막대 그래프
+categories = ['A', 'B', 'C', 'D']
+values = [10, 20, 15, 25]
+plt.bar(categories, values)
+plt.show()
+
+# 산점도
+x = np.random.randn(100)
+y = np.random.randn(100)
+plt.scatter(x, y)
+plt.show()
+
+# 히스토그램
+data = np.random.randn(1000)
+plt.hist(data, bins=30)
+plt.show()
+
+# 박스 플롯
+data = [np.random.randn(100), np.random.randn(100)]
+plt.boxplot(data)
+plt.show()</code></pre>
+    <hr>
+    <h2>3. Seaborn 기초</h2>
+    <h3>3.1 기본 사용법</h3>
+    <pre><code class="language-python">import seaborn as sns
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Seaborn 스타일 설정
+sns.set_style("darkgrid")
+
+# 샘플 데이터
+df = pd.DataFrame({
+    'x': range(10),
+    'y': range(10, 20)
+})
+
+sns.lineplot(data=df, x='x', y='y')
+plt.show()</code></pre>
+    <h3>3.2 주요 그래프</h3>
+    <pre><code class="language-python">import seaborn as sns
+import pandas as pd
+
+# 데이터 로드
+df = pd.read_csv('data.csv')
+
+# 히스토그램
+sns.histplot(data=df, x='나이', bins=20)
+
+# 박스 플롯
+sns.boxplot(data=df, x='직업', y='급여')
+
+# 산점도
+sns.scatterplot(data=df, x='나이', y='급여', hue='직업')
+
+# 히트맵
+correlation = df.corr()
+sns.heatmap(correlation, annot=True)</code></pre>
+    <hr>
+    <h2>4. 주요 그래프 유형</h2>
+    <h3>4.1 막대 그래프</h3>
+    <pre><code class="language-python">import matplotlib.pyplot as plt
+
+categories = ['A', 'B', 'C', 'D']
+values = [10, 20, 15, 25]
+
+plt.bar(categories, values)
+plt.xlabel('카테고리')
+plt.ylabel('값')
+plt.title('막대 그래프')
+plt.show()</code></pre>
+    <h3>4.2 선 그래프</h3>
+    <pre><code class="language-python">import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.linspace(0, 10, 100)
+y = np.sin(x)
+
+plt.plot(x, y)
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.title('선 그래프')
+plt.show()</code></pre>
+    <h3>4.3 산점도</h3>
+    <pre><code class="language-python">import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.random.randn(100)
+y = np.random.randn(100)
+
+plt.scatter(x, y, alpha=0.5)
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.title('산점도')
+plt.show()</code></pre>
+    <hr>
+    <h2>5. 실습</h2>
+    <h3>실습: 데이터 시각화 종합</h3>
+    <pre><code class="language-python">import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# 데이터 생성
+data = {
+    '이름': ['홍길동', '김철수', '이영희', '박민수'],
+    '나이': [25, 30, 28, 35],
+    '급여': [3000, 4000, 3500, 5000],
+    '직업': ['학생', '회사원', '교사', '의사']
+}
+df = pd.DataFrame(data)
+
+# 1. 막대 그래프
+plt.figure(figsize=(10, 6))
+plt.bar(df['이름'], df['급여'])
+plt.xlabel('이름')
+plt.ylabel('급여')
+plt.title('직원별 급여')
+plt.show()
+
+# 2. 산점도
+plt.figure(figsize=(10, 6))
+plt.scatter(df['나이'], df['급여'])
+plt.xlabel('나이')
+plt.ylabel('급여')
+plt.title('나이 vs 급여')
+plt.show()</code></pre>
+    <hr>
+    <div class="summary">
+    <h2>6. 요약</h2>
+    <h3>핵심 정리</h3>
+    <ol>
+    <li><strong>Matplotlib</strong>: 기본 시각화 라이브러리</li>
+    <li><strong>Seaborn</strong>: 통계 시각화에 특화</li>
+    <li><strong>주요 그래프</strong>: 막대, 선, 산점도, 히스토그램, 박스 플롯</li>
+    </ol>
+    <h3>AICE 실전 팁</h3>
+    <ul>
+    <li><strong>그래프 선택</strong>: 데이터 특성에 맞는 그래프 선택</li>
+    <li><strong>레이블</strong>: xlabel, ylabel, title 필수</li>
+    <li><strong>스타일</strong>: 일관된 스타일 사용</li>
+    </ul>
+    </div>
+    <hr>
+    <div class="checklist">
+    <h2>✅ 체크리스트</h2>
+    <div class="checklist-item"><input type="checkbox" ><label>Matplotlib 기본 사용법 이해</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>Seaborn 기본 사용법 이해</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>주요 그래프 유형 숙지</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>실습 코드 작성 및 실행 완료</label></div>
+    </div>
+    <hr>
+    <h2>📚 참고 자료</h2>
+    <ul>
+    <li><a href="https://matplotlib.org/">Matplotlib 공식 문서</a></li>
+    <li><a href="https://seaborn.pydata.org/">Seaborn 공식 문서</a></li>
+    </ul>
+    <hr>
+    <p><strong>작성일</strong>: 2025-11-19  </p>
+    <p><strong>이전 학습</strong>: <a href="../04_전처리/04_01_데이터전처리.md">04_01_데이터전처리</a>  </p>
+    <p><strong>다음 학습</strong>: <a href="../06_머신러닝/06_01_머신러닝기초.md">06_01_머신러닝기초</a></p>
+    </div>
+    
+    <div class="footer">
+      <p>AICE Associate 시험 대비 | 학습 자료</p>
+    </div>
+  </div>
+</body>
+</html>
+

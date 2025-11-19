@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 기타
+*.zip
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.log
+*.tmp
+
+# 공부기록 폴더 (개인 학습 로그)
+공부기록 저정/
+
+# 임시 파일
+batch_convert.py
+

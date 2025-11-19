@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>02-05. 웹데이터 수집</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body { 
+      font-family: 'Segoe UI', 'Malgun Gothic', system-ui, -apple-system, BlinkMacSystemFont, sans-serif; 
+      line-height: 1.6; 
+      padding: 20px 15px; 
+      max-width: 900px; 
+      margin: 0 auto; 
+      background: #000000;
+      color: #e0e0e0;
+    }
+    
+    .container {
+      background: #1a1a1a;
+      border-radius: 15px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      padding: 30px 25px;
+      border: 1px solid #333;
+    }
+    
+    h1, h2, h3 { 
+      color: #ffffff; 
+    }
+    
+    h1 { 
+      border-bottom: 4px solid #888; 
+      padding-bottom: 10px; 
+      margin-bottom: 20px;
+      font-size: 2em;
+      text-align: center;
+      color: #ffffff;
+    }
+    
+    h2 {
+      color: #ffffff;
+      font-size: 1.6em;
+      margin-top: 25px;
+      margin-bottom: 15px;
+      padding-left: 15px;
+      border-left: 5px solid #888;
+    }
+    
+    h3 {
+      color: #ffffff;
+      font-size: 1.3em;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    
+    code { 
+      background: #2a2a2a; 
+      color: #d0d0d0;
+      padding: 3px 8px; 
+      border-radius: 5px; 
+      font-family: "Consolas", "Menlo", "Courier New", monospace; 
+      font-size: 0.95em;
+      font-weight: bold;
+      border: 1px solid #444;
+    }
+    
+    pre { 
+      background: #1e1e1e; 
+      color: #d4d4d4; 
+      padding: 15px; 
+      border-radius: 8px; 
+      overflow-x: auto; 
+      font-size: 14px;
+      line-height: 1.6;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      margin: 10px 0;
+      border: 1px solid #333;
+    }
+    
+    pre code {
+      background: transparent;
+      border: none;
+      padding: 0;
+      color: #d4d4d4;
+    }
+    
+    .box { 
+      background: #2a2a2a; 
+      padding: 15px; 
+      border-radius: 10px; 
+      margin-bottom: 15px; 
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      border-left: 4px solid #888;
+      border: 1px solid #444;
+    }
+    
+    .section-box {
+      background: #2a2a2a;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 15px 0;
+      border-left: 4px solid #888;
+      border: 1px solid #444;
+    }
+    
+    .tip { 
+      font-size: 0.95em; 
+      color: #d0d0d0;
+      margin-top: 10px;
+      padding: 10px;
+      background: #2a2a2a;
+      border-left: 4px solid #888;
+      border-radius: 5px;
+      border: 1px solid #444;
+    }
+    
+    .tip strong {
+      color: #ffffff;
+    }
+    
+    .warning {
+      background: #3a2a1a;
+      border-left: 4px solid #ff6b6b;
+      color: #ffcccc;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 10px 0;
+      border: 1px solid #555;
+    }
+    
+    .summary {
+      background: #1a2a2a;
+      border-left: 4px solid #888;
+      color: #d0d0d0;
+      padding: 15px;
+      border-radius: 5px;
+      margin: 15px 0;
+      border: 1px solid #444;
+    }
+    
+    .summary h3 {
+      margin-top: 0;
+      color: #ffffff;
+    }
+    
+    ol { 
+      padding-left: 25px; 
+    }
+    
+    li { 
+      margin-bottom: 6px; 
+      line-height: 1.6;
+    }
+    
+    ul {
+      padding-left: 25px;
+    }
+    
+    p {
+      margin-bottom: 10px;
+      line-height: 1.8;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+      background: #2a2a2a;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #444;
+    }
+    
+    thead {
+      background: #1a1a1a;
+      color: #ffffff;
+      border-bottom: 2px solid #666;
+    }
+    
+    th {
+      padding: 12px;
+      text-align: left;
+      font-weight: 600;
+      color: #ffffff;
+    }
+    
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #444;
+      color: #e0e0e0;
+    }
+    
+    tr:hover {
+      background: #333;
+    }
+    
+    tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .checklist {
+      background: #2a2a2a;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 15px 0;
+      border: 1px solid #444;
+    }
+    
+    .checklist-item {
+      margin: 8px 0;
+      padding-left: 25px;
+      position: relative;
+    }
+    
+    .checklist-item input[type="checkbox"] {
+      position: absolute;
+      left: 0;
+      margin-top: 3px;
+    }
+    
+    img {
+      max-width: 100%;
+      height: auto;
+      border: 2px solid #666;
+      border-radius: 8px;
+      margin: 15px 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+    
+    hr {
+      border: none;
+      border-top: 2px solid #444;
+      margin: 25px 0;
+    }
+    
+    a {
+      color: #888;
+      text-decoration: underline;
+    }
+    
+    a:hover {
+      color: #ffffff;
+    }
+    
+    .footer {
+      text-align: center;
+      color: #888;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 2px solid #444;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>02-05. 웹데이터 수집</h1>
+    
+    <div class="section-box">
+    <h2>📋 목차</h2>
+    <ul>
+    <li><a href="#1-웹데이터-수집-개요">1. 웹데이터 수집 개요</a></li>
+    <li><a href="#2-requests-라이브러리">2. requests 라이브러리</a></li>
+    <li><a href="#3-beautifulsoup으로-html-파싱">3. BeautifulSoup으로 HTML 파싱</a></li>
+    <li><a href="#4-selenium으로-동적-웹페이지-처리">4. Selenium으로 동적 웹페이지 처리</a></li>
+    <li><a href="#5-데이터-저장">5. 데이터 저장</a></li>
+    <li><a href="#6-실전-예제">6. 실전 예제</a></li>
+    <li><a href="#7-주의사항과-모범-사례">7. 주의사항과 모범 사례</a></li>
+    <li><a href="#8-요약">8. 요약</a></li>
+    </ul>
+    <hr>
+    <h2>1. 웹데이터 수집 개요</h2>
+    <h3>1.1 웹 스크래핑이란?</h3>
+    <p><strong>웹 스크래핑(Web Scraping)</strong>은 웹사이트에서 데이터를 자동으로 추출하는 기술입니다.</p>
+    <p><strong>주요 용도:</strong></p>
+    <ul>
+    <li>뉴스 기사 수집</li>
+    <li>상품 가격 모니터링</li>
+    <li>날씨 정보 수집</li>
+    <li>소셜 미디어 데이터 분석</li>
+    <li>연구용 데이터 수집</li>
+    </ul>
+    <h3>1.2 필요한 라이브러리</h3>
+    <pre><code class="language-python"># 설치 명령어
+# pip install requests beautifulsoup4 selenium pandas lxml
+
+import requests          # HTTP 요청
+from bs4 import BeautifulSoup  # HTML 파싱
+from selenium import webdriver  # 동적 웹페이지 처리
+import pandas as pd     # 데이터 처리
+import time             # 대기 시간</code></pre>
+    <div class="warning"><strong>⚠️ Warning: 웹 스크래핑 시 해당 웹사이트의 이용약관과 robots.txt를 확인하고, 서버에 부하를 주지 않도록 주의하세요.</strong></div>
+    <hr>
+    <h2>2. requests 라이브러리</h2>
+    <h3>2.1 기본 GET 요청</h3>
+    <pre><code class="language-python">import requests
+
+# 기본 요청
+response = requests.get("https://www.example.com")
+
+# 상태 코드 확인
+print(response.status_code)  # 200 (성공)
+
+# 응답 내용
+print(response.text)  # HTML 내용
+print(response.content)  # 바이너리 데이터</code></pre>
+    <h3>2.2 헤더 설정</h3>
+    <pre><code class="language-python">import requests
+
+# User-Agent 설정 (브라우저처럼 보이게)
+headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+}
+
+response = requests.get("https://www.example.com", headers=headers)</code></pre>
+    <h3>2.3 파라미터 전달</h3>
+    <pre><code class="language-python">import requests
+
+# URL 파라미터
+params = {
+    "q": "python",
+    "page": 1
+}
+
+response = requests.get("https://www.example.com/search", params=params)
+print(response.url)  # 실제 요청 URL 확인</code></pre>
+    <h3>2.4 에러 처리</h3>
+    <pre><code class="language-python">import requests
+
+try:
+    response = requests.get("https://www.example.com", timeout=5)
+    response.raise_for_status()  # HTTP 에러 발생 시 예외 발생
+    print("요청 성공")
+except requests.exceptions.RequestException as e:
+    print(f"요청 실패: {e}")</code></pre>
+    <hr>
+    <h2>3. BeautifulSoup으로 HTML 파싱</h2>
+    <h3>3.1 기본 사용법</h3>
+    <pre><code class="language-python">import requests
+from bs4 import BeautifulSoup
+
+# 웹페이지 가져오기
+url = "https://www.example.com"
+response = requests.get(url)
+html = response.text
+
+# BeautifulSoup 객체 생성
+soup = BeautifulSoup(html, "html.parser")
+
+# HTML 구조 확인
+print(soup.prettify())</code></pre>
+    <h3>3.2 태그 찾기</h3>
+    <pre><code class="language-python">from bs4 import BeautifulSoup
+
+html = """
+&lt;html&gt;
+&lt;body&gt;
+    &lt;h1&gt;제목&lt;/h1&gt;
+    &lt;p class="content"&gt;내용 1&lt;/p&gt;
+    &lt;p class="content"&gt;내용 2&lt;/p&gt;
+    &lt;a href="https://example.com"&gt;링크&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"""
+
+soup = BeautifulSoup(html, "html.parser")
+
+# 태그로 찾기
+title = soup.find("h1")
+print(title.text)  # 제목
+
+# 모든 태그 찾기
+paragraphs = soup.find_all("p")
+for p in paragraphs:
+    print(p.text)
+
+# 클래스로 찾기
+contents = soup.find_all("p", class_="content")
+
+# ID로 찾기
+element = soup.find(id="my-id")
+
+# 속성으로 찾기
+link = soup.find("a", href="https://example.com")</code></pre>
+    <h3>3.3 CSS 선택자 사용</h3>
+    <pre><code class="language-python">from bs4 import BeautifulSoup
+
+soup = BeautifulSoup(html, "html.parser")
+
+# CSS 선택자로 찾기
+title = soup.select_one("h1")
+paragraphs = soup.select("p.content")
+link = soup.select_one("a[href='https://example.com']")
+
+# 중첩 선택
+items = soup.select("div.container &gt; ul &gt; li")</code></pre>
+    <h3>3.4 데이터 추출</h3>
+    <pre><code class="language-python">from bs4 import BeautifulSoup
+
+soup = BeautifulSoup(html, "html.parser")
+
+# 텍스트 추출
+text = soup.find("p").text
+text = soup.find("p").get_text()
+
+# 속성 추출
+link = soup.find("a")
+href = link["href"]
+href = link.get("href")
+
+# HTML 추출
+html_content = soup.find("div").prettify()</code></pre>
+    <h3>3.5 실전 예제: 뉴스 헤드라인 수집</h3>
+    <pre><code class="language-python">import requests
+from bs4 import BeautifulSoup
+
+def get_news_headlines(url):
+    """뉴스 헤드라인 수집"""
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+    }
+    
+    response = requests.get(url, headers=headers)
+    soup = BeautifulSoup(response.text, "html.parser")
+    
+    headlines = []
+    # 실제 사이트 구조에 맞게 수정 필요
+    for article in soup.find_all("h2", class_="headline"):
+        title = article.text.strip()
+        link = article.find("a")["href"] if article.find("a") else ""
+        headlines.append({"title": title, "link": link})
+    
+    return headlines
+
+# 사용 예시
+# headlines = get_news_headlines("https://news.example.com")
+# for headline in headlines:
+#     print(headline["title"])</code></pre>
+    <hr>
+    <h2>4. Selenium으로 동적 웹페이지 처리</h2>
+    <h3>4.1 Selenium 설정</h3>
+    <pre><code class="language-python">from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+# Chrome 드라이버 설정
+options = webdriver.ChromeOptions()
+options.add_argument("--headless")  # 브라우저 창 숨기기
+options.add_argument("--no-sandbox")
+options.add_argument("--disable-dev-shm-usage")
+
+driver = webdriver.Chrome(options=options)</code></pre>
+    <h3>4.2 페이지 로드 및 요소 찾기</h3>
+    <pre><code class="language-python">from selenium import webdriver
+from selenium.webdriver.common.by import By
+
+driver = webdriver.Chrome()
+
+# 페이지 열기
+driver.get("https://www.example.com")
+
+# 요소 찾기
+element = driver.find_element(By.ID, "my-id")
+element = driver.find_element(By.CLASS_NAME, "my-class")
+element = driver.find_element(By.CSS_SELECTOR, "div.content")
+
+# 여러 요소 찾기
+elements = driver.find_elements(By.TAG_NAME, "p")
+
+# 텍스트 가져오기
+text = element.text
+
+# 속성 가져오기
+href = element.get_attribute("href")
+
+driver.quit()</code></pre>
+    <h3>4.3 대기 처리</h3>
+    <pre><code class="language-python">from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+# 명시적 대기
+wait = WebDriverWait(driver, 10)
+element = wait.until(EC.presence_of_element_located((By.ID, "my-id")))
+
+# 암시적 대기
+driver.implicitly_wait(10)
+
+# 시간 대기
+import time
+time.sleep(2)</code></pre>
+    <h3>4.4 동적 콘텐츠 처리</h3>
+    <pre><code class="language-python">from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+
+driver = webdriver.Chrome()
+driver.get("https://www.example.com")
+
+# 스크롤
+driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+
+# 클릭
+button = driver.find_element(By.ID, "load-more")
+button.click()
+
+# 입력
+search_box = driver.find_element(By.NAME, "q")
+search_box.send_keys("python")
+search_box.send_keys(Keys.RETURN)
+
+driver.quit()</code></pre>
+    <hr>
+    <h2>5. 데이터 저장</h2>
+    <h3>5.1 CSV 파일로 저장</h3>
+    <pre><code class="language-python">import pandas as pd
+
+# 데이터 준비
+data = [
+    {"이름": "홍길동", "나이": 25, "도시": "서울"},
+    {"이름": "이영희", "나이": 23, "도시": "부산"},
+    {"이름": "김철수", "나이": 27, "도시": "대구"}
+]
+
+# DataFrame 생성
+df = pd.DataFrame(data)
+
+# CSV로 저장
+df.to_csv("data.csv", index=False, encoding="utf-8-sig")
+
+# CSV 읽기
+df = pd.read_csv("data.csv", encoding="utf-8-sig")
+print(df)</code></pre>
+    <h3>5.2 JSON 파일로 저장</h3>
+    <pre><code class="language-python">import json
+
+# 데이터 준비
+data = [
+    {"이름": "홍길동", "나이": 25},
+    {"이름": "이영희", "나이": 23}
+]
+
+# JSON으로 저장
+with open("data.json", "w", encoding="utf-8") as f:
+    json.dump(data, f, ensure_ascii=False, indent=2)
+
+# JSON 읽기
+with open("data.json", "r", encoding="utf-8") as f:
+    data = json.load(f)</code></pre>
+    <h3>5.3 Excel 파일로 저장</h3>
+    <pre><code class="language-python">import pandas as pd
+
+df = pd.DataFrame(data)
+
+# Excel로 저장
+df.to_excel("data.xlsx", index=False, engine="openpyxl")
+
+# Excel 읽기
+df = pd.read_excel("data.xlsx", engine="openpyxl")</code></pre>
+    <hr>
+    <h2>6. 실전 예제</h2>
+    <h3>예제 1: 간단한 웹 스크래퍼</h3>
+    <pre><code class="language-python">import requests
+from bs4 import BeautifulSoup
+import pandas as pd
+import time
+
+def scrape_website(url):
+    """웹사이트에서 데이터 수집"""
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+    }
+    
+    response = requests.get(url, headers=headers)
+    soup = BeautifulSoup(response.text, "html.parser")
+    
+    data = []
+    # 실제 사이트 구조에 맞게 수정
+    items = soup.find_all("div", class_="item")
+    
+    for item in items:
+        title = item.find("h3").text.strip() if item.find("h3") else ""
+        price = item.find("span", class_="price").text.strip() if item.find("span", class_="price") else ""
+        data.append({"제목": title, "가격": price})
+    
+    return data
+
+# 사용
+# url = "https://www.example.com/products"
+# data = scrape_website(url)
+# df = pd.DataFrame(data)
+# df.to_csv("products.csv", index=False, encoding="utf-8-sig")</code></pre>
+    <h3>예제 2: 여러 페이지 수집</h3>
+    <pre><code class="language-python">import requests
+from bs4 import BeautifulSoup
+import pandas as pd
+import time
+
+def scrape_multiple_pages(base_url, max_pages=5):
+    """여러 페이지에서 데이터 수집"""
+    all_data = []
+    
+    for page in range(1, max_pages + 1):
+        url = f"{base_url}?page={page}"
+        print(f"페이지 {page} 수집 중...")
+        
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+        }
+        
+        response = requests.get(url, headers=headers)
+        soup = BeautifulSoup(response.text, "html.parser")
+        
+        # 데이터 추출 (실제 구조에 맞게 수정)
+        items = soup.find_all("div", class_="item")
+        for item in items:
+            # 데이터 추출 로직
+            all_data.append({})  # 실제 데이터로 교체
+        
+        # 서버 부하 방지를 위한 대기
+        time.sleep(1)
+    
+    return all_data
+
+# 사용
+# data = scrape_multiple_pages("https://www.example.com/list", max_pages=10)
+# df = pd.DataFrame(data)
+# df.to_csv("all_data.csv", index=False, encoding="utf-8-sig")</code></pre>
+    <h3>예제 3: 동적 웹페이지 스크래핑</h3>
+    <pre><code class="language-python">from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import pandas as pd
+import time
+
+def scrape_dynamic_page(url):
+    """동적 웹페이지에서 데이터 수집"""
+    options = webdriver.ChromeOptions()
+    options.add_argument("--headless")
+    
+    driver = webdriver.Chrome(options=options)
+    driver.get(url)
+    
+    # 페이지 로드 대기
+    wait = WebDriverWait(driver, 10)
+    wait.until(EC.presence_of_element_located((By.CLASS_NAME, "content")))
+    
+    data = []
+    
+    # 더보기 버튼 클릭 (필요한 경우)
+    try:
+        while True:
+            more_button = driver.find_element(By.ID, "load-more")
+            if more_button.is_displayed():
+                more_button.click()
+                time.sleep(2)
+            else:
+                break
+    except:
+        pass
+    
+    # 데이터 추출
+    items = driver.find_elements(By.CLASS_NAME, "item")
+    for item in items:
+        title = item.find_element(By.TAG_NAME, "h3").text
+        # 추가 데이터 추출
+        data.append({"제목": title})
+    
+    driver.quit()
+    return data
+
+# 사용
+# data = scrape_dynamic_page("https://www.example.com")
+# df = pd.DataFrame(data)
+# df.to_csv("dynamic_data.csv", index=False, encoding="utf-8-sig")</code></pre>
+    <hr>
+    <h2>7. 주의사항과 모범 사례</h2>
+    <h3>7.1 법적 및 윤리적 고려사항</h3>
+    <pre><code class="language-python"># 1. robots.txt 확인
+import urllib.robotparser
+
+rp = urllib.robotparser.RobotFileParser()
+rp.set_url("https://www.example.com/robots.txt")
+rp.read()
+
+if rp.can_fetch("*", "https://www.example.com/page"):
+    # 스크래핑 가능
+    pass
+else:
+    # 스크래핑 불가
+    print("스크래핑이 허용되지 않습니다.")</code></pre>
+    <h3>7.2 서버 부하 방지</h3>
+    <pre><code class="language-python">import time
+import random
+
+# 요청 간 대기 시간
+time.sleep(1)  # 고정 대기
+time.sleep(random.uniform(1, 3))  # 랜덤 대기
+
+# 요청 제한
+max_requests = 100
+request_count = 0
+
+for url in urls:
+    if request_count &gt;= max_requests:
+        break
+    # 요청 처리
+    request_count += 1
+    time.sleep(1)</code></pre>
+    <h3>7.3 에러 처리 및 재시도</h3>
+    <pre><code class="language-python">import requests
+import time
+
+def fetch_with_retry(url, max_retries=3):
+    """재시도 로직이 있는 요청"""
+    for attempt in range(max_retries):
+        try:
+            response = requests.get(url, timeout=10)
+            response.raise_for_status()
+            return response
+        except requests.exceptions.RequestException as e:
+            if attempt &lt; max_retries - 1:
+                wait_time = 2 ** attempt  # 지수 백오프
+                print(f"재시도 {attempt + 1}/{max_retries} ({wait_time}초 대기)")
+                time.sleep(wait_time)
+            else:
+                print(f"요청 실패: {e}")
+                return None
+    return None</code></pre>
+    <h3>7.4 모범 사례 체크리스트</h3>
+    <ul>
+    <li>✅ robots.txt 확인</li>
+    <li>✅ User-Agent 설정</li>
+    <li>✅ 적절한 대기 시간 설정</li>
+    <li>✅ 에러 처리 구현</li>
+    <li>✅ 데이터 검증</li>
+    <li>✅ 요청 제한 설정</li>
+    <li>✅ 이용약관 준수</li>
+    </ul>
+    <hr>
+    <div class="summary">
+    <h2>8. 요약</h2>
+    <h3>핵심 정리</h3>
+    <ol>
+    <li><strong>requests</strong>: HTTP 요청을 위한 라이브러리</li>
+    <li><strong>BeautifulSoup</strong>: HTML 파싱 및 데이터 추출</li>
+    <li><strong>Selenium</strong>: 동적 웹페이지 처리</li>
+    <li><strong>데이터 저장</strong>: CSV, JSON, Excel 형식으로 저장</li>
+    <li><strong>에러 처리</strong>: 재시도 로직 및 예외 처리</li>
+    <li><strong>윤리적 스크래핑</strong>: robots.txt 확인, 서버 부하 방지</li>
+    </ol>
+    <h3>AICE 실전 팁</h3>
+    <ul>
+    <li><strong>선택자</strong>: CSS 선택자와 find 메서드 조합 활용</li>
+    <li><strong>대기 시간</strong>: 동적 콘텐츠는 충분한 대기 시간 필요</li>
+    <li><strong>데이터 검증</strong>: 수집한 데이터의 유효성 확인</li>
+    <li><strong>코드 재사용</strong>: 함수로 모듈화하여 재사용성 향상</li>
+    </ul>
+    <div class="tip"><strong>💡 Tip: 웹 스크래핑은 웹사이트 구조 변경에 민감합니다. 정기적으로 코드를 점검하고 업데이트하세요.</strong></div>
+    </div>
+    <hr>
+    <div class="checklist">
+    <h2>✅ 체크리스트</h2>
+    <div class="checklist-item"><input type="checkbox" ><label>requests로 HTTP 요청 보내기</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>BeautifulSoup으로 HTML 파싱</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>CSS 선택자로 요소 찾기</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>Selenium으로 동적 웹페이지 처리</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>데이터를 CSV/JSON으로 저장</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>에러 처리 및 재시도 로직 구현</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>robots.txt 확인 및 윤리적 스크래핑</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>실습 코드 작성 및 실행 완료</label></div>
+    </div>
+    <hr>
+    <h2>📚 참고 자료</h2>
+    <ul>
+    <li><a href="https://requests.readthedocs.io/">requests 공식 문서</a></li>
+    <li><a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/">BeautifulSoup 공식 문서</a></li>
+    <li><a href="https://www.selenium.dev/documentation/">Selenium 공식 문서</a></li>
+    <li><a href="https://pandas.pydata.org/docs/">Pandas 공식 문서</a></li>
+    </ul>
+    <hr>
+    <p><strong>작성일</strong>: 2025-11-18  </p>
+    <p><strong>다음 학습</strong>: 03_데이터분석</p>
+    </div>
+    
+    <div class="footer">
+      <p>AICE Associate 시험 대비 | 학습 자료</p>
+    </div>
+  </div>
+</body>
+</html>
+

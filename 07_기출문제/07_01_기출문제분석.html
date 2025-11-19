@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>07-01. 기출 문제 분석</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body { 
+      font-family: 'Segoe UI', 'Malgun Gothic', system-ui, -apple-system, BlinkMacSystemFont, sans-serif; 
+      line-height: 1.6; 
+      padding: 20px 15px; 
+      max-width: 900px; 
+      margin: 0 auto; 
+      background: #000000;
+      color: #e0e0e0;
+    }
+    
+    .container {
+      background: #1a1a1a;
+      border-radius: 15px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      padding: 30px 25px;
+      border: 1px solid #333;
+    }
+    
+    h1, h2, h3 { 
+      color: #ffffff; 
+    }
+    
+    h1 { 
+      border-bottom: 4px solid #888; 
+      padding-bottom: 10px; 
+      margin-bottom: 20px;
+      font-size: 2em;
+      text-align: center;
+      color: #ffffff;
+    }
+    
+    h2 {
+      color: #ffffff;
+      font-size: 1.6em;
+      margin-top: 25px;
+      margin-bottom: 15px;
+      padding-left: 15px;
+      border-left: 5px solid #888;
+    }
+    
+    h3 {
+      color: #ffffff;
+      font-size: 1.3em;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    
+    code { 
+      background: #2a2a2a; 
+      color: #d0d0d0;
+      padding: 3px 8px; 
+      border-radius: 5px; 
+      font-family: "Consolas", "Menlo", "Courier New", monospace; 
+      font-size: 0.95em;
+      font-weight: bold;
+      border: 1px solid #444;
+    }
+    
+    pre { 
+      background: #1e1e1e; 
+      color: #d4d4d4; 
+      padding: 15px; 
+      border-radius: 8px; 
+      overflow-x: auto; 
+      font-size: 14px;
+      line-height: 1.6;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      margin: 10px 0;
+      border: 1px solid #333;
+    }
+    
+    pre code {
+      background: transparent;
+      border: none;
+      padding: 0;
+      color: #d4d4d4;
+    }
+    
+    .box { 
+      background: #2a2a2a; 
+      padding: 15px; 
+      border-radius: 10px; 
+      margin-bottom: 15px; 
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      border-left: 4px solid #888;
+      border: 1px solid #444;
+    }
+    
+    .section-box {
+      background: #2a2a2a;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 15px 0;
+      border-left: 4px solid #888;
+      border: 1px solid #444;
+    }
+    
+    .tip { 
+      font-size: 0.95em; 
+      color: #d0d0d0;
+      margin-top: 10px;
+      padding: 10px;
+      background: #2a2a2a;
+      border-left: 4px solid #888;
+      border-radius: 5px;
+      border: 1px solid #444;
+    }
+    
+    .tip strong {
+      color: #ffffff;
+    }
+    
+    .warning {
+      background: #3a2a1a;
+      border-left: 4px solid #ff6b6b;
+      color: #ffcccc;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 10px 0;
+      border: 1px solid #555;
+    }
+    
+    .summary {
+      background: #1a2a2a;
+      border-left: 4px solid #888;
+      color: #d0d0d0;
+      padding: 15px;
+      border-radius: 5px;
+      margin: 15px 0;
+      border: 1px solid #444;
+    }
+    
+    .summary h3 {
+      margin-top: 0;
+      color: #ffffff;
+    }
+    
+    ol { 
+      padding-left: 25px; 
+    }
+    
+    li { 
+      margin-bottom: 6px; 
+      line-height: 1.6;
+    }
+    
+    ul {
+      padding-left: 25px;
+    }
+    
+    p {
+      margin-bottom: 10px;
+      line-height: 1.8;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+      background: #2a2a2a;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #444;
+    }
+    
+    thead {
+      background: #1a1a1a;
+      color: #ffffff;
+      border-bottom: 2px solid #666;
+    }
+    
+    th {
+      padding: 12px;
+      text-align: left;
+      font-weight: 600;
+      color: #ffffff;
+    }
+    
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #444;
+      color: #e0e0e0;
+    }
+    
+    tr:hover {
+      background: #333;
+    }
+    
+    tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .checklist {
+      background: #2a2a2a;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 15px 0;
+      border: 1px solid #444;
+    }
+    
+    .checklist-item {
+      margin: 8px 0;
+      padding-left: 25px;
+      position: relative;
+    }
+    
+    .checklist-item input[type="checkbox"] {
+      position: absolute;
+      left: 0;
+      margin-top: 3px;
+    }
+    
+    img {
+      max-width: 100%;
+      height: auto;
+      border: 2px solid #666;
+      border-radius: 8px;
+      margin: 15px 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+    
+    hr {
+      border: none;
+      border-top: 2px solid #444;
+      margin: 25px 0;
+    }
+    
+    a {
+      color: #888;
+      text-decoration: underline;
+    }
+    
+    a:hover {
+      color: #ffffff;
+    }
+    
+    .footer {
+      text-align: center;
+      color: #888;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 2px solid #444;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>07-01. 기출 문제 분석</h1>
+    
+    <div class="section-box">
+    <h2>📋 목차</h2>
+    <ul>
+    <li><a href="#1-aice-associate-시험-개요">1. AICE Associate 시험 개요</a></li>
+    <li><a href="#2-기출-문제-유형">2. 기출 문제 유형</a></li>
+    <li><a href="#3-문제-풀이-전략">3. 문제 풀이 전략</a></li>
+    <li><a href="#4-실전-문제-예시">4. 실전 문제 예시</a></li>
+    <li><a href="#5-요약">5. 요약</a></li>
+    </ul>
+    <hr>
+    <h2>1. AICE Associate 시험 개요</h2>
+    <h3>1.1 시험 구성</h3>
+    <ul>
+    <li><strong>시험 시간</strong>: 120분</li>
+    <li><strong>문제 유형</strong>: 객관식 + 실습 문제</li>
+    <li><strong>실습 환경</strong>: Jupyter Notebook</li>
+    </ul>
+    <h3>1.2 출제 영역</h3>
+    <ol>
+    <li>Python 기초 (20%)</li>
+    <li>데이터 분석 (25%)</li>
+    <li>시각화 (10%)</li>
+    <li>머신러닝 (30%)</li>
+    <li>실전 문제 (15%)</li>
+    </ol>
+    <hr>
+    <h2>2. 기출 문제 유형</h2>
+    <h3>2.1 Python 기초 문제</h3>
+    <ul>
+    <li>변수, 자료형, 연산자</li>
+    <li>제어문 (if, for, while)</li>
+    <li>함수, 모듈</li>
+    <li>리스트, 딕셔너리 조작</li>
+    </ul>
+    <h3>2.2 데이터 분석 문제</h3>
+    <ul>
+    <li>NumPy 배열 연산</li>
+    <li>Pandas 데이터 조작</li>
+    <li>데이터 전처리</li>
+    <li>데이터 탐색</li>
+    </ul>
+    <h3>2.3 머신러닝 문제</h3>
+    <ul>
+    <li>모델 학습 및 예측</li>
+    <li>모델 평가</li>
+    <li>하이퍼파라미터 튜닝</li>
+    </ul>
+    <hr>
+    <h2>3. 문제 풀이 전략</h2>
+    <h3>3.1 시간 관리</h3>
+    <ul>
+    <li>객관식: 빠르게 풀기</li>
+    <li>실습 문제: 충분한 시간 할당</li>
+    <li>검토: 최소 10분 확보</li>
+    </ul>
+    <h3>3.2 실습 문제 접근법</h3>
+    <ol>
+    <li>문제 이해</li>
+    <li>데이터 확인</li>
+    <li>코드 작성</li>
+    <li>결과 확인</li>
+    <li>검증</li>
+    </ol>
+    <hr>
+    <h2>4. 실전 문제 예시</h2>
+    <h3>예시 1: 데이터 전처리</h3>
+    <pre><code class="language-python">import pandas as pd
+import numpy as np
+
+# 데이터 로드
+df = pd.read_csv('data.csv')
+
+# 결측치 처리
+df['나이'] = df['나이'].fillna(df['나이'].mean())
+
+# 이상치 제거
+Q1 = df['급여'].quantile(0.25)
+Q3 = df['급여'].quantile(0.75)
+IQR = Q3 - Q1
+df = df[(df['급여'] &gt;= Q1 - 1.5*IQR) &amp; (df['급여'] &lt;= Q3 + 1.5*IQR)]</code></pre>
+    <h3>예시 2: 머신러닝 모델</h3>
+    <pre><code class="language-python">from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
+
+# 데이터 분할
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+# 모델 학습
+model = RandomForestClassifier(n_estimators=100)
+model.fit(X_train, y_train)
+
+# 예측 및 평가
+y_pred = model.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)</code></pre>
+    <hr>
+    <div class="summary">
+    <h2>5. 요약</h2>
+    <h3>핵심 정리</h3>
+    <ol>
+    <li><strong>시험 구성</strong>: 객관식 + 실습 문제</li>
+    <li><strong>출제 영역</strong>: Python, 데이터 분석, 머신러닝</li>
+    <li><strong>전략</strong>: 시간 관리, 문제 이해, 코드 검증</li>
+    </ol>
+    <h3>AICE 실전 팁</h3>
+    <ul>
+    <li><strong>기본 문법</strong>: Python 기본 문법 숙지 필수</li>
+    <li><strong>라이브러리</strong>: NumPy, Pandas, Scikit-learn 숙지</li>
+    <li><strong>실습</strong>: Jupyter Notebook 환경에 익숙해지기</li>
+    </ul>
+    </div>
+    <hr>
+    <div class="checklist">
+    <h2>✅ 체크리스트</h2>
+    <div class="checklist-item"><input type="checkbox" ><label>시험 구성 및 출제 영역 이해</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>기출 문제 유형 파악</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>문제 풀이 전략 수립</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>실전 문제 연습 완료</label></div>
+    </div>
+    <hr>
+    <h2>📚 참고 자료</h2>
+    <ul>
+    <li><a href="https://aice.study/">AICE 공식 홈페이지</a></li>
+    <li><a href="https://docs.python.org/ko/3/">Python 공식 문서</a></li>
+    <li><a href="https://scikit-learn.org/stable/">Scikit-learn 공식 문서</a></li>
+    </ul>
+    <hr>
+    <p><strong>작성일</strong>: 2025-11-19  </p>
+    <p><strong>이전 학습</strong>: <a href="../06_머신러닝/06_01_머신러닝기초.md">06_01_머신러닝기초</a>  </p>
+    <p><strong>다음 학습</strong>: -</p>
+    </div>
+    
+    <div class="footer">
+      <p>AICE Associate 시험 대비 | 학습 자료</p>
+    </div>
+  </div>
+</body>
+</html>
+

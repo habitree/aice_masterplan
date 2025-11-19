@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>03-01. NumPy 기초</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body { 
+      font-family: 'Segoe UI', 'Malgun Gothic', system-ui, -apple-system, BlinkMacSystemFont, sans-serif; 
+      line-height: 1.6; 
+      padding: 20px 15px; 
+      max-width: 900px; 
+      margin: 0 auto; 
+      background: #000000;
+      color: #e0e0e0;
+    }
+    
+    .container {
+      background: #1a1a1a;
+      border-radius: 15px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      padding: 30px 25px;
+      border: 1px solid #333;
+    }
+    
+    h1, h2, h3 { 
+      color: #ffffff; 
+    }
+    
+    h1 { 
+      border-bottom: 4px solid #888; 
+      padding-bottom: 10px; 
+      margin-bottom: 20px;
+      font-size: 2em;
+      text-align: center;
+      color: #ffffff;
+    }
+    
+    h2 {
+      color: #ffffff;
+      font-size: 1.6em;
+      margin-top: 25px;
+      margin-bottom: 15px;
+      padding-left: 15px;
+      border-left: 5px solid #888;
+    }
+    
+    h3 {
+      color: #ffffff;
+      font-size: 1.3em;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    
+    code { 
+      background: #2a2a2a; 
+      color: #d0d0d0;
+      padding: 3px 8px; 
+      border-radius: 5px; 
+      font-family: "Consolas", "Menlo", "Courier New", monospace; 
+      font-size: 0.95em;
+      font-weight: bold;
+      border: 1px solid #444;
+    }
+    
+    pre { 
+      background: #1e1e1e; 
+      color: #d4d4d4; 
+      padding: 15px; 
+      border-radius: 8px; 
+      overflow-x: auto; 
+      font-size: 14px;
+      line-height: 1.6;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      margin: 10px 0;
+      border: 1px solid #333;
+    }
+    
+    pre code {
+      background: transparent;
+      border: none;
+      padding: 0;
+      color: #d4d4d4;
+    }
+    
+    .box { 
+      background: #2a2a2a; 
+      padding: 15px; 
+      border-radius: 10px; 
+      margin-bottom: 15px; 
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      border-left: 4px solid #888;
+      border: 1px solid #444;
+    }
+    
+    .section-box {
+      background: #2a2a2a;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 15px 0;
+      border-left: 4px solid #888;
+      border: 1px solid #444;
+    }
+    
+    .tip { 
+      font-size: 0.95em; 
+      color: #d0d0d0;
+      margin-top: 10px;
+      padding: 10px;
+      background: #2a2a2a;
+      border-left: 4px solid #888;
+      border-radius: 5px;
+      border: 1px solid #444;
+    }
+    
+    .tip strong {
+      color: #ffffff;
+    }
+    
+    .warning {
+      background: #3a2a1a;
+      border-left: 4px solid #ff6b6b;
+      color: #ffcccc;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 10px 0;
+      border: 1px solid #555;
+    }
+    
+    .summary {
+      background: #1a2a2a;
+      border-left: 4px solid #888;
+      color: #d0d0d0;
+      padding: 15px;
+      border-radius: 5px;
+      margin: 15px 0;
+      border: 1px solid #444;
+    }
+    
+    .summary h3 {
+      margin-top: 0;
+      color: #ffffff;
+    }
+    
+    ol { 
+      padding-left: 25px; 
+    }
+    
+    li { 
+      margin-bottom: 6px; 
+      line-height: 1.6;
+    }
+    
+    ul {
+      padding-left: 25px;
+    }
+    
+    p {
+      margin-bottom: 10px;
+      line-height: 1.8;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+      background: #2a2a2a;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #444;
+    }
+    
+    thead {
+      background: #1a1a1a;
+      color: #ffffff;
+      border-bottom: 2px solid #666;
+    }
+    
+    th {
+      padding: 12px;
+      text-align: left;
+      font-weight: 600;
+      color: #ffffff;
+    }
+    
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #444;
+      color: #e0e0e0;
+    }
+    
+    tr:hover {
+      background: #333;
+    }
+    
+    tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .checklist {
+      background: #2a2a2a;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 15px 0;
+      border: 1px solid #444;
+    }
+    
+    .checklist-item {
+      margin: 8px 0;
+      padding-left: 25px;
+      position: relative;
+    }
+    
+    .checklist-item input[type="checkbox"] {
+      position: absolute;
+      left: 0;
+      margin-top: 3px;
+    }
+    
+    img {
+      max-width: 100%;
+      height: auto;
+      border: 2px solid #666;
+      border-radius: 8px;
+      margin: 15px 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+    
+    hr {
+      border: none;
+      border-top: 2px solid #444;
+      margin: 25px 0;
+    }
+    
+    a {
+      color: #888;
+      text-decoration: underline;
+    }
+    
+    a:hover {
+      color: #ffffff;
+    }
+    
+    .footer {
+      text-align: center;
+      color: #888;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 2px solid #444;
+      font-size: 0.9em;
+    }
+    
+    .image-save-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #888;
+      color: #ffffff;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95em;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      z-index: 1000;
+      transition: background 0.3s ease;
+    }
+    
+    .image-save-btn:hover {
+      background: #999;
+    }
+    
+    .image-save-btn:active {
+      background: #777;
+    }
+    
+    .save-status {
+      position: fixed;
+      bottom: 70px;
+      right: 20px;
+      background: #2a2a2a;
+      color: #888;
+      padding: 10px 20px;
+      border-radius: 5px;
+      border: 1px solid #444;
+      font-size: 0.9em;
+      display: none;
+      z-index: 1000;
+    }
+    
+    .save-status.saved {
+      color: #888;
+      border-color: #666;
+    }
+    
+    .save-status.saving {
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>03-01. NumPy 기초</h1>
+    
+    <div class="section-box">
+    <h2>📋 목차</h2>
+    <ul>
+    <li><a href="#1-numpy란">1. NumPy란?</a></li>
+    <li><a href="#2-numpy-배열-생성">2. NumPy 배열 생성</a></li>
+    <li><a href="#3-배열-속성-및-정보-확인">3. 배열 속성 및 정보 확인</a></li>
+    <li><a href="#4-배열-인덱싱과-슬라이싱">4. 배열 인덱싱과 슬라이싱</a></li>
+    <li><a href="#5-배열-연산">5. 배열 연산</a></li>
+    <li><a href="#6-배열-형태-변경">6. 배열 형태 변경</a></li>
+    <li><a href="#7-배열-결합-및-분할">7. 배열 결합 및 분할</a></li>
+    <li><a href="#8-실습">8. 실습</a></li>
+    <li><a href="#9-요약">9. 요약</a></li>
+    </ul>
+    <hr>
+    <h2>1. NumPy란?</h2>
+    <p><strong>NumPy (Numerical Python)</strong>는 Python에서 과학 계산을 위한 핵심 라이브러리입니다. 고성능 다차원 배열 객체와 이를 다루는 도구들을 제공합니다.</p>
+    <h3>1.1 NumPy의 특징</h3>
+    <ul>
+    <li><strong>고성능</strong>: C로 구현되어 Python 리스트보다 훨씬 빠름</li>
+    <li><strong>다차원 배열</strong>: 1차원, 2차원, 3차원 이상의 배열 지원</li>
+    <li><strong>벡터화 연산</strong>: 반복문 없이 배열 전체에 연산 적용</li>
+    <li><strong>브로드캐스팅</strong>: 크기가 다른 배열 간 연산 지원</li>
+    <li><strong>다양한 수학 함수</strong>: 통계, 선형대수, 푸리에 변환 등</li>
+    </ul>
+    <h3>1.2 NumPy 설치 및 import</h3>
+    <pre><code class="language-python"># NumPy 설치 (터미널/명령 프롬프트)
+# pip install numpy
+
+# NumPy import (관례적으로 np로 축약)
+import numpy as np
+
+# 버전 확인
+print(np.__version__)  # 예: 1.24.3</code></pre>
+    <div class="tip"><strong>💡 Tip: NumPy는 <code>np</code>로 import하는 것이 관례입니다. 대부분의 코드에서 <code>numpy</code> 대신 <code>np</code>를 사용합니다.</strong></div>
+    <hr>
+    <h2>2. NumPy 배열 생성</h2>
+    <h3>2.1 리스트에서 배열 생성</h3>
+    <pre><code class="language-python">import numpy as np
+
+# 1차원 배열
+arr1 = np.array([1, 2, 3, 4, 5])
+print(arr1)  # [1 2 3 4 5]
+
+# 2차원 배열
+arr2 = np.array([[1, 2, 3], [4, 5, 6]])
+print(arr2)
+# [[1 2 3]
+#  [4 5 6]]
+
+# 3차원 배열
+arr3 = np.array([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])
+print(arr3)
+# [[[1 2]
+#   [3 4]]
+#  [[5 6]
+#   [7 8]]]</code></pre>
+    <h3>2.2 특수 배열 생성 함수</h3>
+    <pre><code class="language-python">import numpy as np
+
+# zeros: 모든 원소가 0인 배열
+zeros_arr = np.zeros((3, 4))  # 3행 4열
+print(zeros_arr)
+# [[0. 0. 0. 0.]
+#  [0. 0. 0. 0.]
+#  [0. 0. 0. 0.]]
+
+# ones: 모든 원소가 1인 배열
+ones_arr = np.ones((2, 3))  # 2행 3열
+print(ones_arr)
+# [[1. 1. 1.]
+#  [1. 1. 1.]]
+
+# full: 지정한 값으로 채운 배열
+full_arr = np.full((2, 2), 7)  # 2행 2열, 값은 7
+print(full_arr)
+# [[7 7]
+#  [7 7]]
+
+# eye: 단위 행렬 (대각선이 1, 나머지는 0)
+eye_arr = np.eye(3)  # 3x3 단위 행렬
+print(eye_arr)
+# [[1. 0. 0.]
+#  [0. 1. 0.]
+#  [0. 0. 1.]]
+
+# arange: 범위 내 숫자 생성 (range와 유사)
+arr_range = np.arange(0, 10, 2)  # 0부터 10 미만, 2씩 증가
+print(arr_range)  # [0 2 4 6 8]
+
+# linspace: 균등 간격 숫자 생성
+arr_lin = np.linspace(0, 10, 5)  # 0부터 10까지 5개 숫자
+print(arr_lin)  # [ 0.   2.5  5.   7.5 10. ]
+
+# random: 랜덤 배열 생성
+random_arr = np.random.rand(3, 3)  # 0~1 사이 랜덤 값
+print(random_arr)
+
+random_int = np.random.randint(1, 10, size=(2, 3))  # 1~9 사이 정수
+print(random_int)</code></pre>
+    <h3>2.3 데이터 타입 지정</h3>
+    <pre><code class="language-python">import numpy as np
+
+# dtype으로 데이터 타입 지정
+arr_int = np.array([1, 2, 3], dtype=np.int32)
+arr_float = np.array([1, 2, 3], dtype=np.float64)
+arr_str = np.array(['a', 'b', 'c'], dtype=np.str_)
+
+print(arr_int.dtype)    # int32
+print(arr_float.dtype)  # float64
+print(arr_str.dtype)    # &lt;U1 (유니코드 문자열)</code></pre>
+    <div class="tip"><strong>💡 Tip: NumPy 배열은 모든 원소가 같은 데이터 타입이어야 합니다. 리스트와 달리 혼합 타입은 자동으로 변환됩니다.</strong></div>
+    <hr>
+    <h2>3. 배열 속성 및 정보 확인</h2>
+    <h3>3.1 배열 속성</h3>
+    <pre><code class="language-python">import numpy as np
+
+arr = np.array([[1, 2, 3], [4, 5, 6]])
+
+# shape: 배열의 차원 크기 (행, 열)
+print(arr.shape)  # (2, 3)
+
+# ndim: 배열의 차원 수
+print(arr.ndim)   # 2
+
+# size: 배열의 총 원소 개수
+print(arr.size)   # 6
+
+# dtype: 배열의 데이터 타입
+print(arr.dtype)  # int64
+
+# itemsize: 각 원소의 바이트 크기
+print(arr.itemsize)  # 8 (int64는 8바이트)
+
+# nbytes: 배열 전체의 바이트 크기
+print(arr.nbytes)  # 48 (6개 원소 × 8바이트)</code></pre>
+    <h3>3.2 배열 정보 확인 함수</h3>
+    <pre><code class="language-python">import numpy as np
+
+arr = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+
+# 최솟값, 최댓값
+print(arr.min())  # 1
+print(arr.max())  # 10
+
+# 합계, 평균
+print(arr.sum())   # 55
+print(arr.mean())  # 5.5
+
+# 표준편차, 분산
+print(arr.std())   # 2.8722813232690143
+print(arr.var())   # 8.25
+
+# 중앙값 (median은 numpy 함수로 사용)
+print(np.median(arr))  # 5.5
+
+# 25%, 50%, 75% 백분위수
+print(np.percentile(arr, [25, 50, 75]))  # [3.25 5.5  7.75]</code></pre>
+    <hr>
+    <h2>4. 배열 인덱싱과 슬라이싱</h2>
+    <h3>4.1 1차원 배열 인덱싱</h3>
+    <pre><code class="language-python">import numpy as np
+
+arr = np.array([10, 20, 30, 40, 50])
+
+# 인덱싱 (0부터 시작)
+print(arr[0])   # 10
+print(arr[2])   # 30
+print(arr[-1])  # 50 (마지막 원소)
+
+# 슬라이싱 [시작:끝:간격]
+print(arr[1:4])    # [20 30 40]
+print(arr[:3])     # [10 20 30] (처음부터 3번째까지)
+print(arr[2:])     # [30 40 50] (2번째부터 끝까지)
+print(arr[::2])    # [10 30 50] (2칸씩 건너뛰기)
+print(arr[::-1])   # [50 40 30 20 10] (역순)</code></pre>
+    <h3>4.2 2차원 배열 인덱싱</h3>
+    <pre><code class="language-python">import numpy as np
+
+arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+
+# 단일 원소 접근 [행, 열]
+print(arr[0, 0])  # 1
+print(arr[1, 2])  # 6
+print(arr[2, 1])  # 8
+
+# 행 전체 선택
+print(arr[0])     # [1 2 3] (첫 번째 행)
+print(arr[1, :])  # [4 5 6] (두 번째 행 전체)
+
+# 열 전체 선택
+print(arr[:, 0])  # [1 4 7] (첫 번째 열)
+print(arr[:, 2])  # [3 6 9] (세 번째 열)
+
+# 부분 배열 선택
+print(arr[0:2, 1:3])  # [[2 3] [5 6]] (0~1행, 1~2열)
+print(arr[1:, :2])    # [[4 5] [7 8]] (1행부터, 0~1열)</code></pre>
+    <h3>4.3 불리언 인덱싱 (조건부 선택)</h3>
+    <pre><code class="language-python">import numpy as np
+
+arr = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+
+# 조건에 맞는 원소 선택
+mask = arr &gt; 5
+print(mask)           # [False False False False False  True  True  True  True  True]
+print(arr[mask])      # [ 6  7  8  9 10]
+
+# 간단한 표현
+print(arr[arr &gt; 5])   # [ 6  7  8  9 10]
+print(arr[arr % 2 == 0])  # [ 2  4  6  8 10] (짝수만)
+
+# 여러 조건 (and: &amp;, or: |, not: ~)
+print(arr[(arr &gt; 3) &amp; (arr &lt; 8)])  # [4 5 6 7]
+print(arr[(arr &lt; 3) | (arr &gt; 8)])  # [ 1  2  9 10]</code></pre>
+    <h3>4.4 팬시 인덱싱 (Fancy Indexing)</h3>
+    <pre><code class="language-python">import numpy as np
+
+arr = np.array([10, 20, 30, 40, 50, 60, 70, 80])
+
+# 인덱스 배열로 선택
+indices = [0, 2, 5, 7]
+print(arr[indices])  # [10 30 60 80]
+
+# 2차원 배열에서
+arr2d = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+rows = [0, 2]
+cols = [1, 2]
+print(arr2d[rows, cols])  # [2 9] (0행1열, 2행2열)</code></pre>
+    <hr>
+    <h2>5. 배열 연산</h2>
+    <h3>5.1 기본 산술 연산</h3>
+    <pre><code class="language-python">import numpy as np
+
+a = np.array([1, 2, 3, 4])
+b = np.array([5, 6, 7, 8])
+
+# 요소별 연산 (벡터화)
+print(a + b)  # [ 6  8 10 12] (덧셈)
+print(a - b)  # [-4 -4 -4 -4] (뺄셈)
+print(a * b)  # [ 5 12 21 32] (곱셈, 요소별)
+print(a / b)  # [0.2 0.33333333 0.42857143 0.5] (나눗셈)
+print(a ** 2) # [ 1  4  9 16] (제곱)
+
+# 스칼라 연산
+print(a + 10)  # [11 12 13 14]
+print(a * 2)   # [2 4 6 8]</code></pre>
+    <h3>5.2 브로드캐스팅 (Broadcasting)</h3>
+    <p>브로드캐스팅은 크기가 다른 배열 간 연산을 가능하게 합니다.</p>
+    <pre><code class="language-python">import numpy as np
+
+# 2차원 배열과 1차원 배열 연산
+arr2d = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+arr1d = np.array([10, 20, 30])
+
+# 각 행에 arr1d가 더해짐
+print(arr2d + arr1d)
+# [[11 22 33]
+#  [14 25 36]
+#  [17 28 39]]
+
+# 스칼라와의 연산
+print(arr2d * 2)
+# [[ 2  4  6]
+#  [ 8 10 12]
+#  [14 16 18]]</code></pre>
+    <h3>5.3 행렬 연산</h3>
+    <pre><code class="language-python">import numpy as np
+
+a = np.array([[1, 2], [3, 4]])
+b = np.array([[5, 6], [7, 8]])
+
+# 행렬 곱셈 (dot product)
+print(np.dot(a, b))
+# [[19 22]
+#  [43 50]]
+
+# @ 연산자 (Python 3.5+)
+print(a @ b)
+# [[19 22]
+#  [43 50]]
+
+# 전치 행렬 (Transpose)
+print(a.T)
+# [[1 3]
+#  [2 4]]</code></pre>
+    <hr>
+    <h2>6. 배열 형태 변경</h2>
+    <h3>6.1 reshape: 배열 형태 변경</h3>
+    <pre><code class="language-python">import numpy as np
+
+arr = np.arange(12)  # [0 1 2 3 4 5 6 7 8 9 10 11]
+
+# 3행 4열로 변경
+arr_2d = arr.reshape(3, 4)
+print(arr_2d)
+# [[ 0  1  2  3]
+#  [ 4  5  6  7]
+#  [ 8  9 10 11]]
+
+# -1 사용 (자동 계산)
+arr_3d = arr.reshape(2, 2, -1)  # 2×2×3
+print(arr_3d.shape)  # (2, 2, 3)
+
+# 1차원으로 펼치기
+arr_flat = arr_2d.flatten()  # 또는 arr_2d.ravel()
+print(arr_flat)  # [0 1 2 3 4 5 6 7 8 9 10 11]</code></pre>
+    <h3>6.2 배열 차원 변경</h3>
+    <pre><code class="language-python">import numpy as np
+
+arr = np.array([1, 2, 3])
+
+# 차원 추가 (1차원 → 2차원)
+arr_2d = arr[:, np.newaxis]  # 또는 arr.reshape(-1, 1)
+print(arr_2d)
+# [[1]
+#  [2]
+#  [3]]
+
+# 차원 제거
+arr_1d = arr_2d.squeeze()
+print(arr_1d)  # [1 2 3]</code></pre>
+    <hr>
+    <h2>7. 배열 결합 및 분할</h2>
+    <h3>7.1 배열 결합</h3>
+    <pre><code class="language-python">import numpy as np
+
+a = np.array([1, 2, 3])
+b = np.array([4, 5, 6])
+
+# concatenate: 배열 연결
+arr_concat = np.concatenate([a, b])
+print(arr_concat)  # [1 2 3 4 5 6]
+
+# 2차원 배열 결합
+arr1 = np.array([[1, 2], [3, 4]])
+arr2 = np.array([[5, 6], [7, 8]])
+
+# 행 방향 결합 (axis=0)
+arr_v = np.concatenate([arr1, arr2], axis=0)
+print(arr_v)
+# [[1 2]
+#  [3 4]
+#  [5 6]
+#  [7 8]]
+
+# 열 방향 결합 (axis=1)
+arr_h = np.concatenate([arr1, arr2], axis=1)
+print(arr_h)
+# [[1 2 5 6]
+#  [3 4 7 8]]
+
+# vstack, hstack (간편 함수)
+arr_v2 = np.vstack([arr1, arr2])  # 수직 결합
+arr_h2 = np.hstack([arr1, arr2])  # 수평 결합</code></pre>
+    <h3>7.2 배열 분할</h3>
+    <pre><code class="language-python">import numpy as np
+
+arr = np.arange(12).reshape(3, 4)
+print(arr)
+# [[ 0  1  2  3]
+#  [ 4  5  6  7]
+#  [ 8  9 10 11]]
+
+# split: 배열 분할
+arrs = np.split(arr, 3, axis=0)  # 3개로 행 분할
+print(arrs[0])  # [[0 1 2 3]]
+
+# vsplit, hsplit (간편 함수)
+arrs_v = np.vsplit(arr, 3)  # 행 분할
+arrs_h = np.hsplit(arr, 2)  # 열 분할</code></pre>
+    <hr>
+    <h2>8. 실습</h2>
+    <h3>실습 1: 학생 점수 분석</h3>
+    <pre><code class="language-python">import numpy as np
+
+# 5명의 학생, 3과목 점수
+scores = np.array([[85, 90, 88],
+                   [92, 87, 91],
+                   [78, 85, 80],
+                   [95, 92, 94],
+                   [88, 89, 87]])
+
+# 각 학생의 평균 점수
+student_avg = scores.mean(axis=1)
+print("학생별 평균:", student_avg)
+
+# 각 과목의 평균 점수
+subject_avg = scores.mean(axis=0)
+print("과목별 평균:", subject_avg)
+
+# 전체 평균
+total_avg = scores.mean()
+print("전체 평균:", total_avg)
+
+# 90점 이상인 점수만 선택
+high_scores = scores[scores &gt;= 90]
+print("90점 이상 점수:", high_scores)</code></pre>
+    <h3>실습 2: 배열 연산 활용</h3>
+    <pre><code class="language-python">import numpy as np
+
+# 온도 데이터 (섭씨)
+temp_c = np.array([20, 22, 25, 28, 30, 32, 28, 25])
+
+# 화씨로 변환: F = C * 9/5 + 32
+temp_f = temp_c * 9/5 + 32
+print("화씨 온도:", temp_f)
+
+# 평균 온도
+avg_temp = temp_c.mean()
+print("평균 온도:", avg_temp)
+
+# 최고/최저 온도
+max_temp = temp_c.max()
+min_temp = temp_c.min()
+print(f"최고 온도: {max_temp}°C, 최저 온도: {min_temp}°C")</code></pre>
+    <hr>
+    <div class="summary">
+    <h2>9. 요약</h2>
+    <h3>핵심 정리</h3>
+    <ol>
+    <li><strong>NumPy 배열</strong>: <code>np.array()</code>로 생성, 리스트보다 빠르고 효율적</li>
+    <li><strong>배열 속성</strong>: <code>shape</code>, <code>ndim</code>, <code>size</code>, <code>dtype</code> 등으로 정보 확인</li>
+    <li><strong>인덱싱</strong>: <code>[행, 열]</code> 형태로 접근, 슬라이싱과 불리언 인덱싱 지원</li>
+    <li><strong>벡터화 연산</strong>: 반복문 없이 배열 전체에 연산 적용</li>
+    <li><strong>브로드캐스팅</strong>: 크기가 다른 배열 간 연산 자동 처리</li>
+    <li><strong>형태 변경</strong>: <code>reshape()</code>, <code>flatten()</code> 등으로 배열 형태 조작</li>
+    </ol>
+    <h3>AICE 실전 팁</h3>
+    <ul>
+    <li><strong>성능</strong>: NumPy 배열은 Python 리스트보다 훨씬 빠르므로, 수치 계산에는 반드시 NumPy 사용</li>
+    <li><strong>인덱싱</strong>: <code>arr[조건]</code> 형태의 불리언 인덱싱을 자주 사용</li>
+    <li><strong>브로드캐스팅</strong>: 크기가 다른 배열 연산 시 브로드캐스팅 규칙 이해 필수</li>
+    <li><strong>메모리</strong>: 대용량 데이터 처리 시 <code>dtype</code>을 적절히 선택하여 메모리 절약</li>
+    <li><strong>행렬 연산</strong>: <code>np.dot()</code> 또는 <code>@</code> 연산자로 행렬 곱셈 수행</li>
+    </ul>
+    </div>
+    <hr>
+    <div class="checklist">
+    <h2>✅ 체크리스트</h2>
+    <div class="checklist-item"><input type="checkbox" ><label>NumPy 배열 생성 방법 이해</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>배열 속성 및 정보 확인 함수 숙지</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>인덱싱과 슬라이싱 활용 가능</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>배열 연산 및 브로드캐스팅 이해</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>배열 형태 변경 및 결합/분할 방법 숙지</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>실습 코드 작성 및 실행 완료</label></div>
+    </div>
+    <hr>
+    <h2>📚 참고 자료</h2>
+    <ul>
+    <li><a href="https://numpy.org/doc/stable/">NumPy 공식 문서</a></li>
+    <li><a href="https://numpy.org/doc/stable/user/quickstart.html">NumPy 튜토리얼</a></li>
+    </ul>
+    <hr>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0; padding: 15px; background: #2a2a2a; border-radius: 8px; border: 1px solid #444;">
+      <div style="flex: 1;">
+        <p style="margin: 0; color: #888; font-size: 0.9em;"><strong>이전 학습</strong></p>
+        <p style="margin: 5px 0 0 0;"><a href="../02_파이썬기초/02_02_자료형.html" style="color: #888; text-decoration: none; transition: color 0.3s ease;">← 02_02_자료형</a></p>
+      </div>
+      <div style="flex: 1; text-align: center;">
+        <p style="margin: 0; color: #888; font-size: 0.9em;"><strong>작성일</strong></p>
+        <p style="margin: 5px 0 0 0; color: #aaa;">2025-11-19</p>
+      </div>
+      <div style="flex: 1; text-align: right;">
+        <p style="margin: 0; color: #888; font-size: 0.9em;"><strong>다음 학습</strong></p>
+        <p style="margin: 5px 0 0 0;"><a href="03_02_Pandas기초.html" style="color: #888; text-decoration: none; transition: color 0.3s ease;">03_02_Pandas기초 →</a></p>
+      </div>
+    </div>
+    <style>
+      div[style*="이전 학습"] a:hover,
+      div[style*="다음 학습"] a:hover {
+        color: #ffffff !important;
+      }
+    </style>
+    </div>
+    
+    <div class="footer">
+      <p>AICE Associate 시험 대비 | 학습 자료</p>
+    </div>
+  </div>
+  
+  <button class="image-save-btn" onclick="saveAsImage()">🖼️ 이미지 저장</button>
+  <div class="save-status" id="saveStatus">저장됨</div>
+  
+  <script>
+    // 저장 상태 표시 함수
+    function showSaveStatus(type) {
+      const status = document.getElementById('saveStatus');
+      status.style.display = 'block';
+      
+      if (type === 'saved') {
+        status.textContent = '✓ 저장됨';
+        status.className = 'save-status saved';
+        setTimeout(() => {
+          status.style.display = 'none';
+        }, 2000);
+      } else if (type === 'saving') {
+        status.textContent = '저장 중...';
+        status.className = 'save-status saving';
+      } else if (type === 'error') {
+        status.textContent = '✗ 저장 실패';
+        status.className = 'save-status';
+        status.style.color = '#ff6b6b';
+        setTimeout(() => {
+          status.style.display = 'none';
+        }, 3000);
+      }
+    }
+    
+    // HTML을 이미지로 저장하는 함수
+    async function saveAsImage() {
+      // html2canvas 라이브러리 확인
+      if (typeof html2canvas === 'undefined') {
+        alert('이미지 변환 라이브러리를 로드하는 중입니다. 잠시 후 다시 시도해주세요.');
+        return;
+      }
+      
+      showSaveStatus('saving');
+      
+      try {
+        const container = document.querySelector('.container');
+        if (!container) {
+          alert('컨테이너를 찾을 수 없습니다.');
+          showSaveStatus('error');
+          return;
+        }
+        
+        // 이미지 변환 옵션 (고해상도 설정)
+        const options = {
+          backgroundColor: '#000000', // 배경색
+          scale: 2, // 고해상도 (2배 스케일)
+          useCORS: true,
+          logging: false,
+          width: container.scrollWidth,
+          height: container.scrollHeight,
+          windowWidth: container.scrollWidth,
+          windowHeight: container.scrollHeight
+        };
+        
+        // HTML을 Canvas로 변환
+        const canvas = await html2canvas(container, options);
+        
+        // Canvas를 Blob으로 변환
+        canvas.toBlob(function(blob) {
+          if (!blob) {
+            alert('이미지 생성에 실패했습니다.');
+            showSaveStatus('error');
+            return;
+          }
+          
+          // 파일명 생성 (제목 기반)
+          const title = document.title.replace(/\./g, '_').replace(/\s+/g, '_');
+          const today = new Date().toISOString().split('T')[0];
+          const fileName = `${title}_${today}.png`;
+          
+          // 이미지 다운로드
+          downloadImage(blob, fileName);
+        }, 'image/png', 1.0);
+        
+      } catch (error) {
+        console.error('이미지 저장 오류:', error);
+        alert('이미지 저장 중 오류가 발생했습니다: ' + error.message);
+        showSaveStatus('error');
+      }
+    }
+    
+    // 이미지 다운로드
+    function downloadImage(blob, fileName) {
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileName;
+      link.click();
+      URL.revokeObjectURL(url);
+      showSaveStatus('saved');
+      alert(`✅ 이미지가 다운로드되었습니다!\n\n파일명: ${fileName}`);
+    }
+  </script>
+</body>
+</html>
+

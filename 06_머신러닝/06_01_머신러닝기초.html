@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>06-01. 머신러닝 기초</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body { 
+      font-family: 'Segoe UI', 'Malgun Gothic', system-ui, -apple-system, BlinkMacSystemFont, sans-serif; 
+      line-height: 1.6; 
+      padding: 20px 15px; 
+      max-width: 900px; 
+      margin: 0 auto; 
+      background: #000000;
+      color: #e0e0e0;
+    }
+    
+    .container {
+      background: #1a1a1a;
+      border-radius: 15px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      padding: 30px 25px;
+      border: 1px solid #333;
+    }
+    
+    h1, h2, h3 { 
+      color: #ffffff; 
+    }
+    
+    h1 { 
+      border-bottom: 4px solid #888; 
+      padding-bottom: 10px; 
+      margin-bottom: 20px;
+      font-size: 2em;
+      text-align: center;
+      color: #ffffff;
+    }
+    
+    h2 {
+      color: #ffffff;
+      font-size: 1.6em;
+      margin-top: 25px;
+      margin-bottom: 15px;
+      padding-left: 15px;
+      border-left: 5px solid #888;
+    }
+    
+    h3 {
+      color: #ffffff;
+      font-size: 1.3em;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    
+    code { 
+      background: #2a2a2a; 
+      color: #d0d0d0;
+      padding: 3px 8px; 
+      border-radius: 5px; 
+      font-family: "Consolas", "Menlo", "Courier New", monospace; 
+      font-size: 0.95em;
+      font-weight: bold;
+      border: 1px solid #444;
+    }
+    
+    pre { 
+      background: #1e1e1e; 
+      color: #d4d4d4; 
+      padding: 15px; 
+      border-radius: 8px; 
+      overflow-x: auto; 
+      font-size: 14px;
+      line-height: 1.6;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      margin: 10px 0;
+      border: 1px solid #333;
+    }
+    
+    pre code {
+      background: transparent;
+      border: none;
+      padding: 0;
+      color: #d4d4d4;
+    }
+    
+    .box { 
+      background: #2a2a2a; 
+      padding: 15px; 
+      border-radius: 10px; 
+      margin-bottom: 15px; 
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      border-left: 4px solid #888;
+      border: 1px solid #444;
+    }
+    
+    .section-box {
+      background: #2a2a2a;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 15px 0;
+      border-left: 4px solid #888;
+      border: 1px solid #444;
+    }
+    
+    .tip { 
+      font-size: 0.95em; 
+      color: #d0d0d0;
+      margin-top: 10px;
+      padding: 10px;
+      background: #2a2a2a;
+      border-left: 4px solid #888;
+      border-radius: 5px;
+      border: 1px solid #444;
+    }
+    
+    .tip strong {
+      color: #ffffff;
+    }
+    
+    .warning {
+      background: #3a2a1a;
+      border-left: 4px solid #ff6b6b;
+      color: #ffcccc;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 10px 0;
+      border: 1px solid #555;
+    }
+    
+    .summary {
+      background: #1a2a2a;
+      border-left: 4px solid #888;
+      color: #d0d0d0;
+      padding: 15px;
+      border-radius: 5px;
+      margin: 15px 0;
+      border: 1px solid #444;
+    }
+    
+    .summary h3 {
+      margin-top: 0;
+      color: #ffffff;
+    }
+    
+    ol { 
+      padding-left: 25px; 
+    }
+    
+    li { 
+      margin-bottom: 6px; 
+      line-height: 1.6;
+    }
+    
+    ul {
+      padding-left: 25px;
+    }
+    
+    p {
+      margin-bottom: 10px;
+      line-height: 1.8;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+      background: #2a2a2a;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #444;
+    }
+    
+    thead {
+      background: #1a1a1a;
+      color: #ffffff;
+      border-bottom: 2px solid #666;
+    }
+    
+    th {
+      padding: 12px;
+      text-align: left;
+      font-weight: 600;
+      color: #ffffff;
+    }
+    
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #444;
+      color: #e0e0e0;
+    }
+    
+    tr:hover {
+      background: #333;
+    }
+    
+    tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .checklist {
+      background: #2a2a2a;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 15px 0;
+      border: 1px solid #444;
+    }
+    
+    .checklist-item {
+      margin: 8px 0;
+      padding-left: 25px;
+      position: relative;
+    }
+    
+    .checklist-item input[type="checkbox"] {
+      position: absolute;
+      left: 0;
+      margin-top: 3px;
+    }
+    
+    img {
+      max-width: 100%;
+      height: auto;
+      border: 2px solid #666;
+      border-radius: 8px;
+      margin: 15px 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+    
+    hr {
+      border: none;
+      border-top: 2px solid #444;
+      margin: 25px 0;
+    }
+    
+    a {
+      color: #888;
+      text-decoration: underline;
+    }
+    
+    a:hover {
+      color: #ffffff;
+    }
+    
+    .footer {
+      text-align: center;
+      color: #888;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 2px solid #444;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>06-01. 머신러닝 기초</h1>
+    
+    <div class="section-box">
+    <h2>📋 목차</h2>
+    <ul>
+    <li><a href="#1-머신러닝이란">1. 머신러닝이란?</a></li>
+    <li><a href="#2-지도학습-vs-비지도학습">2. 지도학습 vs 비지도학습</a></li>
+    <li><a href="#3-scikit-learn-기초">3. Scikit-learn 기초</a></li>
+    <li><a href="#4-회귀-모델">4. 회귀 모델</a></li>
+    <li><a href="#5-분류-모델">5. 분류 모델</a></li>
+    <li><a href="#6-모델-평가">6. 모델 평가</a></li>
+    <li><a href="#7-실습">7. 실습</a></li>
+    <li><a href="#8-요약">8. 요약</a></li>
+    </ul>
+    <hr>
+    <h2>1. 머신러닝이란?</h2>
+    <p><strong>머신러닝</strong>은 데이터로부터 패턴을 학습하여 예측이나 분류를 수행하는 인공지능의 한 분야입니다.</p>
+    <h3>1.1 머신러닝의 종류</h3>
+    <ul>
+    <li><strong>지도학습</strong>: 정답(레이블)이 있는 데이터로 학습</li>
+    <li><strong>비지도학습</strong>: 정답 없이 데이터의 패턴 발견</li>
+    <li><strong>강화학습</strong>: 환경과 상호작용하며 학습</li>
+    </ul>
+    <hr>
+    <h2>2. 지도학습 vs 비지도학습</h2>
+    <h3>2.1 지도학습</h3>
+    <pre><code class="language-python"># 회귀: 연속적인 값 예측 (예: 집 가격, 온도)
+# 분류: 카테고리 예측 (예: 스팸/정상, 고양이/강아지)</code></pre>
+    <h3>2.2 비지도학습</h3>
+    <pre><code class="language-python"># 클러스터링: 비슷한 데이터 그룹화
+# 차원 축소: 데이터의 차원 감소</code></pre>
+    <hr>
+    <h2>3. Scikit-learn 기초</h2>
+    <h3>3.1 기본 구조</h3>
+    <pre><code class="language-python">from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+
+# 1. 데이터 준비
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+# 2. 모델 생성 및 학습
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# 3. 예측
+y_pred = model.predict(X_test)
+
+# 4. 평가
+mse = mean_squared_error(y_test, y_pred)</code></pre>
+    <hr>
+    <h2>4. 회귀 모델</h2>
+    <h3>4.1 선형 회귀</h3>
+    <pre><code class="language-python">from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
+
+# 모델 생성 및 학습
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# 예측
+y_pred = model.predict(X_test)
+
+# 평가
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)</code></pre>
+    <h3>4.2 다항 회귀</h3>
+    <pre><code class="language-python">from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LinearRegression
+
+# 다항 특성 생성
+poly = PolynomialFeatures(degree=2)
+X_poly = poly.fit_transform(X_train)
+
+# 모델 학습
+model = LinearRegression()
+model.fit(X_poly, y_train)</code></pre>
+    <hr>
+    <h2>5. 분류 모델</h2>
+    <h3>5.1 로지스틱 회귀</h3>
+    <pre><code class="language-python">from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, classification_report
+
+# 모델 생성 및 학습
+model = LogisticRegression()
+model.fit(X_train, y_train)
+
+# 예측
+y_pred = model.predict(X_test)
+
+# 평가
+accuracy = accuracy_score(y_test, y_pred)
+print(classification_report(y_test, y_pred))</code></pre>
+    <h3>5.2 결정 트리</h3>
+    <pre><code class="language-python">from sklearn.tree import DecisionTreeClassifier
+
+# 모델 생성 및 학습
+model = DecisionTreeClassifier(max_depth=5)
+model.fit(X_train, y_train)
+
+# 예측
+y_pred = model.predict(X_test)</code></pre>
+    <h3>5.3 랜덤 포레스트</h3>
+    <pre><code class="language-python">from sklearn.ensemble import RandomForestClassifier
+
+# 모델 생성 및 학습
+model = RandomForestClassifier(n_estimators=100)
+model.fit(X_train, y_train)
+
+# 예측
+y_pred = model.predict(X_test)</code></pre>
+    <hr>
+    <h2>6. 모델 평가</h2>
+    <h3>6.1 회귀 평가 지표</h3>
+    <pre><code class="language-python">from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
+
+mse = mean_squared_error(y_test, y_pred)
+rmse = np.sqrt(mse)
+mae = mean_absolute_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)</code></pre>
+    <h3>6.2 분류 평가 지표</h3>
+    <pre><code class="language-python">from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+
+accuracy = accuracy_score(y_test, y_pred)
+precision = precision_score(y_test, y_pred)
+recall = recall_score(y_test, y_pred)
+f1 = f1_score(y_test, y_pred)</code></pre>
+    <h3>6.3 교차 검증</h3>
+    <pre><code class="language-python">from sklearn.model_selection import cross_val_score
+
+scores = cross_val_score(model, X, y, cv=5)
+print(f"평균 점수: {scores.mean():.2f}")</code></pre>
+    <hr>
+    <h2>7. 실습</h2>
+    <h3>실습: 머신러닝 파이프라인</h3>
+    <pre><code class="language-python">from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, classification_report
+
+# 데이터 로드
+iris = load_iris()
+X, y = iris.data, iris.target
+
+# 데이터 분할
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# 모델 학습
+model = RandomForestClassifier(n_estimators=100)
+model.fit(X_train, y_train)
+
+# 예측
+y_pred = model.predict(X_test)
+
+# 평가
+accuracy = accuracy_score(y_test, y_pred)
+print(f"정확도: {accuracy:.2f}")
+print(classification_report(y_test, y_pred))</code></pre>
+    <hr>
+    <div class="summary">
+    <h2>8. 요약</h2>
+    <h3>핵심 정리</h3>
+    <ol>
+    <li><strong>지도학습</strong>: 회귀(연속값), 분류(카테고리)</li>
+    <li><strong>Scikit-learn</strong>: fit(), predict() 패턴</li>
+    <li><strong>모델 평가</strong>: MSE, R² (회귀), Accuracy, F1 (분류)</li>
+    <li><strong>교차 검증</strong>: 모델 성능 검증</li>
+    </ol>
+    <h3>AICE 실전 팁</h3>
+    <ul>
+    <li><strong>데이터 분할</strong>: train_test_split으로 분할</li>
+    <li><strong>모델 선택</strong>: 문제 유형에 맞는 모델 선택</li>
+    <li><strong>평가 지표</strong>: 문제에 맞는 평가 지표 사용</li>
+    </ul>
+    </div>
+    <hr>
+    <div class="checklist">
+    <h2>✅ 체크리스트</h2>
+    <div class="checklist-item"><input type="checkbox" ><label>지도학습과 비지도학습 차이 이해</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>Scikit-learn 기본 사용법 숙지</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>회귀 모델 이해 및 구현</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>분류 모델 이해 및 구현</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>모델 평가 방법 숙지</label></div>
+    <div class="checklist-item"><input type="checkbox" ><label>실습 코드 작성 및 실행 완료</label></div>
+    </div>
+    <hr>
+    <h2>📚 참고 자료</h2>
+    <ul>
+    <li><a href="https://scikit-learn.org/stable/">Scikit-learn 공식 문서</a></li>
+    <li><a href="https://scikit-learn.org/stable/user_guide.html">Scikit-learn 튜토리얼</a></li>
+    </ul>
+    <hr>
+    <p><strong>작성일</strong>: 2025-11-19  </p>
+    <p><strong>이전 학습</strong>: <a href="../05_시각화/05_01_데이터시각화.md">05_01_데이터시각화</a>  </p>
+    <p><strong>다음 학습</strong>: <a href="../07_기출문제/07_01_기출문제분석.md">07_01_기출문제분석</a></p>
+    </div>
+    
+    <div class="footer">
+      <p>AICE Associate 시험 대비 | 학습 자료</p>
+    </div>
+  </div>
+</body>
+</html>
+

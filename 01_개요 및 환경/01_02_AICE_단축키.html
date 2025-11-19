@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jupyter Notebook 단축키 정리 
+        (AICE 시험 대비용)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
+            line-height: 1.8;
+            color: #e0e0e0;
+            background: #000000;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #1a1a1a;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            padding: 50px;
+            border: 1px solid #333;
+        }
+        
+        h1 {
+            color: #ffffff;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            border-bottom: 4px solid #888;
+            padding-bottom: 15px;
+            text-align: center;
+            word-break: keep-all;
+            line-height: 1.4;
+        }
+        
+        h2 {
+            color: #ffffff;
+            font-size: 1.6em;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-left: 15px;
+            border-left: 5px solid #888;
+            text-align: left;
+        }
+        
+        h3 {
+            color: #ffffff;
+            font-size: 1.3em;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        
+        .mode-section {
+            background: #2a2a2a;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #888;
+            border: 1px solid #444;
+        }
+        
+        .mode-section h3 {
+            margin-top: 0;
+            color: #ffffff;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: #2a2a2a;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #444;
+        }
+        
+        thead {
+            background: #1a1a1a;
+            color: #ffffff;
+            border-bottom: 2px solid #666;
+        }
+        
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+            color: #ffffff;
+        }
+        
+        th:first-child {
+            text-align: left;
+        }
+        
+        th:nth-child(2) {
+            text-align: center;
+        }
+        
+        th:nth-child(3) {
+            text-align: left;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #444;
+            text-align: left;
+            vertical-align: middle;
+            color: #e0e0e0;
+        }
+        
+        td:first-child {
+            text-align: left;
+        }
+        
+        td:nth-child(2) {
+            text-align: center;
+        }
+        
+        td:nth-child(3) {
+            text-align: left;
+        }
+        
+        tr:hover {
+            background: #333;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .shortcut {
+            background: #1e1e1e;
+            color: #d0d0d0;
+            padding: 5px 12px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            display: inline-block;
+            margin: 2px;
+            text-align: center;
+            white-space: nowrap;
+            border: 1px solid #666;
+        }
+        
+        .summary-box {
+            background: #2a2a2a;
+            color: #e0e0e0;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 40px 0;
+            border: 1px solid #444;
+            border-left: 5px solid #888;
+        }
+        
+        .summary-box h2 {
+            color: #ffffff;
+            border-left: 5px solid #888;
+            margin-top: 0;
+        }
+        
+        .summary-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .summary-box li {
+            padding: 10px 0;
+            border-bottom: 1px solid #444;
+            font-size: 1.1em;
+            text-align: left;
+        }
+        
+        .summary-box li:last-child {
+            border-bottom: none;
+        }
+        
+        .tip {
+            background: #2a2a2a;
+            border-left: 4px solid #888;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            border: 1px solid #444;
+        }
+        
+        .tip strong {
+            color: #ffffff;
+        }
+        
+        hr {
+            border: none;
+            border-top: 2px solid #444;
+            margin: 30px 0;
+        }
+        
+        .footer {
+            text-align: center;
+            color: #888;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #444;
+        }
+        
+        p {
+            color: #e0e0e0;
+        }
+        
+        ul, ol {
+            color: #e0e0e0;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📘 Jupyter Notebook 단축키 정리<br>(AICE 시험 대비용)</h1>
+        
+        <h2>1. 모드 이해하기</h2>
+        <p>Jupyter Notebook은 <strong>두 가지 모드</strong>가 존재합니다.</p>
+        
+        <div class="mode-section">
+            <h3>✔ 명령 모드 (Command Mode)</h3>
+            <ul>
+                <li>셀 선택 상태</li>
+                <li>파란색 테두리</li>
+                <li>단축키 입력 가능</li>
+            </ul>
+        </div>
+        
+        <div class="mode-section">
+            <h3>✔ 편집 모드 (Edit Mode)</h3>
+            <ul>
+                <li>셀 내부에서 타이핑 가능</li>
+                <li>초록색 테두리</li>
+                <li>코드 입력/수정</li>
+            </ul>
+        </div>
+        
+        <div class="tip">
+            <strong>💡 모드 전환:</strong> <span class="shortcut">Esc</span> → 명령 모드 | <span class="shortcut">Enter</span> → 편집 모드
+        </div>
+        
+        <hr>
+        
+        <h2>2. 셀 실행 관련 단축키</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>동작</th>
+                    <th>단축키</th>
+                    <th>설명</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>셀 실행 + 다음 셀 이동</td>
+                    <td><span class="shortcut">Shift + Enter</span></td>
+                    <td>가장 많이 사용</td>
+                </tr>
+                <tr>
+                    <td>셀 실행 + 같은 셀 유지</td>
+                    <td><span class="shortcut">Ctrl + Enter</span></td>
+                    <td>결과만 확인할 때</td>
+                </tr>
+                <tr>
+                    <td>셀 실행 + 아래에 새 셀 생성</td>
+                    <td><span class="shortcut">Alt + Enter</span></td>
+                    <td>테스트 반복 시 편리</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <hr>
+        
+        <h2>3. 셀 추가 / 삭제</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>동작</th>
+                    <th>단축키</th>
+                    <th>설명</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>위에 셀 추가</td>
+                    <td><span class="shortcut">A</span></td>
+                    <td>명령 모드에서만 작동</td>
+                </tr>
+                <tr>
+                    <td>아래에 셀 추가</td>
+                    <td><span class="shortcut">B</span></td>
+                    <td>명령 모드</td>
+                </tr>
+                <tr>
+                    <td>셀 삭제</td>
+                    <td><span class="shortcut">D</span> <span class="shortcut">D</span></td>
+                    <td>D 두 번</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <hr>
+        
+        <h2>4. 셀 이동 / 복사 / 붙여넣기</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>동작</th>
+                    <th>단축키</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>셀 위로 이동</td>
+                    <td><span class="shortcut">K</span> 또는 <span class="shortcut">↑</span></td>
+                </tr>
+                <tr>
+                    <td>셀 아래로 이동</td>
+                    <td><span class="shortcut">J</span> 또는 <span class="shortcut">↓</span></td>
+                </tr>
+                <tr>
+                    <td>셀 복사</td>
+                    <td><span class="shortcut">C</span></td>
+                </tr>
+                <tr>
+                    <td>셀 잘라내기</td>
+                    <td><span class="shortcut">X</span></td>
+                </tr>
+                <tr>
+                    <td>셀 붙여넣기</td>
+                    <td><span class="shortcut">V</span></td>
+                </tr>
+                <tr>
+                    <td>셀 위에 붙여넣기</td>
+                    <td><span class="shortcut">Shift + V</span></td>
+                </tr>
+                <tr>
+                    <td>셀 병합</td>
+                    <td><span class="shortcut">Shift + M</span></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <hr>
+        
+        <h2>5. 셀 타입 전환 (Code / Markdown)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>동작</th>
+                    <th>단축키</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>코드 셀로 변경</td>
+                    <td><span class="shortcut">Y</span></td>
+                </tr>
+                <tr>
+                    <td>Markdown 셀로 변경</td>
+                    <td><span class="shortcut">M</span></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <hr>
+        
+        <h2>6. 저장 및 커널 제어</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>동작</th>
+                    <th>단축키</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>저장</td>
+                    <td><span class="shortcut">Ctrl + S</span></td>
+                </tr>
+                <tr>
+                    <td>실행 중지 (Interrupt)</td>
+                    <td><span class="shortcut">I</span> <span class="shortcut">I</span></td>
+                </tr>
+                <tr>
+                    <td>커널 재시작</td>
+                    <td>메뉴에서: Kernel → Restart</td>
+                </tr>
+                <tr>
+                    <td>전체 실행</td>
+                    <td>메뉴에서: Kernel → Restart & Run All</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <hr>
+        
+        <h2>7. 선택 확장 및 검색</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>동작</th>
+                    <th>단축키</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>여러 셀 선택</td>
+                    <td><span class="shortcut">Shift + 방향키</span></td>
+                </tr>
+                <tr>
+                    <td>셀 내용 검색</td>
+                    <td><span class="shortcut">Ctrl + F</span></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="summary-box">
+            <h2>✅ AICE 시험 대비 핵심 단축키 요약</h2>
+            <ul>
+                <li><span class="shortcut" style="background: #1e1e1e; color: #d0d0d0; border: 1px solid #666;">Shift + Enter</span> : 셀 실행</li>
+                <li><span class="shortcut" style="background: #1e1e1e; color: #d0d0d0; border: 1px solid #666;">Ctrl + Enter</span> : 실행만</li>
+                <li><span class="shortcut" style="background: #1e1e1e; color: #d0d0d0; border: 1px solid #666;">A</span> / <span class="shortcut" style="background: #1e1e1e; color: #d0d0d0; border: 1px solid #666;">B</span> : 위/아래 셀 추가</li>
+                <li><span class="shortcut" style="background: #1e1e1e; color: #d0d0d0; border: 1px solid #666;">D</span> <span class="shortcut" style="background: #1e1e1e; color: #d0d0d0; border: 1px solid #666;">D</span> : 셀 삭제</li>
+                <li><span class="shortcut" style="background: #1e1e1e; color: #d0d0d0; border: 1px solid #666;">M</span> / <span class="shortcut" style="background: #1e1e1e; color: #d0d0d0; border: 1px solid #666;">Y</span> : Markdown / Code 전환</li>
+                <li><span class="shortcut" style="background: #1e1e1e; color: #d0d0d0; border: 1px solid #666;">Ctrl + S</span> : 저장</li>
+                <li><span class="shortcut" style="background: #1e1e1e; color: #d0d0d0; border: 1px solid #666;">I</span> <span class="shortcut" style="background: #1e1e1e; color: #d0d0d0; border: 1px solid #666;">I</span> : 실행 중지</li>
+                <li><strong>Kernel Restart</strong> : 오류 생기면 초기화 필수</li>
+            </ul>
+        </div>
+        
+        <div class="footer">
+            <p>Jupyter Notebook 단축키 정리 | AICE 시험 대비용</p>
+        </div>
+    </div>
+</body>
+</html>
+

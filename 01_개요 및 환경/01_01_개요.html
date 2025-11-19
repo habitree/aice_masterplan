@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>01. AICE Associate 개요</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body { 
+      font-family: 'Segoe UI', 'Malgun Gothic', system-ui, -apple-system, BlinkMacSystemFont, sans-serif; 
+      line-height: 1.6; 
+      padding: 20px 15px; 
+      max-width: 900px; 
+      margin: 0 auto; 
+      background: #000000;
+      color: #e0e0e0;
+    }
+    
+    .container {
+      background: #1a1a1a;
+      border-radius: 15px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      padding: 30px 25px;
+      border: 1px solid #333;
+    }
+    
+    h1, h2, h3 { 
+      color: #ffffff; 
+    }
+    
+    h1 { 
+      border-bottom: 4px solid #888; 
+      padding-bottom: 10px; 
+      margin-bottom: 20px;
+      font-size: 2em;
+      text-align: center;
+      color: #ffffff;
+    }
+    
+    h2 {
+      color: #ffffff;
+      font-size: 1.6em;
+      margin-top: 25px;
+      margin-bottom: 15px;
+      padding-left: 15px;
+      border-left: 5px solid #888;
+    }
+    
+    h3 {
+      color: #ffffff;
+      font-size: 1.3em;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    
+    code { 
+      background: #2a2a2a; 
+      color: #d0d0d0;
+      padding: 3px 8px; 
+      border-radius: 5px; 
+      font-family: "Consolas", "Menlo", "Courier New", monospace; 
+      font-size: 0.95em;
+      font-weight: bold;
+      border: 1px solid #444;
+    }
+    
+    pre { 
+      background: #1e1e1e; 
+      color: #d4d4d4; 
+      padding: 15px; 
+      border-radius: 8px; 
+      overflow-x: auto; 
+      font-size: 14px;
+      line-height: 1.6;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      margin: 10px 0;
+      border: 1px solid #333;
+    }
+    
+    pre code {
+      background: transparent;
+      border: none;
+      padding: 0;
+      color: #d4d4d4;
+    }
+    
+    .section-box {
+      background: #2a2a2a;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 15px 0;
+      border-left: 4px solid #888;
+      border: 1px solid #444;
+    }
+    
+    .tip { 
+      font-size: 0.95em; 
+      color: #d0d0d0;
+      margin-top: 10px;
+      padding: 10px;
+      background: #2a2a2a;
+      border-left: 4px solid #888;
+      border-radius: 5px;
+      border: 1px solid #444;
+    }
+    
+    .tip strong {
+      color: #ffffff;
+    }
+    
+    ol, ul {
+      padding-left: 25px;
+      margin: 10px 0;
+    }
+    
+    li { 
+      margin-bottom: 6px; 
+      line-height: 1.6;
+    }
+    
+    p {
+      margin-bottom: 10px;
+      line-height: 1.8;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+      background: #2a2a2a;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #444;
+    }
+    
+    thead {
+      background: #1a1a1a;
+      color: #ffffff;
+      border-bottom: 2px solid #666;
+    }
+    
+    th {
+      padding: 12px;
+      text-align: left;
+      font-weight: 600;
+      color: #ffffff;
+    }
+    
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #444;
+      color: #e0e0e0;
+    }
+    
+    tr:hover {
+      background: #333;
+    }
+    
+    .checklist {
+      background: #2a2a2a;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 15px 0;
+      border: 1px solid #444;
+    }
+    
+    .checklist-item {
+      margin: 8px 0;
+      padding-left: 25px;
+      position: relative;
+    }
+    
+    .checklist-item input[type="checkbox"] {
+      position: absolute;
+      left: 0;
+      margin-top: 3px;
+    }
+    
+    hr {
+      border: none;
+      border-top: 2px solid #444;
+      margin: 25px 0;
+    }
+    
+    a {
+      color: #888;
+      text-decoration: underline;
+    }
+    
+    a:hover {
+      color: #ffffff;
+    }
+    
+    .footer {
+      text-align: center;
+      color: #888;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 2px solid #444;
+      font-size: 0.9em;
+    }
+    
+    .image-save-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #888;
+      color: #ffffff;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95em;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      z-index: 1000;
+      transition: background 0.3s ease;
+    }
+    
+    .image-save-btn:hover {
+      background: #999;
+    }
+    
+    .image-save-btn:active {
+      background: #777;
+    }
+    
+    .save-status {
+      position: fixed;
+      bottom: 70px;
+      right: 20px;
+      background: #2a2a2a;
+      color: #888;
+      padding: 10px 20px;
+      border-radius: 5px;
+      border: 1px solid #444;
+      font-size: 0.9em;
+      display: none;
+      z-index: 1000;
+    }
+    
+    .save-status.saved {
+      color: #888;
+      border-color: #666;
+    }
+    
+    .save-status.saving {
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>01. AICE Associate 개요</h1>
+    
+    <div class="section-box">
+      <h2>1. AICE란?</h2>
+      <p><strong>AICE (AI Certification Examination)</strong>는 KT(한국통신)에서 개발하고 한국경제신문사와 공동 주관하는 인공지능 활용능력 인증 시험으로, 국가공인 민간자격으로 지정되었습니다.</p>
+      
+      <h3>AICE Associate 시험 개요</h3>
+      <ul>
+        <li><strong>시험명</strong>: AICE Associate (Associate Level)</li>
+        <li><strong>주관</strong>: KT(개발) + 한국경제신문사(공동 주관)</li>
+        <li><strong>목적</strong>: AI/ML 기초 지식 및 실무 능력 검증</li>
+        <li><strong>난이도</strong>: 입문~중급 수준</li>
+        <li><strong>자격 유형</strong>: 국가공인 민간자격</li>
+      </ul>
+      
+      <h3>시험 특징</h3>
+      <ul>
+        <li><strong>실무 중심</strong>: 이론보다 실무 적용 능력 중시</li>
+        <li><strong>코딩 필수</strong>: Python 기반 데이터 분석 및 머신러닝 실습</li>
+        <li><strong>실시간 평가</strong>: 실습 환경에서 직접 코드 작성</li>
+      </ul>
+    </div>
+    
+    <div class="section-box">
+      <h2>2. 시험 구성</h2>
+      
+      <h3>시험 영역</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>영역</th>
+            <th>비중</th>
+            <th>내용</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Python 기초</td>
+            <td>20%</td>
+            <td>기본 문법, 자료형, 제어문, 함수, 모듈, 클래스</td>
+          </tr>
+          <tr>
+            <td>데이터 분석</td>
+            <td>25%</td>
+            <td>NumPy, Pandas 활용, 데이터 탐색 및 전처리</td>
+          </tr>
+          <tr>
+            <td>시각화</td>
+            <td>10%</td>
+            <td>Matplotlib, Seaborn, 데이터 시각화 기법</td>
+          </tr>
+          <tr>
+            <td>머신러닝</td>
+            <td>30%</td>
+            <td>지도학습, 비지도학습, 모델 평가 및 선택</td>
+          </tr>
+          <tr>
+            <td>실전 문제</td>
+            <td>15%</td>
+            <td>종합 실습 문제, 기출 유형 분석</td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <h3>시험 형식</h3>
+      <ul>
+        <li><strong>시험 시간</strong>: 120분</li>
+        <li><strong>문제 유형</strong>: 객관식 + 실습 문제</li>
+        <li><strong>실습 환경</strong>: Jupyter Notebook 기반</li>
+      </ul>
+    </div>
+    
+    <div class="section-box">
+      <h2>3. 학습 로드맵</h2>
+      
+      <h3>Phase 1: 기초 다지기 (Day 1-10)</h3>
+      <ul>
+        <li>Python 기초 문법</li>
+        <li>자료형 및 제어문</li>
+        <li>함수 및 모듈</li>
+      </ul>
+      
+      <h3>Phase 2: 데이터 분석 (Day 11-18)</h3>
+      <ul>
+        <li>NumPy 기초</li>
+        <li>Pandas 기초</li>
+        <li>데이터 전처리</li>
+      </ul>
+      
+      <h3>Phase 3: 머신러닝 (Day 19-28)</h3>
+      <ul>
+        <li>지도학습 알고리즘</li>
+        <li>모델 평가</li>
+        <li>하이퍼파라미터 튜닝</li>
+      </ul>
+      
+      <h3>Phase 4: 실전 대비 (Day 29-32)</h3>
+      <ul>
+        <li>기출 문제 분석</li>
+        <li>모의고사</li>
+        <li>최종 정리</li>
+      </ul>
+    </div>
+    
+    <div class="section-box">
+      <h2>4. 준비 방법</h2>
+      
+      <h3>필수 준비사항</h3>
+      <ol>
+        <li><strong>Python 환경 설정</strong>
+          <pre><code># 필수 라이브러리
+- pandas
+- numpy
+- matplotlib
+- seaborn
+- scikit-learn
+- jupyter</code></pre>
+        </li>
+        <li><strong>학습 자료</strong>
+          <ul>
+            <li>본 커리큘럼 문서</li>
+            <li>공식 시험 가이드</li>
+            <li>기출 문제</li>
+          </ul>
+        </li>
+      </ol>
+      
+      <div class="tip">
+        <strong>💡 학습 팁:</strong><br>
+        • 매일 최소 2시간 이상 학습<br>
+        • 이론보다 실습 중심으로 학습<br>
+        • 기출 문제를 반복적으로 풀어보기<br>
+        • Jupyter Notebook 단축키 숙지
+      </div>
+    </div>
+    
+    <div class="checklist">
+      <h3>✅ 체크리스트</h3>
+      <div class="checklist-item">
+        <input type="checkbox" id="check1">
+        <label for="check1">Python 환경 설정 완료</label>
+      </div>
+      <div class="checklist-item">
+        <input type="checkbox" id="check2">
+        <label for="check2">필수 라이브러리 설치 완료</label>
+      </div>
+      <div class="checklist-item">
+        <input type="checkbox" id="check3">
+        <label for="check3">Jupyter Notebook 사용법 숙지</label>
+      </div>
+      <div class="checklist-item">
+        <input type="checkbox" id="check4">
+        <label for="check4">학습 일정 수립 완료</label>
+      </div>
+    </div>
+    
+    <div class="section-box">
+      <h2>📚 참고 자료</h2>
+      <ul>
+        <li><a href="https://aice.study/" target="_blank">AICE 공식 홈페이지</a></li>
+        <li><a href="https://docs.python.org/ko/3/" target="_blank">Python 공식 문서</a></li>
+        <li><a href="https://pandas.pydata.org/" target="_blank">Pandas 공식 문서</a></li>
+        <li><a href="https://scikit-learn.org/" target="_blank">Scikit-learn 공식 문서</a></li>
+      </ul>
+      <div class="tip" style="margin-top: 15px;">
+        <strong>⚠️ 참고:</strong> 주관·운영체계 및 공인 자격 지정 등은 시험 공고문을 통해 최신 정보를 확인하시기 바랍니다.
+      </div>
+    </div>
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0; padding: 15px; background: #2a2a2a; border-radius: 8px; border: 1px solid #444;">
+      <div style="flex: 1;">
+        <p style="margin: 0; color: #888; font-size: 0.9em;"><strong>이전 학습</strong></p>
+        <p style="margin: 5px 0 0 0; color: #666;">-</p>
+      </div>
+      <div style="flex: 1; text-align: center;">
+        <p style="margin: 0; color: #888; font-size: 0.9em;"><strong>작성일</strong></p>
+        <p style="margin: 5px 0 0 0; color: #aaa;">2025-11-19</p>
+      </div>
+      <div style="flex: 1; text-align: right;">
+        <p style="margin: 0; color: #888; font-size: 0.9em;"><strong>다음 학습</strong></p>
+        <p style="margin: 5px 0 0 0;"><a href="../02_파이썬기초/02_01_기본문법.html" style="color: #888; text-decoration: none; transition: color 0.3s ease;">02_01_기본문법 →</a></p>
+      </div>
+    </div>
+    <style>
+      div[style*="다음 학습"] a:hover {
+        color: #ffffff !important;
+      }
+    </style>
+    
+    <div class="footer">
+      <p>AICE Associate 시험 대비 | 학습 자료</p>
+    </div>
+  </div>
+  
+  <button class="image-save-btn" onclick="saveAsImage()">🖼️ 이미지 저장</button>
+  <div class="save-status" id="saveStatus">저장됨</div>
+  
+  <script>
+    // 저장 상태 표시 함수
+    function showSaveStatus(type) {
+      const status = document.getElementById('saveStatus');
+      status.style.display = 'block';
+      
+      if (type === 'saved') {
+        status.textContent = '✓ 저장됨';
+        status.className = 'save-status saved';
+        setTimeout(() => {
+          status.style.display = 'none';
+        }, 2000);
+      } else if (type === 'saving') {
+        status.textContent = '저장 중...';
+        status.className = 'save-status saving';
+      } else if (type === 'error') {
+        status.textContent = '✗ 저장 실패';
+        status.className = 'save-status';
+        status.style.color = '#ff6b6b';
+        setTimeout(() => {
+          status.style.display = 'none';
+        }, 3000);
+      }
+    }
+    
+    // HTML을 이미지로 저장하는 함수
+    async function saveAsImage() {
+      // html2canvas 라이브러리 확인
+      if (typeof html2canvas === 'undefined') {
+        alert('이미지 변환 라이브러리를 로드하는 중입니다. 잠시 후 다시 시도해주세요.');
+        return;
+      }
+      
+      showSaveStatus('saving');
+      
+      try {
+        const container = document.querySelector('.container');
+        if (!container) {
+          alert('컨테이너를 찾을 수 없습니다.');
+          showSaveStatus('error');
+          return;
+        }
+        
+        // 이미지 변환 옵션 (고해상도 설정)
+        const options = {
+          backgroundColor: '#000000', // 배경색
+          scale: 2, // 고해상도 (2배 스케일)
+          useCORS: true,
+          logging: false,
+          width: container.scrollWidth,
+          height: container.scrollHeight,
+          windowWidth: container.scrollWidth,
+          windowHeight: container.scrollHeight
+        };
+        
+        // HTML을 Canvas로 변환
+        const canvas = await html2canvas(container, options);
+        
+        // Canvas를 Blob으로 변환
+        canvas.toBlob(function(blob) {
+          if (!blob) {
+            alert('이미지 생성에 실패했습니다.');
+            showSaveStatus('error');
+            return;
+          }
+          
+          // 파일명 생성 (제목 기반)
+          const title = document.title.replace(/\./g, '_').replace(/\s+/g, '_');
+          const today = new Date().toISOString().split('T')[0];
+          const fileName = `${title}_${today}.png`;
+          
+          // 이미지 다운로드
+          downloadImage(blob, fileName);
+        }, 'image/png', 1.0);
+        
+      } catch (error) {
+        console.error('이미지 저장 오류:', error);
+        alert('이미지 저장 중 오류가 발생했습니다: ' + error.message);
+        showSaveStatus('error');
+      }
+    }
+    
+    // 이미지 다운로드
+    function downloadImage(blob, fileName) {
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileName;
+      link.click();
+      URL.revokeObjectURL(url);
+      showSaveStatus('saved');
+      alert(`✅ 이미지가 다운로드되었습니다!\n\n파일명: ${fileName}`);
+    }
+  </script>
+</body>
+</html>
+

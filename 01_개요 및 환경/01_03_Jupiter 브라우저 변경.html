@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jupyter 실행 시 크롬(특정 프로필)로 열기 설정 방법</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body { 
+      font-family: 'Segoe UI', 'Malgun Gothic', system-ui, -apple-system, BlinkMacSystemFont, sans-serif; 
+      line-height: 1.6; 
+      padding: 20px 15px; 
+      max-width: 900px; 
+      margin: 0 auto; 
+      background: #000000;
+      color: #e0e0e0;
+    }
+    
+    .container {
+      background: #1a1a1a;
+      border-radius: 15px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      padding: 30px 25px;
+      border: 1px solid #333;
+    }
+    
+    h1, h2, h3 { 
+      color: #ffffff; 
+    }
+    
+    h1 { 
+      border-bottom: 4px solid #888; 
+      padding-bottom: 10px; 
+      margin-bottom: 20px;
+      font-size: 2em;
+      text-align: center;
+      color: #ffffff;
+    }
+    
+    h2 {
+      color: #ffffff;
+      font-size: 1.6em;
+      margin-top: 25px;
+      margin-bottom: 15px;
+      padding-left: 15px;
+      border-left: 5px solid #888;
+    }
+    
+    code { 
+      background: #2a2a2a; 
+      color: #d0d0d0;
+      padding: 3px 8px; 
+      border-radius: 5px; 
+      font-family: "Consolas", "Menlo", "Courier New", monospace; 
+      font-size: 0.95em;
+      font-weight: bold;
+      border: 1px solid #444;
+    }
+    
+    pre { 
+      background: #1e1e1e; 
+      color: #d4d4d4; 
+      padding: 15px; 
+      border-radius: 8px; 
+      overflow-x: auto; 
+      font-size: 14px;
+      line-height: 1.6;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      margin: 10px 0;
+      border: 1px solid #333;
+    }
+    
+    .box { 
+      background: #2a2a2a; 
+      padding: 15px; 
+      border-radius: 10px; 
+      margin-bottom: 15px; 
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      border-left: 4px solid #888;
+      border: 1px solid #444;
+    }
+    
+    ol { 
+      padding-left: 25px; 
+    }
+    
+    li { 
+      margin-bottom: 6px; 
+      line-height: 1.6;
+    }
+    
+    ul {
+      padding-left: 25px;
+    }
+    
+    .tip { 
+      font-size: 0.95em; 
+      color: #d0d0d0;
+      margin-top: 10px;
+      padding: 10px;
+      background: #2a2a2a;
+      border-left: 4px solid #888;
+      border-radius: 5px;
+      border: 1px solid #444;
+    }
+    
+    .browser-info-section {
+      background: #2a2a2a;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 15px 0;
+      border-left: 4px solid #888;
+      border: 1px solid #444;
+    }
+    
+    .browser-info-section h3 {
+      margin-top: 0;
+      color: #ffffff;
+      font-size: 1.3em;
+    }
+    
+    .browser-info-section ol {
+      padding-left: 25px;
+    }
+    
+    .browser-info-section li {
+      margin-bottom: 10px;
+      line-height: 1.8;
+    }
+    
+    .browser-image {
+      max-width: 100%;
+      width: auto;
+      min-width: 900px;
+      height: auto;
+      border: 2px solid #666;
+      border-radius: 8px;
+      margin: 10px 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      display: block;
+      image-rendering: auto;
+      object-fit: contain;
+    }
+    
+    #image-container {
+      min-height: 300px;
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      margin: 10px 0;
+    }
+    
+    #image-fallback {
+      margin: 15px 0;
+    }
+    
+    .browser-path-box {
+      background: #1e1e1e;
+      border: 2px solid #666;
+      border-radius: 5px;
+      padding: 12px;
+      margin: 10px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 0.95em;
+      word-break: break-all;
+      font-weight: bold;
+      color: #d0d0d0;
+    }
+    
+    .intro-box {
+      background: #2a2a2a;
+      color: #e0e0e0;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      border: 1px solid #444;
+      border-left: 4px solid #888;
+    }
+    
+    .intro-box p {
+      margin: 0;
+      font-size: 1.1em;
+      line-height: 1.8;
+    }
+    
+    .intro-box strong {
+      font-size: 1.15em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Jupyter 실행 시 크롬(특정 프로필)로 자동 열기 설정</h1>
+
+    <div class="intro-box">
+      <p>
+        이 문서는 <strong>Jupyter Notebook/Server</strong>를 실행할 때<br>
+        <strong>자동으로 Chrome + 지정한 프로필</strong>로 열리도록 설정하는 방법을 간단히 정리한 자료입니다.
+      </p>
+    </div>
+
+    <h2>1. Chrome 경로 및 프로필 이름 확인</h2>
+    <div class="browser-info-section">
+      <h3>📌 실행 가능 경로 확인 방법</h3>
+      <ol>
+        <li>Chrome 주소창에 <code>chrome://version</code> 입력 후 엔터</li>
+        <li><strong>실행 가능 경로</strong>를 확인합니다.</li>
+        <li>아래에서 사용할 <code>--profile-directory="프로필이름"</code> 값을 기억합니다.<br>
+          예시: <code>Default</code>, <code>Profile 1</code> 등</li>
+      </ol>
+      <p style="margin-top: 10px;"><strong>실행 가능 경로 확인 예시:</strong></p>
+      <div class="browser-path-box">
+        C:\Program Files\Google\Chrome\Application\chrome.exe
+      </div>
+      <p style="margin-top: 10px; margin-bottom: 8px;"><strong>Chrome 버전 정보 화면:</strong></p>
+      <div id="image-container" style="position: relative;">
+        <img 
+          src="chrome_version_info.png" 
+          alt="Chrome 버전 정보 화면 - 실행 가능 경로 확인" 
+          class="browser-image" 
+          onerror="this.style.display='none'; document.getElementById('image-fallback').style.display='block';"
+        />
+        <div id="image-fallback" style="display: none; background: #2a2a2a; border: 2px dashed #666; border-radius: 8px; padding: 30px; text-align: center; color: #b0b0b0;">
+          <p style="font-size: 1.1em; margin-bottom: 15px;"><strong>📷 이미지 로드 실패</strong></p>
+          <p style="margin-bottom: 10px;">Chrome 버전 정보 화면 캡처 이미지를 표시할 수 없습니다.</p>
+          <div style="background: #1e1e1e; border: 1px solid #444; border-radius: 5px; padding: 20px; margin: 15px 0; text-align: left;">
+            <p style="margin-bottom: 10px;"><strong>확인 방법:</strong></p>
+            <ol style="padding-left: 25px; margin: 0;">
+              <li>Chrome 브라우저를 실행합니다</li>
+              <li>주소창에 <code>chrome://version</code> 입력</li>
+              <li>화면에서 <strong>"실행 가능 경로"</strong> 항목을 찾습니다</li>
+              <li>예시: <code>C:\Program Files\Google\Chrome\Application\chrome.exe</code></li>
+            </ol>
+          </div>
+          <p style="margin-top: 10px; font-size: 0.9em;">
+            💡 이미지 파일(<code>chrome_version_info.png</code>)을 HTML 파일과 같은 폴더에 저장하면 자동으로 표시됩니다.
+          </p>
+        </div>
+      </div>
+      <p class="tip" style="margin-top: 10px; margin-bottom: 0;">
+        <strong>💡 참고:</strong> 크롬 실행 파일 기본 위치 예시:<br>
+        <code>C:\Program Files\Google\Chrome\Application\chrome.exe</code> (64비트)<br>
+        <code>C:\Program Files (x86)\Google\Chrome\Application\chrome.exe</code> (32비트)
+      </p>
+    </div>
+
+    <h2>2. Jupyter 설정 파일 열기/생성</h2>
+    <div class="box">
+      <ol>
+        <li>명령 프롬프트(CMD) 또는 터미널에서 다음 명령 실행:</li>
+      </ol>
+      <pre>jupyter notebook --generate-config</pre>
+      <ol start="2">
+        <li>아래 경로의 파일을 메모장 또는 VS Code로 엽니다.<br>
+          <code>C:\Users\사용자명\.jupyter\jupyter_notebook_config.py</code>
+        </li>
+      </ol>
+    </div>
+
+    <h2>3. 설정 파일 맨 아래에 브라우저 설정 추가</h2>
+    <div class="box">
+      <p>파일 <strong>맨 아래 부분</strong>에 아래 내용을 그대로 추가합니다.<br>
+        (환경에 맞게 <code>chrome.exe</code> 경로와 <code>profile-directory</code>만 수정)</p>
+
+      <pre># --- Jupyter 브라우저 설정 (사용자 추가 설정) ---
+
+# Jupyter 실행 시 브라우저 자동으로 열기
+c.ServerApp.open_browser = True
+
+# 크롬 + 특정 프로필로 토큰 URL 열기
+c.ServerApp.browser = '"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe" --profile-directory="Default" %s'
+
+# redirect 파일 대신 토큰이 포함된 URL 직접 사용
+c.ServerApp.use_redirect_file = False</pre>
+
+      <p class="tip">
+        ▹ <code>--profile-directory="Default"</code> 부분을 본인이 사용하는 프로필로 변경<br>
+        예) <code>"Profile 1"</code>, <code>"Profile 2"</code> 등<br><br>
+        ▹ 크롬이 32비트 경로에 설치된 경우:<br>
+        <code>C:\Program Files (x86)\Google\Chrome\Application\chrome.exe</code> 로 교체
+      </p>
+    </div>
+
+    <h2>4. Jupyter 실행하여 동작 확인</h2>
+    <div class="box">
+      <ol>
+        <li>CMD/터미널에서 아래 명령 실행:</li>
+      </ol>
+      <pre>jupyter notebook</pre>
+      <ol start="2">
+        <li>잠시 후 <strong>지정한 Chrome 프로필</strong>이 자동으로 실행되고,<br>
+          주소창에 <code>http://localhost:8888/?token=...</code> 형태의 Jupyter URL이 열리면 설정 완료입니다.
+        </li>
+      </ol>
+    </div>
+
+    <h2>5. 요약</h2>
+    <div class="box">
+      <ul>
+        <li>Chrome 프로필 이름 확인: <code>chrome://version</code></li>
+        <li>Jupyter 설정 파일 생성/열기: <code>jupyter_notebook_config.py</code></li>
+        <li>파일 맨 아래에
+          <ul>
+            <li><code>c.ServerApp.open_browser = True</code></li>
+            <li><code>c.ServerApp.browser = "크롬경로 --profile-directory=프로필 %s"</code></li>
+            <li><code>c.ServerApp.use_redirect_file = False</code></li>
+          </ul>
+          추가
+        </li>
+        <li>이후부터 <code>jupyter notebook</code> 실행 시, 해당 크롬 계정(토큰)으로 자동 연결</li>
+      </ul>
+    </div>
+  </div>
+  
+  <script>
+    // 이미지 로드 실패 시 대체 경로 시도
+    window.addEventListener('DOMContentLoaded', function() {
+      const img = document.querySelector('.browser-image');
+      if (img) {
+        // 이미지 로드 실패 시 여러 경로 시도
+        img.addEventListener('error', function() {
+          const fallback = document.getElementById('image-fallback');
+          if (fallback) {
+            fallback.style.display = 'block';
+          }
+        });
+        
+        // 이미지 로드 성공 확인
+        img.addEventListener('load', function() {
+          const fallback = document.getElementById('image-fallback');
+          if (fallback) {
+            fallback.style.display = 'none';
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

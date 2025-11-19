@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AICE Associate 학습 진도표</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
+      background: #000000;
+      color: #e0e0e0;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: #1a1a1a;
+      border-radius: 15px;
+      padding: 30px;
+      border: 1px solid #333;
+    }
+    
+    h1 {
+      color: #ffffff;
+      text-align: center;
+      margin-bottom: 30px;
+      border-bottom: 4px solid #888;
+      padding-bottom: 15px;
+    }
+    
+    .stats {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    
+    @media (max-width: 768px) {
+      .stats {
+        grid-template-columns: 1fr;
+      }
+      .stat-box-main {
+        grid-column: span 1;
+      }
+    }
+    
+    .stat-box {
+      background: #2a2a2a;
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid #444;
+      text-align: center;
+    }
+    
+    .stat-box h3 {
+      color: #888;
+      font-size: 0.9em;
+      margin-bottom: 10px;
+    }
+    
+    .stat-box .value {
+      color: #ffffff;
+      font-size: 2em;
+      font-weight: bold;
+    }
+    
+    .stat-box .sub-value {
+      color: #888;
+      font-size: 0.85em;
+      margin-top: 5px;
+    }
+    
+    .progress-bar-large {
+      width: 100%;
+      height: 12px;
+      background: #333;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-top: 15px;
+    }
+    
+    .progress-fill-large {
+      height: 100%;
+      background: linear-gradient(90deg, #888 0%, #aaa 100%);
+      transition: width 0.5s ease;
+      border-radius: 6px;
+    }
+    
+    .category {
+      background: #2a2a2a;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 1px solid #444;
+      border-left: 4px solid #888;
+    }
+    
+    .category-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    .category-header h2 {
+      color: #ffffff;
+      font-size: 1.4em;
+    }
+    
+    .category-progress {
+      color: #888;
+      font-size: 0.9em;
+    }
+    
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #333;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 15px;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: #888;
+      transition: width 0.3s ease;
+    }
+    
+    .item {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      margin: 5px 0;
+      background: #1e1e1e;
+      border-radius: 5px;
+      border: 1px solid #333;
+    }
+    
+    .item:hover {
+      background: #252525;
+    }
+    
+    .item input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      margin-right: 15px;
+      cursor: pointer;
+    }
+    
+    .item label {
+      flex: 1;
+      cursor: pointer;
+      color: #e0e0e0;
+    }
+    
+    .item.completed label {
+      color: #888;
+      text-decoration: line-through;
+    }
+    
+    .time-input {
+      width: 80px;
+      padding: 5px;
+      background: #1e1e1e;
+      border: 1px solid #444;
+      border-radius: 5px;
+      color: #e0e0e0;
+      text-align: center;
+      margin-left: 10px;
+    }
+    
+    .log-section {
+      background: #2a2a2a;
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 30px;
+      border: 1px solid #444;
+    }
+    
+    .log-section h2 {
+      color: #ffffff;
+      margin-bottom: 15px;
+    }
+    
+    .log-input {
+      width: 100%;
+      padding: 10px;
+      background: #1e1e1e;
+      border: 1px solid #444;
+      border-radius: 5px;
+      color: #e0e0e0;
+      margin-bottom: 10px;
+      min-height: 100px;
+      font-family: inherit;
+    }
+    
+    .btn {
+      background: #888;
+      color: #ffffff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1em;
+      margin-right: 10px;
+    }
+    
+    .btn:hover {
+      background: #999;
+    }
+    
+    .log-output {
+      margin-top: 15px;
+      padding: 15px;
+      background: #1e1e1e;
+      border-radius: 5px;
+      border: 1px solid #444;
+      white-space: pre-wrap;
+      color: #e0e0e0;
+      display: none;
+    }
+    
+    .save-status {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #2a2a2a;
+      color: #888;
+      padding: 10px 20px;
+      border-radius: 5px;
+      border: 1px solid #444;
+      font-size: 0.9em;
+      display: none;
+      z-index: 1000;
+    }
+    
+    .save-status.saved {
+      color: #888;
+      border-color: #666;
+    }
+    
+    .save-status.saving {
+      color: #ffffff;
+    }
+    
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    
+    .btn-group-main {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+      margin-bottom: 15px;
+    }
+    
+    .btn-group-sub {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid #444;
+    }
+    
+    .btn-secondary {
+      background: #444;
+    }
+    
+    .btn-secondary:hover {
+      background: #555;
+    }
+    
+    .path-selector {
+      background: #1e1e1e;
+      border: 1px solid #444;
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .path-selector button {
+      background: #555;
+      color: #ffffff;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9em;
+      white-space: nowrap;
+    }
+    
+    .path-selector button:hover {
+      background: #666;
+    }
+    
+    .path-display {
+      flex: 1;
+      color: #888;
+      font-size: 0.85em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    
+    .path-display.set {
+      color: #aaa;
+    }
+    
+    .path-info {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #333;
+      color: #666;
+      font-size: 0.75em;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📊 AICE Associate 학습 진도표</h1>
+    
+    <div class="stats">
+      <div class="stat-box stat-box-main">
+        <h3>전체 진행률</h3>
+        <div class="value" id="totalProgress">0%</div>
+        <div class="sub-value" id="totalTime">실제 학습시간: 0h</div>
+        <div class="sub-value" id="totalPlannedTime">전체 필요 학습시간: 0h</div>
+        <div class="progress-bar-large">
+          <div class="progress-fill-large" id="totalProgressBar" style="width: 0%"></div>
+        </div>
+      </div>
+      <div class="stat-box">
+        <h3>완료 항목</h3>
+        <div class="value" id="completedCount">0</div>
+        <div class="sub-value" id="totalItems">/ 0개</div>
+      </div>
+      <div class="stat-box">
+        <h3>남은 항목</h3>
+        <div class="value" id="remainingCount">0</div>
+        <div class="sub-value">개</div>
+      </div>
+      <div class="stat-box">
+        <h3>평균 학습시간</h3>
+        <div class="value" id="avgTime">0h</div>
+        <div class="sub-value">항목당</div>
+      </div>
+    </div>
+    
+    <div id="categories"></div>
+    
+    <div class="log-section">
+      <h2>📝 오늘의 학습 로그</h2>
+      
+      <div class="path-selector">
+        <button onclick="selectLogPath()">📁 경로 선택</button>
+        <div class="path-display" id="pathDisplay">저장 경로를 선택해주세요</div>
+      </div>
+      
+      <textarea class="log-input" id="dailyLog" placeholder="오늘 학습한 내용을 기록하세요..." oninput="autoSaveLog()"></textarea>
+      
+      <div class="btn-group-main">
+        <button class="btn" onclick="saveLogToFile()">💾 저장하기</button>
+        <button class="btn" onclick="loadLogFromFile()">📂 불러오기</button>
+        <button class="btn" onclick="clearLog()">초기화</button>
+        <button class="btn" onclick="saveAsImage()">🖼️ 이미지 저장</button>
+      </div>
+      
+      <div class="btn-group-sub">
+        <button class="btn btn-secondary" onclick="exportData()">데이터 내보내기</button>
+        <button class="btn btn-secondary" onclick="importData()">데이터 가져오기</button>
+      </div>
+      
+      <div class="path-info" id="pathInfo">저장 경로가 설정되지 않았습니다</div>
+      
+      <input type="file" id="importFile" accept=".json" style="display: none;" onchange="handleFileImport(event)">
+      <input type="file" id="logFile" accept=".txt,.md,.json" style="display: none;" onchange="handleLogFileSelect(event)">
+      
+      <div class="log-output" id="logOutput"></div>
+    </div>
+    
+    <div class="save-status" id="saveStatus">저장됨</div>
+  </div>
+  
+  <script>
+    const curriculum = {
+      "01_개요": [
+        { name: "01_개요.md", time: 1 }
+      ],
+      "02_파이썬기초": [
+        { name: "02_01_기본문법.md", time: 2 },
+        { name: "02_02_자료형.md", time: 2 },
+        { name: "02_03_조건문반복문.md", time: 2 },
+        { name: "02_04_함수모듈.md", time: 2 }
+      ],
+      "03_데이터분석": [
+        { name: "03_01_Numpy기초.md", time: 3 },
+        { name: "03_02_Pandas기초.md", time: 3 },
+        { name: "03_03_데이터탐색.md", time: 2 }
+      ],
+      "04_전처리": [
+        { name: "04_01_결측치처리.md", time: 2 },
+        { name: "04_02_이상치처리.md", time: 2 },
+        { name: "04_03_인코딩.md", time: 2 },
+        { name: "04_04_스케일링.md", time: 2 }
+      ],
+      "05_시각화": [
+        { name: "05_01_Matplotlib.md", time: 2 },
+        { name: "05_02_Seaborn.md", time: 2 }
+      ],
+      "06_머신러닝": [
+        { name: "06_01_지도학습.md", time: 3 },
+        { name: "06_02_비지도학습.md", time: 2 },
+        { name: "06_03_모델평가.md", time: 2 }
+      ],
+      "07_기출문제": [
+        { name: "07_01_기출유형분석.md", time: 3 },
+        { name: "07_02_모의고사.md", time: 4 }
+      ]
+    };
+    
+    function loadProgress() {
+      try {
+        const saved = localStorage.getItem('aice_progress');
+        if (!saved) return {};
+        
+        const parsed = JSON.parse(saved);
+        // 보안: 데이터 구조 검증
+        if (typeof parsed !== 'object' || Array.isArray(parsed)) {
+          console.warn('잘못된 데이터 형식, 초기화합니다.');
+          return {};
+        }
+        
+        // 보안: 각 항목 검증 및 정리
+        const validated = {};
+        Object.keys(parsed).forEach(key => {
+          if (key.startsWith('_')) {
+            // 내부 메타데이터는 그대로 유지
+            validated[key] = parsed[key];
+            return;
+          }
+          
+          const item = parsed[key];
+          if (item && typeof item === 'object') {
+            validated[key] = {
+              checked: Boolean(item.checked),
+              time: Math.max(0, Math.min(parseFloat(item.time) || 0, 20)), // 0-20시간 제한
+              date: item.date || null,
+              updated: item.updated || null
+            };
+          }
+        });
+        
+        return validated;
+      } catch (e) {
+        console.error('데이터 로드 실패:', e);
+        return {};
+      }
+    }
+    
+    function saveProgress(progress) {
+      try {
+        // 보안: 데이터 검증
+        if (!progress || typeof progress !== 'object' || Array.isArray(progress)) {
+          throw new Error('잘못된 데이터 형식');
+        }
+        
+        // 보안: 데이터 크기 제한 (5MB)
+        const dataStr = JSON.stringify(progress);
+        if (new Blob([dataStr]).size > 5 * 1024 * 1024) {
+          throw new Error('데이터 크기가 너무 큽니다');
+        }
+        
+        localStorage.setItem('aice_progress', dataStr);
+        showSaveStatus('saved');
+        return true;
+      } catch (e) {
+        console.error('저장 실패:', e);
+        showSaveStatus('error');
+        return false;
+      }
+    }
+    
+    function showSaveStatus(type) {
+      const status = document.getElementById('saveStatus');
+      status.style.display = 'block';
+      
+      if (type === 'saved') {
+        status.textContent = '✓ 저장됨';
+        status.className = 'save-status saved';
+        setTimeout(() => {
+          status.style.display = 'none';
+        }, 2000);
+      } else if (type === 'saving') {
+        status.textContent = '저장 중...';
+        status.className = 'save-status saving';
+      } else if (type === 'error') {
+        status.textContent = '✗ 저장 실패';
+        status.className = 'save-status';
+        status.style.color = '#ff6b6b';
+        setTimeout(() => {
+          status.style.display = 'none';
+        }, 3000);
+      }
+    }
+    
+    // 보안: XSS 방지 텍스트 이스케이프
+    function escapeHtml(text) {
+      if (typeof text !== 'string') return String(text);
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+    
+    function updateStats() {
+      const progress = loadProgress();
+      let total = 0;
+      let completed = 0;
+      let totalTime = 0;
+      let totalPlannedTime = 0;
+      
+      Object.keys(curriculum).forEach(category => {
+        curriculum[category].forEach(item => {
+          total++;
+          totalPlannedTime += item.time;
+          const key = `${category}_${item.name}`;
+          if (progress[key] && progress[key].checked) {
+            completed++;
+            const time = parseFloat(progress[key].time) || item.time;
+            totalTime += Math.max(0, Math.min(time, 20)); // 보안: 0-20시간 범위 제한
+          }
+        });
+      });
+      
+      const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+      const avgTime = completed > 0 ? (totalTime / completed).toFixed(1) : 0;
+      
+      // XSS 방지: textContent 사용
+      const totalProgressEl = document.getElementById('totalProgress');
+      const totalTimeEl = document.getElementById('totalTime');
+      const totalPlannedTimeEl = document.getElementById('totalPlannedTime');
+      const completedCountEl = document.getElementById('completedCount');
+      const remainingCountEl = document.getElementById('remainingCount');
+      const totalItemsEl = document.getElementById('totalItems');
+      const avgTimeEl = document.getElementById('avgTime');
+      const totalProgressBarEl = document.getElementById('totalProgressBar');
+      
+      if (totalProgressEl) totalProgressEl.textContent = percentage + '%';
+      if (totalTimeEl) totalTimeEl.textContent = `실제 학습시간: ${totalTime.toFixed(1)}h`;
+      if (totalPlannedTimeEl) totalPlannedTimeEl.textContent = `전체 필요 학습시간: ${totalPlannedTime.toFixed(1)}h`;
+      if (completedCountEl) completedCountEl.textContent = completed;
+      if (remainingCountEl) remainingCountEl.textContent = total - completed;
+      if (totalItemsEl) totalItemsEl.textContent = `/ ${total}개`;
+      if (avgTimeEl) avgTimeEl.textContent = avgTime + 'h';
+      if (totalProgressBarEl) {
+        const safePercentage = Math.max(0, Math.min(percentage, 100)); // 0-100% 범위 제한
+        totalProgressBarEl.style.width = safePercentage + '%';
+      }
+    }
+    
+    function renderCategories() {
+      const progress = loadProgress();
+      const container = document.getElementById('categories');
+      container.innerHTML = '';
+      
+      Object.keys(curriculum).forEach(category => {
+        const categoryDiv = document.createElement('div');
+        categoryDiv.className = 'category';
+        
+        let categoryCompleted = 0;
+        let categoryTotal = curriculum[category].length;
+        
+        const itemsHtml = curriculum[category].map((item, index) => {
+          const key = `${category}_${item.name}`;
+          const itemProgress = progress[key];
+          const isCompleted = itemProgress && itemProgress.checked;
+          
+          if (isCompleted) categoryCompleted++;
+          
+          // 보안: XSS 방지 - 키와 이름 이스케이프
+          const safeKey = escapeHtml(key);
+          const safeName = escapeHtml(item.name);
+          const safeTime = Math.max(0, Math.min(parseFloat(itemProgress ? itemProgress.time : item.time) || 0, 20));
+          const safeDefaultTime = Math.max(0, Math.min(parseFloat(item.time) || 0, 20));
+          
+          return `
+            <div class="item ${isCompleted ? 'completed' : ''}">
+              <input type="checkbox" id="${safeKey}" ${isCompleted ? 'checked' : ''} 
+                     onchange="toggleItem('${safeKey}', ${safeDefaultTime})">
+              <label for="${safeKey}">${safeName}</label>
+              <input type="number" class="time-input" id="${safeKey}_time" 
+                     value="${safeTime}" 
+                     min="0" max="20" step="0.5"
+                     onchange="updateTime('${safeKey}')" 
+                     oninput="updateTime('${safeKey}')"
+                     placeholder="시간">
+            </div>
+          `;
+        }).join('');
+        
+        const categoryProgress = categoryTotal > 0 ? Math.round((categoryCompleted / categoryTotal) * 100) : 0;
+        
+        // 보안: XSS 방지 - 카테고리 이름 이스케이프
+        const safeCategory = escapeHtml(category);
+        const safeCategoryProgress = Math.max(0, Math.min(categoryProgress, 100));
+        
+        categoryDiv.innerHTML = `
+          <div class="category-header">
+            <h2>${safeCategory}</h2>
+            <span class="category-progress">${categoryCompleted}/${categoryTotal} (${safeCategoryProgress}%)</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: ${safeCategoryProgress}%"></div>
+          </div>
+          ${itemsHtml}
+        `;
+        
+        container.appendChild(categoryDiv);
+      });
+    }
+    
+    function toggleItem(key, defaultTime) {
+      // 보안: 키 검증
+      if (!key || typeof key !== 'string' || key.length > 200) {
+        console.error('잘못된 키:', key);
+        return;
+      }
+      
+      // 보안: defaultTime 검증
+      defaultTime = Math.max(0, Math.min(parseFloat(defaultTime) || 0, 20));
+      
+      showSaveStatus('saving');
+      const progress = loadProgress();
+      const checkbox = document.getElementById(key);
+      
+      if (!checkbox) {
+        console.error('체크박스를 찾을 수 없습니다:', key);
+        return;
+      }
+      
+      const item = checkbox.closest('.item');
+      
+      if (checkbox.checked) {
+        progress[key] = {
+          checked: true,
+          time: defaultTime,
+          date: new Date().toISOString()
+        };
+        if (item) item.classList.add('completed');
+      } else {
+        delete progress[key];
+        if (item) item.classList.remove('completed');
+      }
+      
+      saveProgress(progress);
+      updateStats();
+      // 카테고리 재렌더링은 약간의 지연을 두어 부드럽게 처리
+      setTimeout(() => {
+        renderCategories();
+      }, 100);
+    }
+    
+    function updateTime(key) {
+      // 보안: 키 검증
+      if (!key || typeof key !== 'string' || key.length > 200) {
+        console.error('잘못된 키:', key);
+        return;
+      }
+      
+      showSaveStatus('saving');
+      const progress = loadProgress();
+      const timeInput = document.getElementById(key + '_time');
+      
+      if (!timeInput) {
+        console.error('시간 입력 필드를 찾을 수 없습니다:', key);
+        return;
+      }
+      
+      // 보안: 입력값 검증 및 제한 (0-20시간)
+      let time = parseFloat(timeInput.value) || 0;
+      time = Math.max(0, Math.min(time, 20));
+      timeInput.value = time; // 유효한 값으로 재설정
+      
+      if (progress[key]) {
+        progress[key].time = time;
+        progress[key].updated = new Date().toISOString();
+        saveProgress(progress);
+        updateStats();
+      } else {
+        // 체크되지 않은 항목도 시간만 저장할 수 있도록
+        progress[key] = {
+          checked: false,
+          time: time,
+          updated: new Date().toISOString()
+        };
+        saveProgress(progress);
+        updateStats();
+      }
+    }
+    
+    function autoSaveLog() {
+      const logInput = document.getElementById('dailyLog');
+      if (!logInput) return;
+      
+      // 보안: 로그 길이 제한 (10,000자)
+      let log = logInput.value;
+      if (log.length > 10000) {
+        log = log.substring(0, 10000);
+        logInput.value = log;
+        alert('로그는 최대 10,000자까지 입력 가능합니다.');
+      }
+      
+      const today = new Date().toISOString().split('T')[0];
+      const progress = loadProgress();
+      
+      if (!progress._logs) {
+        progress._logs = {};
+      }
+      
+      progress._logs[today] = log;
+      saveProgress(progress);
+    }
+    
+    function loadDailyLog() {
+      const today = new Date().toISOString().split('T')[0];
+      const progress = loadProgress();
+      
+      if (progress._logs && progress._logs[today]) {
+        document.getElementById('dailyLog').value = progress._logs[today];
+      }
+    }
+    
+    function exportData() {
+      const progress = loadProgress();
+      const dataStr = JSON.stringify(progress, null, 2);
+      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(dataBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `aice_progress_${new Date().toISOString().split('T')[0]}.json`;
+      link.click();
+      URL.revokeObjectURL(url);
+      showSaveStatus('saved');
+    }
+    
+    function importData() {
+      document.getElementById('importFile').click();
+    }
+    
+    function handleFileImport(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      // 보안: 파일 크기 제한 (5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('파일 크기가 너무 큽니다. (최대 5MB)');
+        event.target.value = '';
+        return;
+      }
+      
+      // 보안: 파일 타입 검증
+      if (file.type && !file.type.includes('json') && !file.name.endsWith('.json')) {
+        alert('JSON 파일만 가져올 수 있습니다.');
+        event.target.value = '';
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const imported = JSON.parse(e.target.result);
+          
+          // 보안: 데이터 구조 검증
+          if (typeof imported !== 'object' || Array.isArray(imported)) {
+            throw new Error('잘못된 데이터 형식');
+          }
+          
+          // 보안: 데이터 크기 재검증
+          const dataStr = JSON.stringify(imported);
+          if (new Blob([dataStr]).size > 5 * 1024 * 1024) {
+            throw new Error('데이터 크기가 너무 큽니다');
+          }
+          
+          if (confirm('기존 데이터를 가져온 데이터로 덮어쓰시겠습니까?')) {
+            // 보안: 검증된 데이터만 저장
+            const validated = loadProgress(); // 검증 함수 재사용
+            Object.keys(imported).forEach(key => {
+              if (key.startsWith('_')) {
+                validated[key] = imported[key];
+              } else if (imported[key] && typeof imported[key] === 'object') {
+                validated[key] = {
+                  checked: Boolean(imported[key].checked),
+                  time: Math.max(0, Math.min(parseFloat(imported[key].time) || 0, 20)),
+                  date: imported[key].date || null,
+                  updated: imported[key].updated || null
+                };
+              }
+            });
+            
+            saveProgress(validated);
+            updateStats();
+            renderCategories();
+            loadDailyLog();
+            showSaveStatus('saved');
+            alert('데이터를 성공적으로 가져왔습니다.');
+          }
+        } catch (error) {
+          alert('파일 형식이 올바르지 않습니다: ' + error.message);
+          console.error('Import error:', error);
+        }
+      };
+      
+      reader.onerror = function() {
+        alert('파일을 읽는 중 오류가 발생했습니다.');
+        event.target.value = '';
+      };
+      
+      reader.readAsText(file);
+      event.target.value = ''; // 같은 파일 재선택 가능하도록
+    }
+    
+    function generateLog() {
+      const log = document.getElementById('dailyLog').value;
+      const date = new Date().toLocaleDateString('ko-KR');
+      const progress = loadProgress();
+      
+      let completedToday = [];
+      Object.keys(progress).forEach(key => {
+        if (progress[key].date) {
+          const itemDate = new Date(progress[key].date).toLocaleDateString('ko-KR');
+          if (itemDate === date) {
+            completedToday.push(key.split('_').slice(1).join('_'));
+          }
+        }
+      });
+      
+      const output = `
+📅 ${date} 학습 로그
+
+✅ 완료한 항목:
+${completedToday.length > 0 ? completedToday.map(item => `- ${item}`).join('\n') : '- 없음'}
+
+📝 학습 내용:
+${log || '- 기록 없음'}
+
+📊 오늘의 통계:
+- 완료 항목: ${completedToday.length}개
+- 총 학습시간: ${document.getElementById('totalTime').textContent}
+      `.trim();
+      
+      const outputDiv = document.getElementById('logOutput');
+      outputDiv.textContent = output;
+      outputDiv.style.display = 'block';
+    }
+    
+    function clearLog() {
+      document.getElementById('dailyLog').value = '';
+      document.getElementById('logOutput').style.display = 'none';
+    }
+    
+    // HTML을 이미지로 저장하는 함수
+    async function saveAsImage() {
+      // html2canvas 라이브러리 확인
+      if (typeof html2canvas === 'undefined') {
+        alert('이미지 변환 라이브러리를 로드하는 중입니다. 잠시 후 다시 시도해주세요.');
+        return;
+      }
+      
+      showSaveStatus('saving');
+      
+      try {
+        const container = document.querySelector('.container');
+        if (!container) {
+          alert('컨테이너를 찾을 수 없습니다.');
+          showSaveStatus('error');
+          return;
+        }
+        
+        // 이미지 변환 옵션 (참조 파일의 설정 반영)
+        const options = {
+          backgroundColor: '#000000', // 배경색
+          scale: 2, // 고해상도 (참조 파일의 2배 크기 설정 반영)
+          useCORS: true,
+          logging: false,
+          width: container.scrollWidth,
+          height: container.scrollHeight,
+          windowWidth: container.scrollWidth,
+          windowHeight: container.scrollHeight
+        };
+        
+        // HTML을 Canvas로 변환
+        const canvas = await html2canvas(container, options);
+        
+        // Canvas를 Blob으로 변환
+        canvas.toBlob(function(blob) {
+          if (!blob) {
+            alert('이미지 생성에 실패했습니다.');
+            showSaveStatus('error');
+            return;
+          }
+          
+          // 파일명 생성 (현재 날짜)
+          const today = new Date().toISOString().split('T')[0];
+          const fileName = `AICE_진도표_${today}.png`;
+          
+          // File System Access API를 사용한 저장 (경로가 설정된 경우)
+          if (logPathHandle && 'showDirectoryPicker' in window) {
+            saveImageToPath(blob, fileName);
+          } else {
+            // 다운로드로 저장
+            downloadImage(blob, fileName);
+          }
+        }, 'image/png', 1.0);
+        
+      } catch (error) {
+        console.error('이미지 저장 오류:', error);
+        alert('이미지 저장 중 오류가 발생했습니다: ' + error.message);
+        showSaveStatus('error');
+      }
+    }
+    
+    // File System Access API를 사용하여 이미지 저장
+    async function saveImageToPath(blob, fileName) {
+      try {
+        // "공부기록 저정" 폴더 찾기 또는 생성
+        let targetDirHandle = null;
+        try {
+          targetDirHandle = await logPathHandle.getDirectoryHandle('공부기록 저정', { create: true });
+        } catch (e) {
+          console.error('폴더 접근 실패:', e);
+          alert('"공부기록 저정" 폴더에 접근할 수 없습니다. 다운로드로 저장합니다.');
+          downloadImage(blob, fileName);
+          return;
+        }
+        
+        // 파일 저장
+        const fileHandle = await targetDirHandle.getFileHandle(fileName, { create: true });
+        const writable = await fileHandle.createWritable();
+        await writable.write(blob);
+        await writable.close();
+        
+        showSaveStatus('saved');
+        alert(`✅ 이미지가 성공적으로 저장되었습니다!\n\n파일명: ${fileName}\n위치: ${logPathHandle.name || '선택한 폴더'}/공부기록 저정`);
+      } catch (error) {
+        console.error('파일 저장 실패:', error);
+        if (error.name !== 'AbortError') {
+          alert('파일 저장에 실패했습니다. 다운로드로 저장합니다.');
+          downloadImage(blob, fileName);
+        }
+      }
+    }
+    
+    // 이미지 다운로드 (폴백)
+    function downloadImage(blob, fileName) {
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileName;
+      link.click();
+      URL.revokeObjectURL(url);
+      showSaveStatus('saved');
+      alert(`✅ 이미지가 다운로드되었습니다!\n\n파일명: ${fileName}\n\n"공부기록 저정" 폴더에 저장해주세요.`);
+    }
+    
+    // File System Access API를 사용한 로그 저장
+    let logDirectoryHandle = null;
+    let logPathHandle = null; // 선택한 경로 핸들
+    
+    // 경로 선택 함수
+    async function selectLogPath() {
+      if ('showDirectoryPicker' in window) {
+        try {
+          logPathHandle = await window.showDirectoryPicker({
+            mode: 'readwrite',
+            startIn: 'documents'
+          });
+          
+          // 경로 표시 업데이트
+          updatePathDisplay();
+          showSaveStatus('saved');
+          alert('✅ 저장 경로가 설정되었습니다!');
+        } catch (e) {
+          if (e.name !== 'AbortError') {
+            console.error('경로 선택 실패:', e);
+            alert('경로 선택에 실패했습니다.');
+          }
+        }
+      } else {
+        alert('이 브라우저는 경로 선택을 지원하지 않습니다.\n다운로드 폴더에 저장됩니다.');
+      }
+    }
+    
+    // 경로 표시 업데이트
+    function updatePathDisplay() {
+      const pathDisplay = document.getElementById('pathDisplay');
+      const pathInfo = document.getElementById('pathInfo');
+      
+      if (logPathHandle) {
+        // File System Access API에서는 폴더 이름만 표시 가능
+        pathDisplay.textContent = `선택된 폴더: ${logPathHandle.name || '폴더'}`;
+        pathDisplay.classList.add('set');
+        pathInfo.textContent = `저장 경로: ${logPathHandle.name || '폴더'} / 공부기록 저정`;
+      } else {
+        pathDisplay.textContent = '저장 경로를 선택해주세요';
+        pathDisplay.classList.remove('set');
+        pathInfo.textContent = '저장 경로가 설정되지 않았습니다';
+      }
+    }
+    
+    async function saveLogToFile() {
+      const logInput = document.getElementById('dailyLog');
+      const log = logInput.value;
+      
+      if (!log.trim()) {
+        alert('저장할 로그 내용이 없습니다.');
+        return;
+      }
+      
+      const today = new Date().toISOString().split('T')[0];
+      const dateStr = new Date().toLocaleString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
+      const progress = loadProgress();
+      
+      // 완료한 항목 수집
+      let completedToday = [];
+      Object.keys(progress).forEach(key => {
+        if (progress[key].date) {
+          const itemDate = new Date(progress[key].date).toISOString().split('T')[0];
+          if (itemDate === today) {
+            completedToday.push(key.split('_').slice(1).join('_'));
+          }
+        }
+      });
+      
+      // 로그 내용 생성
+      const logContent = `📅 ${dateStr} 학습 로그
+
+✅ 완료한 항목:
+${completedToday.length > 0 ? completedToday.map(item => `- ${item}`).join('\n') : '- 없음'}
+
+📝 학습 내용:
+${log}
+
+📊 오늘의 통계:
+- 완료 항목: ${completedToday.length}개
+- 총 학습시간: ${document.getElementById('totalTime').textContent}
+
+---
+생성일시: ${new Date().toLocaleString('ko-KR')}
+`;
+      
+      const fileName = `학습로그_${today}.txt`;
+      
+      // 경로가 설정되지 않은 경우 경로 선택 요청
+      if (!logPathHandle) {
+        if (confirm('저장 경로가 설정되지 않았습니다.\n경로를 선택하시겠습니까?')) {
+          await selectLogPath();
+          if (!logPathHandle) {
+            return; // 사용자가 취소한 경우
+          }
+        } else {
+          // 경로 선택을 취소한 경우 다운로드로 저장
+          downloadLogFile(logContent, fileName);
+          return;
+        }
+      }
+      
+      // File System Access API 지원 확인 (Chrome/Edge)
+      if ('showDirectoryPicker' in window && logPathHandle) {
+        try {
+          // "공부기록 저정" 폴더 찾기 또는 생성
+          let targetDirHandle = null;
+          try {
+            targetDirHandle = await logPathHandle.getDirectoryHandle('공부기록 저정', { create: true });
+          } catch (e) {
+            // 폴더 접근 실패 시 다운로드로 폴백
+            console.error('폴더 접근 실패:', e);
+            alert('"공부기록 저정" 폴더에 접근할 수 없습니다. 다운로드로 저장합니다.');
+            downloadLogFile(logContent, fileName);
+            return;
+          }
+          
+          // 파일 저장
+          const fileHandle = await targetDirHandle.getFileHandle(fileName, { create: true });
+          const writable = await fileHandle.createWritable();
+          await writable.write(logContent);
+          await writable.close();
+          
+          showSaveStatus('saved');
+          alert(`✅ 로그가 성공적으로 저장되었습니다!\n\n파일명: ${fileName}\n위치: ${logPathHandle.name || '선택한 폴더'}/공부기록 저정`);
+        } catch (error) {
+          console.error('파일 저장 실패:', error);
+          if (error.name !== 'AbortError') {
+            alert('파일 저장에 실패했습니다. 다운로드로 저장합니다.');
+            downloadLogFile(logContent, fileName);
+          }
+        }
+      } else {
+        // File System Access API를 지원하지 않는 브라우저 (Firefox, Safari 등)
+        downloadLogFile(logContent, fileName);
+      }
+    }
+    
+    // 다운로드로 로그 저장 (폴백)
+    function downloadLogFile(content, fileName) {
+      const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileName;
+      link.click();
+      URL.revokeObjectURL(url);
+      showSaveStatus('saved');
+      alert(`로그가 다운로드되었습니다!\n파일명: ${fileName}\n\n"공부기록 저정" 폴더에 저장해주세요.`);
+    }
+    
+    // 로그 파일 불러오기
+    async function loadLogFromFile() {
+      // 경로가 설정된 경우 해당 경로에서 파일 선택
+      if (logPathHandle && 'showDirectoryPicker' in window) {
+        try {
+          // "공부기록 저정" 폴더 접근
+          let targetDirHandle = null;
+          try {
+            targetDirHandle = await logPathHandle.getDirectoryHandle('공부기록 저정');
+          } catch (e) {
+            alert('"공부기록 저정" 폴더를 찾을 수 없습니다.\n파일 선택 다이얼로그를 사용합니다.');
+            document.getElementById('logFile').click();
+            return;
+          }
+          
+          // 파일 목록 가져오기
+          const files = [];
+          for await (const [name, handle] of targetDirHandle.entries()) {
+            if (handle.kind === 'file' && (name.endsWith('.txt') || name.endsWith('.md'))) {
+              files.push({ name, handle });
+            }
+          }
+          
+          if (files.length === 0) {
+            alert('저장된 로그 파일이 없습니다.');
+            return;
+          }
+          
+          // 파일 선택 다이얼로그 (간단한 방법으로는 파일 선택 다이얼로그 사용)
+          // File System Access API의 파일 선택은 복잡하므로 일반 파일 선택 사용
+          document.getElementById('logFile').click();
+        } catch (e) {
+          console.error('폴더 접근 실패:', e);
+          document.getElementById('logFile').click();
+        }
+      } else {
+        // 경로가 설정되지 않았거나 API를 지원하지 않는 경우 일반 파일 선택
+        document.getElementById('logFile').click();
+      }
+    }
+    
+    function handleLogFileSelect(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      // 보안: 파일 크기 제한 (1MB)
+      if (file.size > 1 * 1024 * 1024) {
+        alert('파일 크기가 너무 큽니다. (최대 1MB)');
+        event.target.value = '';
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const content = e.target.result;
+          
+          // 로그 내용 파싱 (간단한 형식)
+          // "📝 학습 내용:" 섹션 추출
+          const contentMatch = content.match(/📝 학습 내용:\s*\n([\s\S]*?)(?=\n📊|\n---|$)/);
+          if (contentMatch) {
+            const logContent = contentMatch[1].trim();
+            document.getElementById('dailyLog').value = logContent;
+            showSaveStatus('saved');
+            
+            // 로그 출력 영역에 전체 내용 표시
+            const outputDiv = document.getElementById('logOutput');
+            outputDiv.textContent = content;
+            outputDiv.style.display = 'block';
+            
+            alert(`✅ 로그를 성공적으로 불러왔습니다!\n\n파일명: ${file.name}`);
+          } else {
+            // 형식이 다른 경우 전체 내용 표시
+            document.getElementById('dailyLog').value = content;
+            showSaveStatus('saved');
+            
+            // 로그 출력 영역에도 표시
+            const outputDiv = document.getElementById('logOutput');
+            outputDiv.textContent = content;
+            outputDiv.style.display = 'block';
+            
+            alert(`✅ 로그를 불러왔습니다!\n\n파일명: ${file.name}\n(형식이 다를 수 있습니다)`);
+          }
+        } catch (error) {
+          alert('파일을 읽는 중 오류가 발생했습니다: ' + error.message);
+          console.error('Log file read error:', error);
+        }
+      };
+      
+      reader.onerror = function() {
+        alert('파일을 읽는 중 오류가 발생했습니다.');
+        event.target.value = '';
+      };
+      
+      reader.readAsText(file, 'UTF-8');
+      event.target.value = ''; // 같은 파일 재선택 가능하도록
+    }
+    
+    // 페이지 로드 시 일일 로그 자동 로드 및 경로 표시 업데이트
+    window.addEventListener('DOMContentLoaded', function() {
+      loadDailyLog();
+      updatePathDisplay();
+    });
+    
+    // 주기적으로 자동 저장 (10초마다) - 변경사항이 있을 때만
+    let lastProgressHash = '';
+    setInterval(function() {
+      const progress = loadProgress();
+      const currentHash = JSON.stringify(progress);
+      if (currentHash !== lastProgressHash) {
+        lastProgressHash = currentHash;
+        // 저장 상태 표시 없이 조용히 저장
+        try {
+          localStorage.setItem('aice_progress', JSON.stringify(progress));
+        } catch (e) {
+          console.error('자동 저장 실패:', e);
+        }
+      }
+    }, 10000);
+    
+    // 페이지 떠나기 전 자동 저장
+    window.addEventListener('beforeunload', function() {
+      const progress = loadProgress();
+      saveProgress(progress);
+    });
+    
+    // 초기화
+    const initialProgress = loadProgress();
+    lastProgressHash = JSON.stringify(initialProgress);
+    updateStats();
+    renderCategories();
+  </script>
+</body>
+</html>
+
